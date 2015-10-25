@@ -9158,7 +9158,7 @@
 							"width": 649,
 							"height": 153,
 							"autoResize": false,
-							"text": "WEB CLIENT: Safari, Chrome, Firefox\n\nWEB SERVER: written in cocos 2D JS game engine, it generates our 2D game in web client browsers\n\nMOBILE CLIENT: iOS and/or Android version of our 2D game written in cocos 2D JS game engine.\n\n*cocos 2D is a cross platform, hence we only need to write our game once and deploy it to both web and mobile plaforms with very little additional code\n\nGAME SERVER: dedicated server that hosts muliplayer games. Its job is to synchronize player movements, game events and handle all other multiplayer aspects of the game.\n\nGAME STAT DATABASE: stores all player statics, game statistics and saved game states\n\n",
+							"text": "WEB CLIENT: Safari, Chrome, Firefox\n\nWEB SERVER: written in cocos 2D JS game engine, it generates our 2D game in web client browsers\n\nMOBILE CLIENT: iOS and/or Android version of our 2D game written in cocos 2D JS game engine.\n\n*cocos 2D is cross platform, hence we only need to write our game once and deploy it to both web and mobile plaforms with very little additional code\n\nGAME SERVER: dedicated server that hosts muliplayer games. Its job is to synchronize player movements, game events and handle all other multiplayer aspects of the game.\n\nGAME STAT DATABASE: stores all player statics, game statistics and saved game states\n\n",
 							"wordWrap": true
 						},
 						{
