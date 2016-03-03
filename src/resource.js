@@ -6,12 +6,10 @@ var res = {
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     character_bunny_png : "res/character/bunny.png",
     trees_png : "res/map/trees.png",
-    HF1_A2_png : "res/map/HF1_A2.png",
-    map_tmx : "res/map/map.tmx"
+    HF1_A2_png : "res/map/HF1_A2.png"
 };
 
 var g_resources = [
-    res.map_tmx
 ];
 
 for (var i in res) {
