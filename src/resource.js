@@ -5,10 +5,15 @@ var res = {
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     character_bunny_png : "res/character/bunny.png",
-    map_png : "res/map/map.png"
+    trees_png : "res/map/trees.png",
+    HF1_A2_png : "res/map/HF1_A2.png",
+    map_tmx : "res/map/map.tmx"
 };
 
-var g_resources = [];
+var g_resources = [
+    res.map_tmx
+];
+
 for (var i in res) {
     g_resources.push(res[i]);
 }

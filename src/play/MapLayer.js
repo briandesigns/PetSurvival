@@ -2,6 +2,8 @@
  * Created by brian on 2/13/16.
  */
 var MapLayer = cc.Layer.extend({
+    map:null,
+
     ctor:function () {
         this._super();
         this.init();
@@ -9,12 +11,10 @@ var MapLayer = cc.Layer.extend({
 
     init:function () {
         this._super();
-        var winsize = cc.director.getWinSize();
 
-        //create the background image and position it at the center of screen
-        var centerPos = cc.p(winsize.width / 2, winsize.height / 2);
-        var spriteBG = new cc.Sprite(res.map_png);
-        spriteBG.setPosition(centerPos);
-        this.addChild(spriteBG);
+        this.map = new cc.TMXTiledMap(res.map_tmx);
+        this.addChild(this.map);
+
+        this.scheduleUpdate();
     }
 });
