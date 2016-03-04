@@ -5,8 +5,7 @@ var res = {
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     character_bunny_png : "res/character/bunny.png",
-    trees_png : "res/map/trees.png",
-    HF1_A2_png : "res/map/HF1_A2.png"
+    terrain_jpg : "res/map/terrain.jpg"
 };
 
 var g_resources = [];
