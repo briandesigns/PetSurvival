@@ -19,10 +19,6 @@ var PlayerLayer = cc.Layer.extend({
         this.bunny.sprite.setScale(0.1);
         this.addChild(this.bunny.sprite);
 
-        //set camera to follow hero sprite (may not be necessary)
-        //var followAction = cc.Follow.create(this.bunny.sprite);
-        //this.runAction(followAction);
-
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
@@ -68,6 +64,9 @@ var PlayerLayer = cc.Layer.extend({
     },
     getEyeX: function () {
         return this.bunny.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
+    },
+    getEyeY: function () {
+        return this.bunny.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
     }
 });
 

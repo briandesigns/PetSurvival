@@ -15,9 +15,10 @@ var PlayScene = cc.Scene.extend({
         this.scheduleUpdate();
     },
     update: function (dt) {
+        //moves the map in the opposite direction of player movement
         var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
         var eyeX = playerLayer.getEyeX();
-
-        this.gameLayer.setPosition(cc.p(-eyeX,0));
+        var eyeY = playerLayer.getEyeY();
+        this.gameLayer.setPosition(cc.p(-eyeX,-eyeY));
     }
 });
