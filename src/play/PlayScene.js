@@ -11,11 +11,13 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(new MapLayer(), 0, TagOfLayer.Map);
         this.gameLayer.addChild(new PlayerLayer(), 0, TagOfLayer.Player);
         this.addChild(this.gameLayer);
+
+        this.scheduleUpdate();
     },
-    update: function () {
+    update: function (dt) {
         var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
         var eyeX = playerLayer.getEyeX();
 
-        this.setPosition(cc.p(-eyeX,0));
+        this.gameLayer.setPosition(cc.p(-eyeX,0));
     }
 });
