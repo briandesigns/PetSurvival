@@ -9,8 +9,7 @@ var res = {
     HF1_A2_png : "res/map/HF1_A2.png"
 };
 
-var g_resources = [
-];
+var g_resources = [];
 
 for (var i in res) {
     g_resources.push(res[i]);

@@ -20,8 +20,8 @@ var PlayerLayer = cc.Layer.extend({
         this.addChild(this.bunny.sprite);
 
         //set camera to follow hero sprite
-        //var followAction = cc.Follow.create(this.bunny.sprite);
-        //this.runAction(followAction);
+        var followAction = cc.Follow.create(this.bunny.sprite);
+        this.runAction(followAction);
 
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
@@ -66,6 +66,10 @@ var PlayerLayer = cc.Layer.extend({
         this.bunny.sprite.setRotation(-180);
         var actionTo = new cc.MoveBy(0.2, cc.p(0, -10));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
+    },
+    getEyeX: function () {
+        console.log("getEyeX has been called");
+        return this.bunny.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
     }
 });
 

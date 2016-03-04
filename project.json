@@ -12,6 +12,7 @@
   ],
   "jsList": [
     "src/resource.js",
+    "src/globals.js",
     "src/menu/MainMenuLayer.js",
     "src/menu/MainMenuScene.js",
     "src/play/PlayScene.js",
