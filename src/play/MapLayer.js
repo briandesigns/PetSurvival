@@ -14,23 +14,36 @@ var MapLayer = cc.Layer.extend({
     init:function () {
         this._super();
 
+        //width == height otherwise the map will not load
+        var tiledMapsWide = 1;
+        var tiledMapsHigh = 1;
+        var totalTiledMaps = tiledMapsWide * tiledMapsHigh;
+
+        var tiledMapWidth = 64;
+        var tiledMapHeight = 64;
+        var fullMapWidth = tiledMapWidth * tiledMapsWide;
+        var fullMapHeight = tiledMapHeight * tiledMapsHigh;
+        var fullMapTileCount = fullMapWidth * fullMapHeight;
+
+        MapGenerator.Terrain(fullMapTileCount);
+
         //the input array of map tiles. for now make this iterate through the tile types
-        var inputTileData = [];
-        for (i=0; i<65536; i++) {
-            inputTileData.push(parseInt(i/483));
+        var inputTileData = new Array(fullMapTileCount);
+        for (i=0; i<fullMapTileCount; i++) {
+            inputTileData[i] = (parseInt(i/483));
         }
 
         //an array of empty tiled map data arrays
-        var tiledMapData = new Array(16);
-        for (var i = 0; i<16; i++) {
+        var tiledMapData = new Array(totalTiledMaps);
+        for (var i = 0; i<totalTiledMaps; i++) {
             tiledMapData[i] = [];
         }
 
         //fill the tiled map data arrays with the proper data from the input array
-        for (var j=0; j<65536; j++) {
-            var row = parseInt((j%256)/64);
-            var column = parseInt((j/256)/64);
-            var array = column*4 + row;
+        for (var j=0; j<fullMapTileCount; j++) {
+            var row = parseInt((j % fullMapWidth) / tiledMapHeight);
+            var column = parseInt((j / fullMapHeight) / tiledMapWidth);
+            var array = column * tiledMapsWide + row;
             tiledMapData[array].push(inputTileData[j]);
         }
 
@@ -39,13 +52,13 @@ var MapLayer = cc.Layer.extend({
         var mapAsTmxStrings = [];
 
         //attach headers and footers to our arrays to form tmx strings
-        for (var k=0; k<16; k++) {
+        for (var k=0; k<totalTiledMaps; k++) {
             var mapArrayAsString = tiledMapData[k].toString();
             mapAsTmxStrings.push(header.concat(mapArrayAsString, footer));
         }
 
-        //create 16 tiled map objects
-        for (i=0; i<16; i++) {
+        //create tiled map objects
+        for (i=0; i<totalTiledMaps; i++) {
             var map = new cc.TMXTiledMap.create(mapAsTmxStrings[i], "res/map");
             this.maps.push(map);
         }
@@ -53,10 +66,10 @@ var MapLayer = cc.Layer.extend({
         this.mapWidth = this.maps[0].getContentSize().width;
         this.mapHeight = this.maps[0].getContentSize().height;
 
-        //set the position of 16 tiled maps in a 4x4 grid
-        for (i=0; i<16; i++) {
-            var xPosition = (this.mapWidth * i) % (this.mapWidth * 4);
-            var yPosition = this.mapHeight * parseInt(i / 4);
+        //set the position of tiled maps in a square grid
+        for (i=0; i<totalTiledMaps; i++) {
+            var xPosition = (this.mapWidth * i) % (this.mapWidth * tiledMapsWide);
+            var yPosition = this.mapHeight * parseInt(i / tiledMapsHigh);
 
             this.maps[i].setPosition(cc.p(xPosition, yPosition));
             this.addChild(this.maps[i]);

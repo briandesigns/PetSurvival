@@ -19,6 +19,7 @@
     "src/character/Player.js",
     "src/play/MapLayer.js",
     "src/play/PlayerLayer.js",
-    "src/play/PlayScene.js"
+    "src/play/PlayScene.js",
+    "src/load/MapGenerator.js"
   ]
 }
