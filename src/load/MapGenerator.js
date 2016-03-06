@@ -23,7 +23,8 @@ Terrain.prototype.generate = function(roughness) {
     divide(this.max);
 
     function divide(size) {
-        var x, y, half = size / 2;
+        var x, y;
+        var half = size / 2;
         var scale = roughness * size;
 
         if (half < 1) return;

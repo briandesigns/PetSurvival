@@ -31,9 +31,37 @@ var MapLayer = cc.Layer.extend({
         terrain.generate(0.7);
         for (i=0; i<fullMapTileCount; i++) {
             var terrainAsInt = parseInt(terrain.map[i]/10);
-            console.log(terrainAsInt);
-            inputTileData[i] = terrainAsInt;
+
+            switch (terrainAsInt) {
+                case 0:
+                    inputTileData[i] = 323;
+                    break;
+                case 1:
+                    inputTileData[i] = 320;
+                    break;
+                case 2:
+                    inputTileData[i] = 191;
+                    break;
+                case 3:
+                    inputTileData[i] = 197;
+                    break;
+                case 4:
+                    inputTileData[i] = 71;
+                    break;
+                case 5:
+                    inputTileData[i] = 65;
+                    break;
+                case 6:
+                    inputTileData[i] = 206;
+                    break;
+                case 7:
+                    inputTileData[i] = 203;
+                    break;
+                default:
+                    inputTileData[i] = 326;
+            }
         }
+        console.log("max " + parseInt(Math.max.apply(Math, terrain.map)/10) + ", min " + parseInt(Math.min.apply(Math, terrain.map)/10));
 
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(totalTiledMaps);
