@@ -19,18 +19,20 @@ var MapLayer = cc.Layer.extend({
         var tiledMapsHigh = 1;
         var totalTiledMaps = tiledMapsWide * tiledMapsHigh;
 
-        var tiledMapWidth = 64;
-        var tiledMapHeight = 64;
+        //for our map to generate properly, these need to be a power of 2 + 1
+        var tiledMapWidth = 65;
+        var tiledMapHeight = 65;
         var fullMapWidth = tiledMapWidth * tiledMapsWide;
         var fullMapHeight = tiledMapHeight * tiledMapsHigh;
         var fullMapTileCount = fullMapWidth * fullMapHeight;
 
-        MapGenerator.Terrain(fullMapTileCount);
-
-        //the input array of map tiles. for now make this iterate through the tile types
         var inputTileData = new Array(fullMapTileCount);
+        var terrain = new Terrain(tiledMapWidth);
+        terrain.generate(0.7);
         for (i=0; i<fullMapTileCount; i++) {
-            inputTileData[i] = (parseInt(i/483));
+            var terrainAsInt = parseInt(terrain.map[i]/10);
+            console.log(terrainAsInt);
+            inputTileData[i] = terrainAsInt;
         }
 
         //an array of empty tiled map data arrays
@@ -47,7 +49,7 @@ var MapLayer = cc.Layer.extend({
             tiledMapData[array].push(inputTileData[j]);
         }
 
-        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"64\" height=\"64\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"64\" height=\"64\">\r\n  <data encoding=\"csv\">\r\n";
+        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
         var footer = "<\/data>\r\n <\/layer>\r\n<\/map>\r\n";
         var mapAsTmxStrings = [];
 

@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="df23ebfd-654c-401d-8895-b67358c03441" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/load/MapGenerator.js" afterPath="$PROJECT_DIR$/src/load/MapGenerator.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/play/MapLayer.js" afterPath="$PROJECT_DIR$/src/play/MapLayer.js" />
     </list>
     <ignored path="PetSurvival.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,21 +25,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MapLayer.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MapLayer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/play/MapLayer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3047404">
-              <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="32" column="57" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MapGenerator.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MapGenerator.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/load/MapGenerator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.43269232">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -70,6 +72,7 @@
         <option value="$PROJECT_DIR$/src/globals.js" />
         <option value="$PROJECT_DIR$/src/play/MapGenerator.js" />
         <option value="$PROJECT_DIR$/project.json" />
+        <option value="$PROJECT_DIR$/src/load/MapGenerator.js" />
         <option value="$PROJECT_DIR$/src/play/MapLayer.js" />
       </list>
     </option>
@@ -384,7 +387,13 @@
       <option name="project" value="LOCAL" />
       <updated>1457221455005</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Created placeholder for generator function. Removed hard code from MapLayer">
+      <created>1457221494645</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1457221494645</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -430,7 +439,8 @@
     <MESSAGE value="Map is now represented by a grid of tiled maps. Player can move vertically." />
     <MESSAGE value="Array of map tile data gets transformed into the game map" />
     <MESSAGE value="Grid of tiled maps now act as one complete game map (by properly showing map data from a single array)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Grid of tiled maps now act as one complete game map (by properly showing map data from a single array)" />
+    <MESSAGE value="Created placeholder for generator function. Removed hard code from MapLayer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created placeholder for generator function. Removed hard code from MapLayer" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -787,18 +797,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/load/MapGenerator.js">
+    <entry file="file://$PROJECT_DIR$/src/play/MapLayer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+          <caret line="32" column="57" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/play/MapLayer.js">
+    <entry file="file://$PROJECT_DIR$/src/load/MapGenerator.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3047404">
-          <caret line="23" column="57" selection-start-line="23" selection-start-column="57" selection-end-line="23" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.43269232">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
       </provider>
