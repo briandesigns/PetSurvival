@@ -1,7 +1,3 @@
-/**
- * Created by brian on 2/13/16.
- */
-
 var Player = cc.Class.extend({
 
     sprite: null,
