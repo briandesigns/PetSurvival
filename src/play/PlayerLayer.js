@@ -42,24 +42,24 @@ var PlayerLayer = cc.Layer.extend({
     moveRight: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(90);
-        var actionTo = new cc.MoveBy(0.2, cc.p(10, 0));
+        var actionTo = new cc.MoveBy(0.2, cc.p(32, 0));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveLeft: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(-90);
-        var actionTo = new cc.MoveBy(0.2, cc.p(-10, 0));
+        var actionTo = new cc.MoveBy(0.2, cc.p(-32, 0));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveUp: function () {
         this.bunny.sprite.setRotation(0);
-        var actionTo = new cc.MoveBy(0.2, cc.p(0, 10));
+        var actionTo = new cc.MoveBy(0.2, cc.p(0, 32));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveDown: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(-180);
-        var actionTo = new cc.MoveBy(0.2, cc.p(0, -10));
+        var actionTo = new cc.MoveBy(0.2, cc.p(0, -32));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
     },
     getEyeX: function () {

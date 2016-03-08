@@ -2,6 +2,7 @@
  * Created by brian on 2/13/16.
  */
 var MapLayer = cc.Layer.extend({
+    map:null,
     maps:[],
     mapWidth:0,
     mapHeight:0,
@@ -30,7 +31,7 @@ var MapLayer = cc.Layer.extend({
         var terrain = new Terrain(tiledMapWidth);
         terrain.generate(0.7);
         for (i=0; i<fullMapTileCount; i++) {
-            var terrainAsInt = parseInt(terrain.map[i]/10);
+            var terrainAsInt = parseInt(terrain.map[i]/20);
 
             switch (terrainAsInt) {
                 case 0:
@@ -61,7 +62,78 @@ var MapLayer = cc.Layer.extend({
                     inputTileData[i] = 326;
             }
         }
-        console.log("max " + parseInt(Math.max.apply(Math, terrain.map)/10) + ", min " + parseInt(Math.min.apply(Math, terrain.map)/10));
+        console.log("max " + parseInt(Math.max.apply(Math, terrain.map)/20) + ", min " + parseInt(Math.min.apply(Math, terrain.map)/20));
+
+        var p;
+        var w = 323;
+        var s = 320;
+        var madeIt = 0;
+
+        for (p=0; p<fullMapTileCount; p++) {
+
+            //SAND SURROUNDED BY WATER
+            if (inputTileData[p] == s) { //sand tile
+                if (inputTileData[p-1] == w) { //water left
+                    if (inputTileData[p-fullMapWidth] == w) { //water above
+                        if (inputTileData[p+1] == w) { //water right
+                            if (inputTileData[p+fullMapWidth] == w) { //water below
+                                inputTileData[p] = 277;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //SAND WITH WATER IN BOTTOM RIGHT
+            if (inputTileData[p-1] == s) { //sand left
+                if (inputTileData[p-fullMapWidth] == s) { //sand above
+                    if (inputTileData[p+1] == 258 || inputTileData[p+1] == 341 || inputTileData[p+1] == 342) { //sand right on top half
+                        if (inputTileData[p+fullMapWidth] == 278 || inputTileData[p+fullMapWidth] == 321 || inputTileData[p+fullMapWidth] == 342) { //sand below on left half
+                            inputTileData[p] = 256;
+                        }
+                    }
+                }
+            }
+
+            //SAND WITH WATER IN BOTTOM LEFT
+            if (inputTileData[p-1] == 257 || inputTileData[p-1] == 340 || inputTileData[p-1] == 341) { //sand left on to half
+                if (inputTileData[p-fullMapWidth] == s) { //sand above
+                    if (inputTileData[p+1]) { //sand right
+                        if (inputTileData[p+fullMapWidth] == 279 || inputTileData[p+fullMapWidth] == 319 || inputTileData[p+fullMapWidth] == 340) { //sand below on right half
+                            inputTileData[p] = 257;
+                        }
+                    }
+                }
+            }
+
+            //SAND WITH WATER IN TOP RIGHT
+            if (inputTileData[p-1] == s) { //sand left
+                if (inputTileData[p-fullMapWidth] == 257 || inputTileData[p-fullMapWidth] == 300 || inputTileData[p-fullMapWidth] == 321) { //sand above on left half
+                    if (inputTileData[p+1] == 279 || inputTileData[p+1] == 299 || inputTileData[p+1] == 300) { //sand right on bottom half
+                        if (inputTileData[p+fullMapWidth] == s) { //sand below
+                            inputTileData[p] = 278;
+                        }
+                    }
+                }
+            }
+
+            //SAND WITH WATER IN TOP LEFT
+            if (inputTileData[p-1] == 278 || inputTileData[p-1] == 298 || inputTileData[p-1] == 399) { //sand left in bottom half
+                if (inputTileData[p-fullMapWidth] == 258 || inputTileData[p-fullMapWidth] == 298 || inputTileData[p-fullMapWidth] == 319) { //sand above on right half
+                    if (inputTileData[p+1] == s) { //sand right on top half
+                        if (inputTileData[p+fullMapWidth] == s) { //sand below on left half
+                            inputTileData[p] = 279;
+                        }
+                    }
+                }
+            }
+
+
+
+        }
+
+        console.log(madeIt);
+
 
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(totalTiledMaps);
@@ -77,7 +149,7 @@ var MapLayer = cc.Layer.extend({
             tiledMapData[array].push(inputTileData[j]);
         }
 
-        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
+        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <tile id=\"322\">\r\n   <objectgroup draworder=\"index\">\r\n    <object id=\"0\" x=\"0.17234\" y=\"0.344679\" width=\"31.5381\" height=\"31.3658\"\/>\r\n   <\/objectgroup>\r\n  <\/tile> <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
         var footer = "<\/data>\r\n <\/layer>\r\n<\/map>\r\n";
         var mapAsTmxStrings = [];
 
@@ -104,6 +176,9 @@ var MapLayer = cc.Layer.extend({
             this.maps[i].setPosition(cc.p(xPosition, yPosition));
             this.addChild(this.maps[i]);
         }
+
+       //this.map = new cc.TMXTiledMap(res.testmap_tmx);
+        //this.addChild(this.map);
 
         this.scheduleUpdate();
     }
