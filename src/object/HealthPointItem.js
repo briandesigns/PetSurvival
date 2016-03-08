@@ -6,7 +6,7 @@ var HealthPointItem = Item.extend({
      * @param {cc.p}
      */
     ctor: function (name, sprite, healthBenefit) {
-        this._super(name, sprite);;
-        this.healthBenefit = healthBenefit;
-    },
-})
+        this._super(name, sprite);
+        this.healthPointBenefit = healthBenefit;
+    }
+});

@@ -1,4 +1,5 @@
 var HealthBoostItem = Item.extend({
+
     healthBoost: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}
@@ -6,7 +7,7 @@ var HealthBoostItem = Item.extend({
      * @param {cc.p}
      */
     ctor: function (name, sprite, healthBoost) {
-        this._super(name, sprite);;
+        this._super(name, sprite, ITEM_TYPE.healthBoost);;
         this.healthBoost = healthBoost;
-    },
-})
+    }
+});
