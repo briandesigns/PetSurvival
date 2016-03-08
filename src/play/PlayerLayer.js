@@ -11,7 +11,7 @@ var PlayerLayer = cc.Layer.extend({
         this._super();
 
         //create the hero sprite
-        this.player = new Player(new Dog());
+        this.player = new Player(new Cat());
         this.player.character.sprite.attr({
             x: cc.director.getWinSize().width / 2,
             y: cc.director.getWinSize().height / 2
