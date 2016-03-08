@@ -22,6 +22,19 @@ var PlayerLayer = cc.Layer.extend({
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
+                    onKeyReleased: function (key, event) {
+                        cc.log("Key released: " + key.toString());
+                        if (key.toString() === "65") { //a
+                            this.player.character.sprite.stopAllActions();
+                        } else if (key.toString() === "87") { //w
+                            this.player.character.sprite.stopAllActions();
+                        } else if (key.toString() === "83") { //s
+                            this.player.character.sprite.stopAllActions();
+                        } else if (key.toString() === "68") { //d
+                            this.player.character.sprite.stopAllActions();
+                        } else {
+                        }
+                    }.bind(this),
                     onKeyPressed: function (key, event) {
                         //cc.log("Key pressed: " + key.toString());
                         if (key.toString() === "65") { //a
@@ -32,6 +45,7 @@ var PlayerLayer = cc.Layer.extend({
                             this.moveDown();
                         } else if (key.toString() === "68") { //d
                             this.moveRight();
+                        } else {
                         }
                     }.bind(this)
                 },
