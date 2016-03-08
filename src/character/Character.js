@@ -45,24 +45,25 @@ var Character = cc.Node.extend({
 
     moveRight: function () {
         this.sprite.setRotation(0);
-        this.sprite.setRotation(90);
+        this.sprite.setRotation(-90);
         var actionTo = new cc.MoveBy(0.2, cc.p(10, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveLeft: function () {
         this.sprite.setRotation(0);
-        this.sprite.setRotation(-90);
+        this.sprite.setRotation(90);
         var actionTo = new cc.MoveBy(0.2, cc.p(-10, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveUp: function () {
         this.sprite.setRotation(0);
+        this.sprite.setRotation(180);
         var actionTo = new cc.MoveBy(0.2, cc.p(0, 10));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveDown: function () {
         this.sprite.setRotation(0);
-        this.sprite.setRotation(-180);
+        this.sprite.setRotation(0);
         var actionTo = new cc.MoveBy(0.2, cc.p(0, -10));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },

@@ -19,6 +19,8 @@
     "src/character/Player.js",
     "src/character/Character.js",
     "src/character/Dog.js",
+    "src/character/Pig.js",
+    "src/character/Cat.js",
     "src/object/Item.js",
     "src/object/HealthPointItem.js",
     "src/object/HealthBoostItem.js",

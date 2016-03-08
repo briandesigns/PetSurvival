@@ -6,7 +6,7 @@ var SpeedItem = Item.extend({
      * @param {cc.p}
      */
     ctor: function (name, sprite, speedBoost) {
-        this._super(name, sprite);
+        this._super(name, sprite, ITEM_TYPE.speed);
         this.speedBoost = speedBoost;
     },
 })

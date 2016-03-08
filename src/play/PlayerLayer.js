@@ -40,6 +40,7 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
     moveRight: function () {
+
         this.player.character.moveRight();
     },
     moveLeft: function () {

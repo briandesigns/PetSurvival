@@ -7,8 +7,7 @@ var HitPointItem = Item.extend({
      * @param {cc.p}
      */
     ctor: function (name, sprite, hitPointBenefit) {
-        this._super(name, sprite);
-        ;
+        this._super(name, sprite, ITEM_TYPE.hitPoint);
         this.hitPointBenefit = hitPointBenefit;
     }
 });
