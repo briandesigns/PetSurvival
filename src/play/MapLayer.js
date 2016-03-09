@@ -2,6 +2,7 @@
  * Created by brian on 2/13/16.
  */
 var MapLayer = cc.Layer.extend({
+
     map: null,
     maps: [],
     tileArray: [],
@@ -10,9 +11,11 @@ var MapLayer = cc.Layer.extend({
     fullMapHeight: null,
     mapWidth: 0,
     mapHeight: 0,
+    space: null,
 
-    ctor: function () {
+    ctor:function (space) {
         this._super();
+        this.space = space;
         this.init();
     },
 

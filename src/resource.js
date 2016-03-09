@@ -4,9 +4,17 @@ var res = {
     menu_button_selected_singleplayer : "res/menu/menu_button_selected_singleplayer.png",
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
-    character_bunny_png : "res/character/bunny.png",
     terrain_jpg : "res/map/terrain.jpg",
-    testmap_tmx : "res/map/64x64.tmx"
+    testmap_tmx : "res/map/64x64.tmx",
+    character_rabbit_png : "res/character/rabbit.png",
+    character_dog_png : "res/character/dog.png",
+    character_pig_png : "res/character/pig.png",
+    character_cat_png : "res/character/cat.png",
+    character_hydrant_png : "res/character/hydrant.png",
+    character_dryer_png : "res/character/dryer.png",
+    character_can_png : "res/character/can.png",
+    character_vacuum_png : "res/character/vacuum.png"
+
 };
 
 var g_resources = [
