@@ -38,6 +38,9 @@ var MapLayer = cc.Layer.extend({
             var terrainAsInt = parseInt(terrain.map[i] / 20);
 
             switch (terrainAsInt) {
+                case (terrainAsInt < 0):
+                    this.tileArray[i] = 320; //sand
+                    break;
                 case 0:
                     this.tileArray[i] = 323; //water
                     break;
@@ -50,20 +53,10 @@ var MapLayer = cc.Layer.extend({
                 case 3:
                     this.tileArray[i] = 326; //earth
                     break;
-                case 4:
-                    this.tileArray[i] = 71;
-                    break;
-                case 5:
-                    this.tileArray[i] = 65;
-                    break;
-                case 6:
-                    this.tileArray[i] = 206;
-                    break;
-                case 7:
-                    this.tileArray[i] = 203;
+                case (terrainAsInt > 3):
+                    this.tileArray[i] = 191;
                     break;
                 default:
-                    this.tileArray[i] = 326;
             }
         }
         console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
@@ -144,6 +137,31 @@ var MapLayer = cc.Layer.extend({
                 }
             }
 
+            //dirt
+            if (this.tileArray[d] == 326) {
+                seed = parseInt(Math.random() * 6);
+                switch (seed) {
+                    case 0:
+                        this.tileArray[d] = 326;
+                        break;
+                    case 1:
+                        this.tileArray[d] = 389;
+                        break;
+                    case 2:
+                        this.tileArray[d] = 390;
+                        break;
+                    case 3:
+                        this.tileArray[d] = 391;
+                        break;
+                    case 4:
+                        this.tileArray[d] = 392;
+                        break;
+                    case 5:
+                        this.tileArray[d] = 393;
+                        break;
+                    default:
+                }
+            }
         }
 
         //an array of empty tiled map data arrays
