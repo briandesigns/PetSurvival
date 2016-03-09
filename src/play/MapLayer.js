@@ -39,16 +39,16 @@ var MapLayer = cc.Layer.extend({
 
             switch (terrainAsInt) {
                 case 0:
-                    this.tileArray[i] = 323;
+                    this.tileArray[i] = 323; //water
                     break;
                 case 1:
-                    this.tileArray[i] = 320;
+                    this.tileArray[i] = 320; //sand
                     break;
                 case 2:
-                    this.tileArray[i] = 191;
+                    this.tileArray[i] = 191; //grass
                     break;
                 case 3:
-                    this.tileArray[i] = 197;
+                    this.tileArray[i] = 326; //earth
                     break;
                 case 4:
                     this.tileArray[i] = 71;
@@ -70,6 +70,7 @@ var MapLayer = cc.Layer.extend({
         
         this.smoothTiles(320,323,256,277,279,278,258,257,342,340,300,298,299,341,319,321); //water/sand smoothing
         this.smoothTiles(320,191,253,274,276,275,255,254,339,337,297,295,296,338,316,318); //sand/grass smoothing
+        this.smoothTiles(326,191,262,283,285,284,264,263,348,346,306,304,305,347,325,327); //grass/dirt smoothing
 
         /*
         p: first tile type
