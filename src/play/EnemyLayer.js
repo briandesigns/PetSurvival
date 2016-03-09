@@ -3,7 +3,7 @@
  */
 var EnemyLayer = cc.Layer.extend({
     space: null,
-    hydrantGroup: null,
+    DryerGroup: null,
     ctor: function (space) {
         this._super();
         this.space = space;
@@ -12,15 +12,15 @@ var EnemyLayer = cc.Layer.extend({
     init: function () {
         this._super();
 
-        this.hydrantGroup = [];
+        this.DryerGroup = [];
         for (var i = 0; i<1; i++) {
-            this.hydrantGroup[i] = new Hydrant();
+            this.DryerGroup[i] = new Dryer();
 
 
-            this.space.addBody(this.hydrantGroup[i].body);
-            this.space.addShape(this.hydrantGroup[i].shape);
-            this.hydrantGroup[i].body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
-            this.addChild(this.hydrantGroup[i].sprite);
+            this.space.addBody(this.DryerGroup[i].body);
+            this.space.addShape(this.DryerGroup[i].shape);
+            this.DryerGroup[i].body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
+            this.addChild(this.DryerGroup[i].sprite);
 
 
         }
