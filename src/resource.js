@@ -5,6 +5,8 @@ var res = {
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     terrain_jpg : "res/map/terrain.jpg",
+    terrain2_png : "res/map/terrain2.png",
+    terrain3_png : "res/map/terrain3.png",
     testmap_tmx : "res/map/64x64.tmx",
     character_rabbit_png : "res/character/rabbit.png",
     character_dog_png : "res/character/dog.png",
