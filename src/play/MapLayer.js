@@ -4,6 +4,10 @@
 var MapLayer = cc.Layer.extend({
     map:null,
     maps:[],
+    tileArray:[],
+    fullMapTileCount:null,
+    fullMapWidth:null,
+    fullMapHeight:null,
     mapWidth:0,
     mapHeight:0,
 
@@ -23,50 +27,65 @@ var MapLayer = cc.Layer.extend({
         //for our map to generate properly, these need to be a power of 2 + 1
         var tiledMapWidth = 65;
         var tiledMapHeight = 65;
-        var fullMapWidth = tiledMapWidth * tiledMapsWide;
-        var fullMapHeight = tiledMapHeight * tiledMapsHigh;
-        var fullMapTileCount = fullMapWidth * fullMapHeight;
+        this.fullMapWidth = tiledMapWidth * tiledMapsWide;
+        this.fullMapHeight = tiledMapHeight * tiledMapsHigh;
+        this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
 
-        var inputTileData = new Array(fullMapTileCount);
+        this.tileArray = new Array(this.fullMapTileCount);
         var terrain = new Terrain(tiledMapWidth);
         terrain.generate(0.7);
-        for (i=0; i<fullMapTileCount; i++) {
+        for (i=0; i<this.fullMapTileCount; i++) {
             var terrainAsInt = parseInt(terrain.map[i]/20);
 
             switch (terrainAsInt) {
                 case 0:
-                    inputTileData[i] = 323;
+                    this.tileArray[i] = 323;
                     break;
                 case 1:
-                    inputTileData[i] = 320;
+                    this.tileArray[i] = 320;
                     break;
                 case 2:
-                    inputTileData[i] = 191;
+                    this.tileArray[i] = 191;
                     break;
                 case 3:
-                    inputTileData[i] = 197;
+                    this.tileArray[i] = 197;
                     break;
                 case 4:
-                    inputTileData[i] = 71;
+                    this.tileArray[i] = 71;
                     break;
                 case 5:
-                    inputTileData[i] = 65;
+                    this.tileArray[i] = 65;
                     break;
                 case 6:
-                    inputTileData[i] = 206;
+                    this.tileArray[i] = 206;
                     break;
                 case 7:
-                    inputTileData[i] = 203;
+                    this.tileArray[i] = 203;
                     break;
                 default:
-                    inputTileData[i] = 326;
+                    this.tileArray[i] = 326;
             }
         }
         console.log("max " + parseInt(Math.max.apply(Math, terrain.map)/20) + ", min " + parseInt(Math.min.apply(Math, terrain.map)/20));
 
-        var p;
-        var w = 323;
-        var s = 320;
+        var siws = 256; //sand island surrounded by water (small)
+        var swbr = 257; //sand with water in bottom right
+        var swbl = 258; //sand with water in bottom left
+        var siwl = 277; //sand island surrounded by water (large)
+        var swur = 278; //sand with water in upper left
+        var swul = 279; //sand with water in upper right
+        var wsbr = 298; //water with sand in bottom right
+        var wasb = 299; //water above sand below
+        var wsbl = 300; //water with sand in bottom left
+        var wlsr = 319; //water left sand right
+        var wrsl = 321; //water right sand left
+        var wstp = 340; //water with sand in top right
+        var wbsa = 341; //water below sand above
+        var wstl = 342; //water with sand in top left
+
+        var w = 323; //water
+        var s = 320; //sand
+
         var corrections = 0;
         var lastCorrections = 0;
 
@@ -75,17 +94,16 @@ var MapLayer = cc.Layer.extend({
             lastCorrections = corrections;
             corrections = 0;
 
-            for (p = 0; p < fullMapTileCount; p++) {
-
+            for (var p = 0; p < this.fullMapTileCount; p++) {
 
                 //SAND SURROUNDED BY WATER
-                if (inputTileData[p] == s) { //sand tile
-                    if (inputTileData[p - 1] == w || inputTileData[p - 1] == 277 || inputTileData[p - 1] == 300 || inputTileData[p - 1] == 321 || inputTileData[p - 1] == 342) { //water left
-                        if (inputTileData[p - fullMapWidth] == w || inputTileData[p - fullMapWidth] == 277 || inputTileData[p - fullMapWidth] == 340 || inputTileData[p - fullMapWidth] == 341 || inputTileData[p - fullMapWidth] == 342) { //water above
-                            if (inputTileData[p + 1] == w || inputTileData[p + 1] == 277 || inputTileData[p + 1] == 298 || inputTileData[p + 1] == 319 || inputTileData[p + 1] == 340) { //water right
-                                if (inputTileData[p + fullMapWidth] == w || inputTileData[p + fullMapWidth] == 277 || inputTileData[p + fullMapWidth] == 298 || inputTileData[p + fullMapWidth] == 299 || inputTileData[p + fullMapWidth] == 300) { //water below
-                                    if (inputTileData[p] != 277) {
-                                        inputTileData[p] = 277;
+                if (this.tileArray[p] == s) { //sand tile
+                    if (this.tileArray[p - 1] == w || this.tileArray[p - 1] == siwl || this.tileArray[p - 1] == wsbl || this.tileArray[p - 1] == wrsl || this.tileArray[p - 1] == wstl) { //water left
+                        if (this.tileArray[p - this.fullMapWidth] == w || this.tileArray[p - this.fullMapWidth] == siwl || this.tileArray[p - this.fullMapWidth] == wstp || this.tileArray[p - this.fullMapWidth] == wbsa || this.tileArray[p - this.fullMapWidth] == wstl) { //water above
+                            if (this.tileArray[p + 1] == w || this.tileArray[p + 1] == siwl || this.tileArray[p + 1] == wsbr || this.tileArray[p + 1] == wlsr || this.tileArray[p + 1] == wstp) { //water right
+                                if (this.tileArray[p + this.fullMapWidth] == w || this.tileArray[p + this.fullMapWidth] == siwl || this.tileArray[p + this.fullMapWidth] == wsbr || this.tileArray[p + this.fullMapWidth] == wasb || this.tileArray[p + this.fullMapWidth] == wsbl) { //water below
+                                    if (this.tileArray[p] != siwl) {
+                                        this.tileArray[p] = siwl;
                                         corrections++;
                                     }
                                 }
@@ -94,109 +112,54 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER ABOVE, SAND BELOW
-                if (inputTileData[p - fullMapWidth] == w || inputTileData[p - fullMapWidth] == 277 || inputTileData[p - fullMapWidth] == 340 || inputTileData[p - fullMapWidth] == 341 || inputTileData[p - fullMapWidth] == 342) { //water above
-                    if (inputTileData[p + fullMapWidth] == s || inputTileData[p + fullMapWidth] == 340) { //sand below
-                        if (inputTileData[p] != 299) {
-                            inputTileData[p] = 299;
-                            corrections++;
-                        }
-                    }
-                }
-
-                //WATER LEFT, SAND RIGHT
-                if (inputTileData[p - 1] == w || inputTileData[p - 1] == 277 || inputTileData[p - 1] == 300 || inputTileData[p - 1] == 321 || inputTileData[p - 1] == 342) {
-                    if (inputTileData[p + 1] == s || inputTileData[p + 1] == 321) {
-                        if (inputTileData[p] != 319) {
-                            inputTileData[p] = 319;
-                            corrections++;
-                        }
-                    }
-                }
-
-                //SAND LEFT, WATER RIGHT
-                if (inputTileData[p - 1] == s || inputTileData[p - 1] == 319) {
-                    if (inputTileData[p + 1] == w || inputTileData[p + 1] == 277 || inputTileData[p + 1] == 298 || inputTileData[p + 1] == 319 || inputTileData[p + 1] == 340) {
-                        if (inputTileData[p] != 321) {
-                            inputTileData[p] = 321;
-                            corrections++;
-                        }
-                    }
-                }
-
-                //SAND ABOVE, WATER BELOW
-                if (inputTileData[p - fullMapWidth] == s || inputTileData[p - fullMapWidth] == 299 || inputTileData[p - fullMapWidth] == 278 || inputTileData[p - fullMapWidth] == 279) {
-                    if (inputTileData[p + fullMapWidth] == w || inputTileData[p + fullMapWidth] == 277 || inputTileData[p + fullMapWidth] == 298 || inputTileData[p + fullMapWidth] == 299 || inputTileData[p + fullMapWidth] == 300) {
-                        if (inputTileData[p] != 341) {
-                            inputTileData[p] = 341;
-                            corrections++;
-                        }
-                    }
-                }
-
                 //SAND WITH WATER IN BOTTOM RIGHT
-                if (inputTileData[p - 1] == s || inputTileData[p - 1] == 319) { //sand left
-                    if (inputTileData[p - fullMapWidth] == s || inputTileData[p - fullMapWidth] == 299 || inputTileData[p - fullMapWidth] == 278 || inputTileData[p - fullMapWidth] == 279) { //sand above
-                        if (inputTileData[p + 1] == 258 || inputTileData[p + 1] == 341 || inputTileData[p + 1] == 342) { //sand right on top half
-                            if (inputTileData[p + fullMapWidth] == 278 || inputTileData[p + fullMapWidth] == 321 || inputTileData[p + fullMapWidth] == 342) { //sand below on left half
-                                if (inputTileData[p] != 257) {
-                                    inputTileData[p] = 257;
+                        if (this.tileArray[p + 1] == swbl || this.tileArray[p + 1] == wbsa || this.tileArray[p + 1] == wstl) { //sand right on top half
+                            if (this.tileArray[p + this.fullMapWidth] == swur || this.tileArray[p + this.fullMapWidth] == wrsl || this.tileArray[p + this.fullMapWidth] == wstl) { //sand below on left half
+                                if (this.tileArray[p] != swbr) {
+                                    this.tileArray[p] = swbr;
                                     corrections++;
                                 }
                             }
                         }
-                    }
-                }
 
                 //SAND WITH WATER IN BOTTOM LEFT
-                if (inputTileData[p - 1] == 257 || inputTileData[p - 1] == 340 || inputTileData[p - 1] == 341) { //sand left on top half
-                    if (inputTileData[p - fullMapWidth] == s || inputTileData[p - fullMapWidth] == 299 || inputTileData[p - fullMapWidth] == 278 || inputTileData[p - fullMapWidth] == 279) { //sand above
-                        if (inputTileData[p + 1]) { //sand right
-                            if (inputTileData[p + fullMapWidth] == 279 || inputTileData[p + fullMapWidth] == 319 || inputTileData[p + fullMapWidth] == 340) { //sand below on right half
-                                if (inputTileData[p] != 258) {
-                                    inputTileData[p] = 258;
+                if (this.tileArray[p - 1] == swbr || this.tileArray[p - 1] == wstp || this.tileArray[p - 1] == wbsa) { //sand left on top half
+                            if (this.tileArray[p + this.fullMapWidth] == swul || this.tileArray[p + this.fullMapWidth] == wlsr || this.tileArray[p + this.fullMapWidth] == wstp) { //sand below on right half
+                                if (this.tileArray[p] != swbl) {
+                                    this.tileArray[p] = swbl;
                                     corrections++;
                                 }
                             }
-                        }
-                    }
                 }
 
                 //SAND WITH WATER IN TOP RIGHT
-                if (inputTileData[p - 1] == s || inputTileData[p - 1] == 319) { //sand left
-                    if (inputTileData[p - fullMapWidth] == 257 || inputTileData[p - fullMapWidth] == 300 || inputTileData[p - fullMapWidth] == 321) { //sand above on left half
-                        if (inputTileData[p + 1] == 279 || inputTileData[p + 1] == 299 || inputTileData[p + 1] == 300) { //sand right on bottom half
-                            if (inputTileData[p + fullMapWidth] == s || inputTileData[p + fullMapWidth] == 340) { //sand below
-                                if (inputTileData[p] != 278) {
-                                    inputTileData[p] = 278;
+                    if (this.tileArray[p - this.fullMapWidth] == swbr || this.tileArray[p - this.fullMapWidth] == wsbl || this.tileArray[p - this.fullMapWidth] == wrsl) { //sand above on left half
+                        if (this.tileArray[p + 1] == swul || this.tileArray[p + 1] == wasb || this.tileArray[p + 1] == wsbl) { //sand right on bottom half
+                                if (this.tileArray[p] != swur) {
+                                    this.tileArray[p] = swur;
                                     corrections++;
                                 }
-                            }
                         }
                     }
-                }
+
 
                 //SAND WITH WATER IN TOP LEFT
-                if (inputTileData[p - 1] == 278 || inputTileData[p - 1] == 298 || inputTileData[p - 1] == 399) { //sand left in bottom half
-                    if (inputTileData[p - fullMapWidth] == 258 || inputTileData[p - fullMapWidth] == 298 || inputTileData[p - fullMapWidth] == 319) { //sand above on right half
-                        if (inputTileData[p + 1] == s || inputTileData[p + 1] == 321) { //sand right on top half
-                            if (inputTileData[p + fullMapWidth] == s || inputTileData[p + fullMapWidth] == 340) { //sand below on left half
-                                if (inputTileData[p] != 279) {
-                                    inputTileData[p] = 279;
+                if (this.tileArray[p - 1] == swur || this.tileArray[p - 1] == wsbr || this.tileArray[p - 1] == 399) { //sand left in bottom half
+                    if (this.tileArray[p - this.fullMapWidth] == swbl || this.tileArray[p - this.fullMapWidth] == wsbr || this.tileArray[p - this.fullMapWidth] == wlsr) { //sand above on right half
+                                if (this.tileArray[p] != swul) {
+                                    this.tileArray[p] = swul;
                                     corrections++;
                                 }
-                            }
-                        }
                     }
                 }
 
                 //WATER WITH SAND IN BOTTOM RIGHT
-                if (inputTileData[p - 1] == w || inputTileData[p - 1] == 277 || inputTileData[p - 1] == 300 || inputTileData[p - 1] == 321 || inputTileData[p - 1] == 342) { //water left
-                    if (inputTileData[p - fullMapWidth] == w || inputTileData[p - fullMapWidth] == 277 || inputTileData[p - fullMapWidth] == 340 || inputTileData[p - fullMapWidth] == 341 || inputTileData[p - fullMapWidth] == 342) { //water above
-                        if (inputTileData[p + 1] == 279 || inputTileData[p + 1] == 299 || inputTileData[p + 1] == 300) { //water right on top half
-                            if (inputTileData[p + fullMapWidth] == 279 || inputTileData[p + fullMapWidth] == 319 || inputTileData[p + fullMapWidth] == 340) { //water below on left half
-                                if (inputTileData[p] != 298) {
-                                    inputTileData[p] = 298;
+                if (this.tileArray[p - 1] == w || this.tileArray[p - 1] == siwl || this.tileArray[p - 1] == wsbl || this.tileArray[p - 1] == wrsl || this.tileArray[p - 1] == wstl) { //water left
+                    if (this.tileArray[p - this.fullMapWidth] == w || this.tileArray[p - this.fullMapWidth] == siwl || this.tileArray[p - this.fullMapWidth] == wstp || this.tileArray[p - this.fullMapWidth] == wbsa || this.tileArray[p - this.fullMapWidth] == wstl) { //water above
+                        if (this.tileArray[p + 1] == swul || this.tileArray[p + 1] == wasb || this.tileArray[p + 1] == wsbl) { //water right on top half
+                            if (this.tileArray[p + this.fullMapWidth] == swul || this.tileArray[p + this.fullMapWidth] == wlsr || this.tileArray[p + this.fullMapWidth] == wstp) { //water below on left half
+                                if (this.tileArray[p] != wsbr) {
+                                    this.tileArray[p] = wsbr;
                                     corrections++;
                                 }
                             }
@@ -205,43 +168,72 @@ var MapLayer = cc.Layer.extend({
                 }
 
                 //WATER WITH SAND IN BOTTOM LEFT
-                if (inputTileData[p - 1] == 278 || inputTileData[p - 1] == 298 || inputTileData[p - 1] == 299) { //water left on top half
-                    if (inputTileData[p - fullMapWidth] == w || inputTileData[p - fullMapWidth] == 277 || inputTileData[p - fullMapWidth] == 340 || inputTileData[p - fullMapWidth] == 341 || inputTileData[p - fullMapWidth] == 342) { //water above
-                        if (inputTileData[p + 1] == w || inputTileData[p + 1] == 277 || inputTileData[p + 1] == 298 || inputTileData[p + 1] == 319 || inputTileData[p + 1] == 340) { //water right
-                            if (inputTileData[p + fullMapWidth] == 278 || inputTileData[p + fullMapWidth] == 321 || inputTileData[p + fullMapWidth] == 342) { //water below in right half
-                                if (inputTileData[p] != 300) {
-                                    inputTileData[p] = 300;
+                if (this.tileArray[p - 1] == swur || this.tileArray[p - 1] == wsbr || this.tileArray[p - 1] == wasb) { //water left on top half
+                            if (this.tileArray[p + this.fullMapWidth] == swur || this.tileArray[p + this.fullMapWidth] == wrsl || this.tileArray[p + this.fullMapWidth] == wstl) { //water below in right half
+                                if (this.tileArray[p] != wsbl) {
+                                    this.tileArray[p] = wsbl;
                                     corrections++;
                                 }
                             }
-                        }
-                    }
                 }
 
                 //WATER WITH SAND IN TOP RIGHT
-                if (inputTileData[p - 1] == w || inputTileData[p - 1] == 277 || inputTileData[p - 1] == 300 || inputTileData[p - 1] == 321 || inputTileData[p - 1] == 342) { //water left
-                    if (inputTileData[p - fullMapWidth] == 258 || inputTileData[p - fullMapWidth] == 298 || inputTileData[p - fullMapWidth] == 319) { //water above in left half
-                        if (inputTileData[p + 1] == 258 || inputTileData[p + 1] == 341 || inputTileData[p + 1] == 342) { //water right in bottom half
-                            if (inputTileData[p + fullMapWidth] == w || inputTileData[p + fullMapWidth] == 277 || inputTileData[p + fullMapWidth] == 298 || inputTileData[p + fullMapWidth] == 299 || inputTileData[p + fullMapWidth] == 300) { //water below
-                                if (inputTileData[p] != 340) {
-                                    inputTileData[p] = 340;
+                    if (this.tileArray[p - this.fullMapWidth] == swbl || this.tileArray[p - this.fullMapWidth] == wsbr || this.tileArray[p - this.fullMapWidth] == wlsr) { //water above in left half
+                        if (this.tileArray[p + 1] == swbl || this.tileArray[p + 1] == wbsa || this.tileArray[p + 1] == wstl) { //water right in bottom half
+                                if (this.tileArray[p] != wstp) {
+                                    this.tileArray[p] = wstp;
                                     corrections++;
                                 }
-                            }
+                        }
+                    }
+
+                //WATER WITH SAND IN TOP LEFT
+                if (this.tileArray[p - 1] == swbr || this.tileArray[p - 1] == wstp || this.tileArray[p - 1] == wbsa) { //water left in bottom half
+                    if (this.tileArray[p - this.fullMapWidth] == swbr || this.tileArray[p - this.fullMapWidth] == wsbl || this.tileArray[p - this.fullMapWidth] == wrsl) { //water above in right half
+                                if (this.tileArray[p] != wstl) {
+                                    this.tileArray[p] = wstl;
+                                    corrections++;
+                                }
+                    }
+                }
+
+
+                //WATER ABOVE, SAND BELOW
+                if (this.tileArray[p - this.fullMapWidth] == w || this.tileArray[p - this.fullMapWidth] == siwl || this.tileArray[p - this.fullMapWidth] == wstp || this.tileArray[p - this.fullMapWidth] == wbsa || this.tileArray[p - this.fullMapWidth] == wstl) { //water above
+                    if (this.tileArray[p + this.fullMapWidth] == s || this.tileArray[p + this.fullMapWidth] == wstp) { //sand below
+                        if (this.tileArray[p] != wasb) {
+                            this.tileArray[p] = wasb;
+                            corrections++;
                         }
                     }
                 }
 
-                //WATER WITH SAND IN TOP LEFT
-                if (inputTileData[p - 1] == 257 || inputTileData[p - 1] == 340 || inputTileData[p - 1] == 341) { //water left in bottom half
-                    if (inputTileData[p - fullMapWidth] == 257 || inputTileData[p - fullMapWidth] == 300 || inputTileData[p - fullMapWidth] == 321) { //water above in right half
-                        if (inputTileData[p + 1] == w || inputTileData[p + 1] == 277 || inputTileData[p + 1] == 298 || inputTileData[p + 1] == 319 || inputTileData[p + 1] == 340) { //water right
-                            if (inputTileData[p + fullMapWidth] == w || inputTileData[p + fullMapWidth] == 277 || inputTileData[p + fullMapWidth] == 298 || inputTileData[p + fullMapWidth] == 299 || inputTileData[p + fullMapWidth] == 300) { //water below
-                                if (inputTileData[p] != 342) {
-                                    inputTileData[p] = 342;
-                                    corrections++;
-                                }
-                            }
+                //WATER LEFT, SAND RIGHT
+                if (this.tileArray[p - 1] == w || this.tileArray[p - 1] == siwl || this.tileArray[p - 1] == wsbl || this.tileArray[p - 1] == wrsl || this.tileArray[p - 1] == wstl) {
+                    if (this.tileArray[p + 1] == s || this.tileArray[p + 1] == wrsl) {
+                        if (this.tileArray[p] != wlsr) {
+                            this.tileArray[p] = wlsr;
+                            corrections++;
+                        }
+                    }
+                }
+
+                //SAND LEFT, WATER RIGHT
+                if (this.tileArray[p - 1] == s || this.tileArray[p - 1] == wlsr) {
+                    if (this.tileArray[p + 1] == w || this.tileArray[p + 1] == siwl || this.tileArray[p + 1] == wsbr || this.tileArray[p + 1] == wlsr || this.tileArray[p + 1] == wstp) {
+                        if (this.tileArray[p] != wrsl) {
+                            this.tileArray[p] = wrsl;
+                            corrections++;
+                        }
+                    }
+                }
+
+                //SAND ABOVE, WATER BELOW
+                if (this.tileArray[p - this.fullMapWidth] == s || this.tileArray[p - this.fullMapWidth] == wasb || this.tileArray[p - this.fullMapWidth] == swur || this.tileArray[p - this.fullMapWidth] == swul) {
+                    if (this.tileArray[p + this.fullMapWidth] == w || this.tileArray[p + this.fullMapWidth] == siwl || this.tileArray[p + this.fullMapWidth] == wsbr || this.tileArray[p + this.fullMapWidth] == wasb || this.tileArray[p + this.fullMapWidth] == wsbl) {
+                        if (this.tileArray[p] != wbsa) {
+                            this.tileArray[p] = wbsa;
+                            corrections++;
                         }
                     }
                 }
@@ -250,28 +242,28 @@ var MapLayer = cc.Layer.extend({
         } while (corrections != lastCorrections);
 
         //RANDOMLY VARY SOLID TILE TEXTURE
-        for (var d=0; d<fullMapTileCount; d++) {
+        var seed;
+        for (var d=0; d<this.fullMapTileCount; d++) {
 
             //sand
-            if (inputTileData[d] == s) {
-                var seed = parseInt(Math.random() * 5);
-                console.log(seed);
+            if (this.tileArray[d] == s) {
+                seed = parseInt(Math.random() * 5);
 
                 switch (seed) {
                     case 0:
-                        inputTileData[d] = 317;
+                        this.tileArray[d] = 317;
                         break;
                     case 1:
-                        inputTileData[d] = 320;
+                        this.tileArray[d] = 320;
                         break;
                     case 2:
-                        inputTileData[d] = 358;
+                        this.tileArray[d] = 358;
                         break;
                     case 3:
-                        inputTileData[d] = 359;
+                        this.tileArray[d] = 359;
                         break;
                     case 4:
-                        inputTileData[d] = 360;
+                        this.tileArray[d] = 360;
                         break;
                     default:
                 }
@@ -285,11 +277,11 @@ var MapLayer = cc.Layer.extend({
         }
 
         //fill the tiled map data arrays with the proper data from the input array
-        for (var j=0; j<fullMapTileCount; j++) {
-            var row = parseInt((j % fullMapWidth) / tiledMapHeight);
-            var column = parseInt((j / fullMapHeight) / tiledMapWidth);
+        for (var j=0; j<this.fullMapTileCount; j++) {
+            var row = parseInt((j % this.fullMapWidth) / tiledMapHeight);
+            var column = parseInt((j / this.fullMapHeight) / tiledMapWidth);
             var array = column * tiledMapsWide + row;
-            tiledMapData[array].push(inputTileData[j]);
+            tiledMapData[array].push(this.tileArray[j]);
         }
 
         var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <tile id=\"322\">\r\n   <objectgroup draworder=\"index\">\r\n    <object id=\"0\" x=\"0.17234\" y=\"0.344679\" width=\"31.5381\" height=\"31.3658\"\/>\r\n   <\/objectgroup>\r\n  <\/tile> <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
@@ -324,5 +316,11 @@ var MapLayer = cc.Layer.extend({
         //this.addChild(this.map);
 
         this.scheduleUpdate();
+    },
+
+    tileAtCoordinate: function (xCoord, yCoord){
+        var xTile = parseInt(xCoord/32);
+        var yTile = parseInt(this.fullMapHeight - yCoord/32);
+        console.log("index at (" + xTile + "," + yTile + ") is: " + (xTile + yTile * this.fullMapWidth) + " with tile: " + this.tileArray[(xTile + yTile * this.fullMapWidth)]);
     }
 });

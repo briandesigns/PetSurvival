@@ -42,25 +42,29 @@ var PlayerLayer = cc.Layer.extend({
     moveRight: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(90);
-        var actionTo = new cc.MoveBy(0.2, cc.p(32, 0));
+        var actionTo = new cc.MoveBy(0.2, cc.p(10, 0));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
+        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.bunny.sprite.getPositionX(), this.bunny.sprite.getPositionY());
     },
     moveLeft: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(-90);
-        var actionTo = new cc.MoveBy(0.2, cc.p(-32, 0));
+        var actionTo = new cc.MoveBy(0.2, cc.p(-10, 0));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
+        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.bunny.sprite.getPositionX(), this.bunny.sprite.getPositionY());
     },
     moveUp: function () {
         this.bunny.sprite.setRotation(0);
-        var actionTo = new cc.MoveBy(0.2, cc.p(0, 32));
+        var actionTo = new cc.MoveBy(0.2, cc.p(0, 10));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
+        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.bunny.sprite.getPositionX(), this.bunny.sprite.getPositionY());
     },
     moveDown: function () {
         this.bunny.sprite.setRotation(0);
         this.bunny.sprite.setRotation(-180);
-        var actionTo = new cc.MoveBy(0.2, cc.p(0, -32));
+        var actionTo = new cc.MoveBy(0.2, cc.p(0, -10));
         this.bunny.sprite.runAction(new cc.Sequence(actionTo));
+        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.bunny.sprite.getPositionX(), this.bunny.sprite.getPositionY());
     },
     getEyeX: function () {
         return this.bunny.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
