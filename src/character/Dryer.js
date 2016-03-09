@@ -1,4 +1,4 @@
-var Pig = Character.extend({
+var Dryer = Character.extend({
 
 
 
@@ -8,7 +8,7 @@ var Pig = Character.extend({
      * @param {cc.p}
      */
     ctor: function () {
-        this._super(CHARACTER_TYPE.player, new cc.PhysicsSprite(res.character_pig_png), 100, 100, 100, 1.0, {}, 5)
+        this._super(CHARACTER_TYPE.enemy, new cc.PhysicsSprite(res.character_dryer_png), 100, 100, 100, 1.0, {}, 5)
     },
 
     maximizeHealth: function() {
@@ -30,9 +30,4 @@ var Pig = Character.extend({
     dropItem: function(itemName) {
 
     }
-
-
-
-
-
 });

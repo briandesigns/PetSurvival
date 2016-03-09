@@ -4,6 +4,7 @@ if(typeof TagOfLayer == "undefined") {
     TagOfLayer.Map = 0;
     TagOfLayer.Player = 1;
     TagOfLayer.Generator = 2;
+    TagOfLayer.Enemy = 3;
 }
 
 //items
@@ -16,12 +17,8 @@ if(typeof ITEM_TYPE == "undefined") {
 }
 
 //character
-var DOG_BASE_HEALTH_POINT = 100;
-var CAT_BASE_HEALTH_POINT = 100;
-var RABBIT_BASE_HEALTH_POINT = 100;
-var PIG_BASE_HEALTH_POINT = 100;
-
-var DOG_BASE_HEALTH = 100;
-var CAT_BASE_HEALTH = 100;
-var RABBIT_BASE_HEALTH = 100;
-var PIG_BASE_HEALTH = 100;
+if(typeof CHARACTER_TYPE == "undefined") {
+    var CHARACTER_TYPE = {};
+    CHARACTER_TYPE.player = "player";
+    CHARACTER_TYPE.enemy = "enemy";
+}

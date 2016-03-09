@@ -1,4 +1,4 @@
-var Player = cc.Class.extend({
+var Player = cc.Node.extend({
 
     character: null,
 

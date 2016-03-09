@@ -2,22 +2,37 @@
  * Created by brian on 2/13/16.
  */
 var PlayerLayer = cc.Layer.extend({
+    space: null,
     player: null,
-    ctor: function () {
+    ctor: function (space) {
         this._super();
+        this.space = space;
         this.init();
+
+        this._debugNode = new cc.PhysicsDebugNode(this.space);
+        this._debugNode.setVisible(true);
+        // Parallax ratio and offset
+        this.addChild(this._debugNode, 10);
     },
     init: function () {
         this._super();
 
         //create the hero sprite
-        this.player = new Player(new Cat());
-        this.player.character.sprite.attr({
-            x: cc.director.getWinSize().width / 2,
-            y: cc.director.getWinSize().height / 2
-        });
-        this.player.character.sprite.setScale(0.1);
+        this.player = new Player(new Dog());
+        this.space.addBody(this.player.character.body);
+        this.space.addShape(this.player.character.shape);
+        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
+
+
+
+        //this.player.character.sprite.attr({
+        //    x: cc.director.getWinSize().width / 2,
+        //    y: cc.director.getWinSize().height / 2
+        //});
+        //this.player.character.sprite.setScale(0.1);
         this.addChild(this.player.character.sprite);
+
+
 
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({

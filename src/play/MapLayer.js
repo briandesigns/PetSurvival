@@ -2,12 +2,14 @@
  * Created by brian on 2/13/16.
  */
 var MapLayer = cc.Layer.extend({
+    space: null,
     maps:[],
     mapWidth:0,
     mapHeight:0,
 
-    ctor:function () {
+    ctor:function (space) {
         this._super();
+        this.space = space;
         this.init();
     },
 

@@ -8,7 +8,7 @@ var Dog = Character.extend({
      * @param {cc.p}
      */
     ctor: function () {
-        this._super(new cc.Sprite(res.character_dog_png), 100, 100, 100, 1.0, {}, 5)
+        this._super(CHARACTER_TYPE.player, new cc.PhysicsSprite(res.character_dog_png), 100, 100, 100, 1.0, {}, 5)
     },
 
     maximizeHealth: function() {
