@@ -38,7 +38,7 @@ var PlayerLayer = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyReleased: function (key, event) {
-                        cc.log("Key released: " + key.toString());
+                        //cc.log("Key released: " + key.toString());
                         if (key.toString() === "65") { //a
                             this.player.character.sprite.stopAllActions();
                         } else if (key.toString() === "87") { //w

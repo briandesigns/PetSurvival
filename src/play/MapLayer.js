@@ -2,10 +2,10 @@
  * Created by brian on 2/13/16.
  */
 var MapLayer = cc.Layer.extend({
-
     map: null,
     maps: [],
     tileArray: [],
+    featuresArray: [],
     fullMapTileCount: null,
     fullMapWidth: null,
     fullMapHeight: null,
@@ -27,7 +27,7 @@ var MapLayer = cc.Layer.extend({
         var tiledMapsHigh = 1;
         var totalTiledMaps = tiledMapsWide * tiledMapsHigh;
 
-        //for our map to generate properly, these need to be a power of 2 + 1
+        //for our map to generate properly, these need to be (a power of 2) + 1
         var tiledMapWidth = 65;
         var tiledMapHeight = 65;
         this.fullMapWidth = tiledMapWidth * tiledMapsWide;
@@ -35,8 +35,10 @@ var MapLayer = cc.Layer.extend({
         this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
 
         this.tileArray = new Array(this.fullMapTileCount);
+        this.featuresArray = new Array(this.fullMapTileCount);
         var terrain = new Terrain(tiledMapWidth);
         terrain.generate(0.7);
+
         for (i = 0; i < this.fullMapTileCount; i++) {
             var terrainAsInt = parseInt(terrain.map[i] / 20);
 
@@ -61,92 +63,17 @@ var MapLayer = cc.Layer.extend({
                     break;
                 default:
             }
+
+            this.featuresArray[i] = 1046; //fill features array with blank transparent tiles
         }
+
         console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
-        
+
         this.smoothTiles(320,323,256,277,279,278,258,257,342,340,300,298,299,341,319,321); //water/sand smoothing
         this.smoothTiles(320,191,253,274,276,275,255,254,339,337,297,295,296,338,316,318); //sand/grass smoothing
         this.smoothTiles(326,191,262,283,285,284,264,263,348,346,306,304,305,347,325,327); //grass/dirt smoothing
 
-        //RANDOMLY VARY SOLID TILE TEXTURE
-        var seed;
-        for (var d = 0; d < this.fullMapTileCount; d++) {
-
-            //sand
-            if (this.tileArray[d] == 320) {
-                seed = parseInt(Math.random() * 5);
-                switch (seed) {
-                    case 0:
-                        this.tileArray[d] = 317;
-                        break;
-                    case 1:
-                        this.tileArray[d] = 320;
-                        break;
-                    case 2:
-                        this.tileArray[d] = 358;
-                        break;
-                    case 3:
-                        this.tileArray[d] = 359;
-                        break;
-                    case 4:
-                        this.tileArray[d] = 360;
-                        break;
-                    default:
-                }
-            }
-
-            //grass
-            if (this.tileArray[d] == 191) {
-                seed = parseInt(Math.random() * 6);
-                switch (seed) {
-                    case 0:
-                        this.tileArray[d] = 232;
-                        break;
-                    case 1:
-                        this.tileArray[d] = 233;
-                        break;
-                    case 2:
-                        this.tileArray[d] = 234;
-                        break;
-                    case 3:
-                        this.tileArray[d] = 235;
-                        break;
-                    case 4:
-                        this.tileArray[d] = 236;
-                        break;
-                    case 5:
-                        this.tileArray[d] = 194;
-                        break;
-                    default:
-                }
-            }
-
-            //dirt
-            if (this.tileArray[d] == 326) {
-                seed = parseInt(Math.random() * 6);
-                switch (seed) {
-                    case 0:
-                        this.tileArray[d] = 326;
-                        break;
-                    case 1:
-                        this.tileArray[d] = 389;
-                        break;
-                    case 2:
-                        this.tileArray[d] = 390;
-                        break;
-                    case 3:
-                        this.tileArray[d] = 391;
-                        break;
-                    case 4:
-                        this.tileArray[d] = 392;
-                        break;
-                    case 5:
-                        this.tileArray[d] = 393;
-                        break;
-                    default:
-                }
-            }
-        }
+        this.varyAndAddFeatures();
 
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(totalTiledMaps);
@@ -164,14 +91,13 @@ var MapLayer = cc.Layer.extend({
 
         var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"484\" name=\"terrain2\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain2.png\" trans=\"ffffff\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"967\" name=\"terrain3\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"256\" columns=\"16\">\r\n  <image source=\"terrain3.png\" trans=\"ffffff\" width=\"512\" height=\"512\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
         var divider = "<\/data>\r\n <\/layer>\r\n <layer name=\"UpperTerrain\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" offsetx=\"448\" offsety=\"251\">\r\n  <data encoding=\"csv\">";
-        var topLayerArray = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,1095,1096,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,1111,1112,0,0,0,0,1012,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1063,1064,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1079,1080,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,1095,1096,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,1111,1112,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,1015,1016,1017,1018,1019,1020,1021,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,\r\n0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
         var footer = "<\/data>\r\n <\/layer>\r\n<\/map>\r\n";
         var mapAsTmxStrings = [];
 
         //attach headers and footers to our arrays to form tmx strings
         for (var k = 0; k < totalTiledMaps; k++) {
             var mapArrayAsString = tiledMapData[k].toString();
-            mapAsTmxStrings.push(header.concat(mapArrayAsString, divider, topLayerArray, footer));
+            mapAsTmxStrings.push(header.concat(mapArrayAsString, divider, this.featuresArray.toString(), footer));
         }
 
         //create tiled map objects
@@ -234,7 +160,7 @@ var MapLayer = cc.Layer.extend({
         var lastCorrections = 0;
 
         do {
-            console.log("corrections: " + corrections);
+            //console.log("corrections: " + corrections);
             lastCorrections = corrections;
             corrections = 0;
 
@@ -378,5 +304,176 @@ var MapLayer = cc.Layer.extend({
                 }
             }
         } while (corrections != lastCorrections);
+    },
+
+    //randomly vary patterns for grass, dirt etc. also place appropriate features on these tiles
+    varyAndAddFeatures : function () {
+        var terrainSeed;
+        var featureSeed;
+        for (var d = 0; d < this.fullMapTileCount; d++) {
+
+            //randomly vary sand texture
+            if (this.tileArray[d] == 320) {
+                terrainSeed = parseInt(Math.random() * 5);
+                switch (terrainSeed) {
+                    case 0:
+                        this.tileArray[d] = 317;
+                        break;
+                    case 1:
+                        this.tileArray[d] = 320;
+                        break;
+                    case 2:
+                        this.tileArray[d] = 358;
+                        break;
+                    case 3:
+                        this.tileArray[d] = 359;
+                        break;
+                    case 4:
+                        this.tileArray[d] = 360;
+                        break;
+                    default:
+                }
+
+                //randomly place sand features
+                featureSeed = parseInt(Math.random() * 40);
+                switch (featureSeed) {
+                    case 0:
+                        this.featuresArray[d] = 994; //big rock
+                        break;
+                    case 1:
+                        this.featuresArray[d] = 995; //small rocks
+                        break;
+                    case 2:
+                        this.featuresArray[d] = 996; //seaweed-y plant
+                        break;
+                    case 3:
+                        this.featuresArray[d] = 1012; //big fern
+                        break;
+                    case 4:
+                        this.featuresArray[d] = 1015; //two ferns
+                        break;
+                    case 5:
+                        this.featuresArray[d] = 1016; //small fern
+                        break;
+                    default:
+                }
+            }
+
+            //randomly vary grass texture
+            if (this.tileArray[d] == 191) {
+                terrainSeed = parseInt(Math.random() * 6);
+                switch (terrainSeed) {
+                    case 0:
+                        this.tileArray[d] = 232;
+                        break;
+                    case 1:
+                        this.tileArray[d] = 233;
+                        break;
+                    case 2:
+                        this.tileArray[d] = 234;
+                        break;
+                    case 3:
+                        this.tileArray[d] = 235;
+                        break;
+                    case 4:
+                        this.tileArray[d] = 236;
+                        break;
+                    case 5:
+                        this.tileArray[d] = 194;
+                        break;
+                    default:
+                }
+
+                //randomly place grass features
+                featureSeed = parseInt(Math.random() * 60);
+                switch (featureSeed) {
+                    case 0:
+                        this.featuresArray[d] = 980; //mushroom
+                        break;
+                    case 1:
+                        this.featuresArray[d] = 994; //big rock
+                        break;
+                    case 2:
+                        this.featuresArray[d] = 995; //small rocks
+                        break;
+                    case 3:
+                        this.featuresArray[d] = 1017; //dark fern
+                        break;
+                    case 4:
+                        this.featuresArray[d] = 1018; //scattered leaves
+                        break;
+                    case 5:
+                        this.featuresArray[d] = 1019; //flowers
+                        break;
+                    case 6:
+                        this.featuresArray[d] = 1020; //flowers in bush
+                        break;
+                    case 7:
+                        this.featuresArray[d] = 1021; //tree stump
+                        break;
+                    case 8:
+                        this.featuresArray[d] = 1009; //skinny pine tree bottom
+                        this.featuresArray[d-this.fullMapWidth] = 993; //skinny pine tree top
+                        break;
+                    case 9:
+                        this.featuresArray[d] = 1079; //wide pine tree bottom left
+                        this.featuresArray[d+1] = 1080; //bottom right
+                        this.featuresArray[d-this.fullMapWidth] = 1063; //top left
+                        this.featuresArray[d-this.fullMapWidth+1] = 1064; //top left
+                        break;
+                    case 10:
+                        this.featuresArray[d] = 1111; //wide leafy tree bottom left
+                        this.featuresArray[d+1] = 1112; //bottom right
+                        this.featuresArray[d-this.fullMapWidth] = 1095; //top left
+                        this.featuresArray[d-this.fullMapWidth+1] = 1096; //top left
+                        break;
+                    default:
+                }
+            }
+
+            //randomly vary solid dirt texture
+            if (this.tileArray[d] == 326) {
+                terrainSeed = parseInt(Math.random() * 6);
+                switch (terrainSeed) {
+                    case 0:
+                        this.tileArray[d] = 326;
+                        break;
+                    case 1:
+                        this.tileArray[d] = 389;
+                        break;
+                    case 2:
+                        this.tileArray[d] = 390;
+                        break;
+                    case 3:
+                        this.tileArray[d] = 391;
+                        break;
+                    case 4:
+                        this.tileArray[d] = 392;
+                        break;
+                    case 5:
+                        this.tileArray[d] = 393;
+                        break;
+                    default:
+                }
+
+                //randomly place dirt features
+                featureSeed = parseInt(Math.random() * 6);
+                switch (featureSeed) {
+                    case 0:
+                        this.featuresArray[d] = 994; //big rock
+                        break;
+                    case 1:
+                        this.featuresArray[d] = 995; //small rocks
+                        break;
+                    case 2:
+                        this.featuresArray[d] = 1015; //two ferns
+                        break;
+                    case 3:
+                        this.featuresArray[d] = 1018; //scattered leaves
+                        break;
+                    default:
+                }
+            }
+        }
     }
 });
