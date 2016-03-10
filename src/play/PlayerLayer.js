@@ -60,7 +60,10 @@ var PlayerLayer = cc.Layer.extend({
                             this.moveDown();
                         } else if (key.toString() === "68") { //d
                             this.moveRight();
-                        } else {
+                        } else if (key.toString() === "32"){
+                            if(this.player.character.isCollideEnemy) {
+                                this.player.character.attackEnemy();
+                            }
                         }
                     }.bind(this)
                 },

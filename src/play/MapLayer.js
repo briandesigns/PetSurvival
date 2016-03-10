@@ -1,6 +1,3 @@
-/**
- * Created by brian on 2/13/16.
- */
 var MapLayer = cc.Layer.extend({
 
     map: null,

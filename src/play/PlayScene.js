@@ -5,20 +5,27 @@
 var PlayScene = cc.Scene.extend({
     space: null,
 
-    initPhysics:function() {
+    initPhysics: function () {
         //1. new space object
         this.space = new cp.Space();
         //2. setup the  Gravity
         this.space.gravity = cp.v(0, 0);
 
-        //// 3. set up Walls
-        //var wallBottom = new cp.SegmentShape(this.space.staticBody,
-        //    cp.v(0, g_groundHeight),// start point
-        //    cp.v(4294967295, g_groundHeight),// MAX INT:4294967295
-        //    0);// thickness of wall
-        //this.space.addStaticShape(wallBottom);
 
 
+
+    },
+
+    initCollisions: function() {
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
+            this.collisionPlayerEnemyBegin.bind(this), null, null, null);
+    },
+
+    collisionPlayerEnemyBegin: function (arbiter, space) {
+        var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
+        var player = playerLayer.player;
+        player.character.isCollideEnemy = true;
+        player.character.sprite.setScale(0.5);
     },
 
     onEnter: function () {
@@ -29,6 +36,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(new MapLayer(this.space), 0, TagOfLayer.Map);
         this.gameLayer.addChild(new PlayerLayer(this.space), 0, TagOfLayer.Player);
         this.gameLayer.addChild(new EnemyLayer(this.space), 0, TagOfLayer.Enemy);
+        this.initCollisions();
         this.addChild(this.gameLayer);
 
         this.scheduleUpdate();
@@ -40,6 +48,6 @@ var PlayScene = cc.Scene.extend({
         var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
         var eyeX = playerLayer.getEyeX();
         var eyeY = playerLayer.getEyeY();
-        this.gameLayer.setPosition(cc.p(-eyeX,-eyeY));
+        this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
     }
 });
