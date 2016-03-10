@@ -30,8 +30,6 @@ var PlayerLayer = cc.Layer.extend({
         //this.player.character.sprite.setScale(0.1);
         this.addChild(this.player.character.sprite);
 
-
-
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
