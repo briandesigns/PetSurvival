@@ -17,6 +17,8 @@ var PlayScene = cc.Scene.extend({
         //    cp.v(4294967295, g_groundHeight),// MAX INT:4294967295
         //    0);// thickness of wall
         //this.space.addStaticShape(wallBottom);
+
+
     },
 
     onEnter: function () {

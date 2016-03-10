@@ -1,6 +1,6 @@
 var Character = cc.Node.extend({
 
-    type: null,
+    collisionType: null,
     body: null,
     shape: null,
     sprite: null,
@@ -17,9 +17,9 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (type, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity) {
+    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity) {
         this._super();
-        this.type = type;
+        this.collisionType = collisionType;
         this.sprite = sprite;
         this.sprite.setScale(0.1);
         this.healthPoint = healthPoint;
@@ -33,6 +33,8 @@ var Character = cc.Node.extend({
         this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width*0.1, contentSize.height*0.1));
         this.shape = new cp.BoxShape(this.body, contentSize.width*0.1, contentSize.height*0.1);
         this.sprite.setBody(this.body);
+        this.shape.setCollisionType(this.collisionType);
+        this.shape.setSensor(false);
 
     },
 

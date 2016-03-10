@@ -8,7 +8,7 @@ var Hydrant = Character.extend({
      * @param {cc.p}
      */
     ctor: function () {
-        this._super(CHARACTER_TYPE.enemy, new cc.PhysicsSprite(res.character_hydrant_png), 100, 100, 100, 1.0, {}, 5)
+        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_hydrant_png), 100, 100, 100, 1.0, {}, 5)
     },
 
     maximizeHealth: function() {

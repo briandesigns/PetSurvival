@@ -1,5 +1,5 @@
 var Item = cc.Class.extend({
-
+    collisionType: null,
     name: null,
     sprite: null,
     itemType: null,
@@ -14,6 +14,7 @@ var Item = cc.Class.extend({
         this.name = name;
         this.sprite = sprite;
         this.itemType = itemType;
-    },
+        this.collisionType = COLLISION_TYPE.item;
+    }
 
 });
