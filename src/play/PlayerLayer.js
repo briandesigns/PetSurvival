@@ -23,8 +23,6 @@ var PlayerLayer = cc.Layer.extend({
         this.space.addShape(this.player.character.shape);
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
 
-
-
         //this.player.character.sprite.attr({
         //    x: cc.director.getWinSize().width / 2,
         //    y: cc.director.getWinSize().height / 2
@@ -39,6 +37,7 @@ var PlayerLayer = cc.Layer.extend({
                     event: cc.EventListener.KEYBOARD,
                     onKeyReleased: function (key, event) {
                         //cc.log("Key released: " + key.toString());
+
                         if (key.toString() === "65") { //a
                             this.player.character.sprite.stopAllActions();
                         } else if (key.toString() === "87") { //w

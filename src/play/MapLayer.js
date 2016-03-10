@@ -124,6 +124,16 @@ var MapLayer = cc.Layer.extend({
         this.scheduleUpdate();
     },
 
+    coordinateAtTileIndex: function (tileIndex) {
+        var xTile = tileIndex % this.fullMapWidth;
+        var yTile = parseInt(tileIndex / this.fullWidth);
+
+        var xCoordinate = xTile * 32;
+        var yCoordinate = yTile * 32;
+
+        console.log("index " + tileIndex + " has coordinate (" + xCoordinate + "," + yCoordinate + ")");
+    },
+
     tileAtCoordinate: function (xCoord, yCoord) {
         var xTile = parseInt(xCoord / 32);
         var yTile = parseInt(this.fullMapHeight - yCoord / 32);
