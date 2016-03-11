@@ -10,7 +10,7 @@ var Character = cc.Node.extend({
     speed: null,
     inventory: null,
     inventoryCapacity: null,
-    isCollideEnemy: null,
+    collisionList: null,
 
 
     /** Constructor
@@ -29,7 +29,7 @@ var Character = cc.Node.extend({
         this.speed = speed;
         this.inventory = inventory;
         this.inventoryCapacity = inventoryCapacity;
-        this.isCollideEnemy = true;
+        this.collisionList = [];
 
         var contentSize = this.sprite.getContentSize();
         this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width*0.1, contentSize.height*0.1));
@@ -84,9 +84,9 @@ var Character = cc.Node.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
-    attackEnemy: function(enemy) {
-        enemy.health -= this.hitPoint;
-    }
+
+
+
 
 
 

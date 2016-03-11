@@ -4,6 +4,10 @@
 
 var PlayScene = cc.Scene.extend({
     space: null,
+    gameLayer: null,
+    playerLayer: null,
+    mapLayer: null,
+    enemyLayer: null,
 
     initPhysics: function () {
         //1. new space object
@@ -22,25 +26,65 @@ var PlayScene = cc.Scene.extend({
     },
 
     collisionPlayerEnemyBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+
         var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
         var player = playerLayer.player;
-        player.character.isCollideEnemy = true;
         player.character.sprite.setScale(0.5);
+        return true;
     },
 
     onEnter: function () {
         this._super();
         this.initPhysics();
         this.gameLayer = new cc.Layer();
+        this.playerLayer = new PlayerLayer(this.space);
+        this.mapLayer = new MapLayer(this.space);
+        this.enemyLayer = new EnemyLayer(this.space);
 
-        this.gameLayer.addChild(new MapLayer(this.space), 0, TagOfLayer.Map);
-        this.gameLayer.addChild(new PlayerLayer(this.space), 0, TagOfLayer.Player);
-        this.gameLayer.addChild(new EnemyLayer(this.space), 0, TagOfLayer.Enemy);
+        this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
+        this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
+        this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.initCollisions();
         this.addChild(this.gameLayer);
 
         this.scheduleUpdate();
+        this.schedule(this.spawnEnemy,7);
+        this.schedule(this.enemyBehavior, 0.5);
+
     },
+
+    enemyBehavior: function(dt) {
+        for(var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
+            var enemySpawn = this.enemyLayer.enemySpawnList[i];
+            for (var j = 0; j< enemySpawn.enemyList.length; j++) {
+                var enemy = enemySpawn.enemyList[j];
+                if (!true) {
+                    //do something when theres player present
+                } else {
+                    var probability = Math.random();
+                    if (probability < 0.5) {
+                        if (probability<0.1) {
+                            enemy.moveUp();
+                        } else if (probability>0.1 && probability<=0.2) {
+                            enemy.moveDown();
+                        } else if (probability>0.2 && probability<=0.3) {
+                            enemy.moveLeft();
+                        } else if (probability>0.3 && probability<=0.4) {
+                            enemy.moveRight();
+                        } else {
+                            //do nothing
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    spawnEnemy: function(dt) {
+        this.enemyLayer.spawnEnemy();
+    },
+
     update: function (dt) {
         // chipmunk step, tells cocos to start chipmunk
         this.space.step(dt);
@@ -49,5 +93,6 @@ var PlayScene = cc.Scene.extend({
         var eyeX = playerLayer.getEyeX();
         var eyeY = playerLayer.getEyeY();
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
+
     }
 });

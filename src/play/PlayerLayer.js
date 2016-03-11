@@ -4,6 +4,7 @@
 var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
+    players: null,
     ctor: function (space) {
         this._super();
         this.space = space;
@@ -61,9 +62,7 @@ var PlayerLayer = cc.Layer.extend({
                         } else if (key.toString() === "68") { //d
                             this.moveRight();
                         } else if (key.toString() === "32"){
-                            if(this.player.character.isCollideEnemy) {
-                                this.player.character.attackEnemy();
-                            }
+
                         }
                     }.bind(this)
                 },

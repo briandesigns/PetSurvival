@@ -29,3 +29,13 @@ if (typeof COLLISION_TYPE == "undefined") {
 }
 
 var MAX_INT = 4294967295;
+
+//EnemySpawn Types
+if (typeof SPAWN_TYPE == "undefined") {
+    var SPAWN_TYPE = {};
+    SPAWN_TYPE.can = 0;
+    SPAWN_TYPE.dryer = 1;
+    SPAWN_TYPE.hydrant = 2;
+    SPAWN_TYPE.vacuum = 3;
+    SPAWN_TYPE.cave = 4;
+}
