@@ -34,8 +34,8 @@ var Character = cc.Node.extend({
         this.space = space;
 
         var contentSize = this.sprite.getContentSize();
-        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width*0.1, contentSize.height*0.1));
-        this.shape = new cp.BoxShape(this.body, contentSize.width*0.1, contentSize.height*0.1);
+        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * 0.1, contentSize.height * 0.1));
+        this.shape = new cp.BoxShape(this.body, contentSize.width * 0.1, contentSize.height * 0.1);
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
@@ -44,23 +44,23 @@ var Character = cc.Node.extend({
 
     },
 
-    maximizeHealth: function() {
+    maximizeHealth: function () {
 
     },
 
-    setHealth: function(h) {
-        
-    },
-
-    setHitPoint: function(hp) {
+    setHealth: function (h) {
 
     },
 
-    dropAllItems: function() {
+    setHitPoint: function (hp) {
 
     },
 
-    dropItem: function(itemName) {
+    dropAllItems: function () {
+
+    },
+
+    dropItem: function (itemName) {
     },
 
     moveRight: function () {
@@ -88,24 +88,14 @@ var Character = cc.Node.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
-    die: function() {
-        this.space.removeShape(this.shape);
+    die: function () {
+        //this.space.removeShape(this.shape);
         //this.shape = null;
-        //this.sprite.removeFromParent();
+        this.sprite.removeFromParent();
         //this.sprite = null;
-        if (this.body == null || this.sprite == null) {
-            cc.log("body or sprite is null");
-        } else {
-        }
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
     },
-
-
-
-
-
-
-
 
 
 });

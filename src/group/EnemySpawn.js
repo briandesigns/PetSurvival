@@ -7,7 +7,7 @@ var EnemySpawn = cc.Node.extend({
     healthPoint: null,
     health: null,
     capacity: null,
-    enemyList: [],
+    enemyList: null,
     spriteScale: null,
     spawnType: null,
     space: null,
@@ -29,6 +29,7 @@ var EnemySpawn = cc.Node.extend({
         this.sprite.setScale(this.spriteScale);
         this.spawnType = spawnType;
         this.space = space;
+        this.enemyList = [];
 
         var contentSize = this.sprite.getContentSize();
         this.body = new cp.Body(MAX_INT, cp.momentForBox(1, contentSize.width*(this.spriteScale), contentSize.height*(this.spriteScale)));
@@ -41,7 +42,17 @@ var EnemySpawn = cc.Node.extend({
         this.space.addBody(this.body);
         this.space.addShape(this.shape);
 
-    }
+    },
+
+    die: function () {
+        //todo: come up with actual way of removing elements
+        //this.space.removeShape(this.shape);
+        //this.shape = null;
+        //this.sprite.removeFromParent();
+        //this.sprite = null;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+
+    },
 
 
 

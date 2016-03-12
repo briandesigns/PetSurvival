@@ -7,6 +7,7 @@ var EnemyLayer = cc.Layer.extend({
     ctor: function (space) {
         this._super();
         this.space = space;
+        this.enemySpawnList = [];
         this.init();
     },
     init: function () {
@@ -27,6 +28,7 @@ var EnemyLayer = cc.Layer.extend({
     spawnEnemy: function() {
         for (var i = 0; i< this.enemySpawnList.length; i++) {
             var enemySpawn = this.enemySpawnList[i];
+            cc.log("spawn" + i + "created, " + "spawn capacity: " + enemySpawn.capacity+ ", enemylist: " + enemySpawn.enemyList.length);
             if (enemySpawn.enemyList.length<enemySpawn.capacity) {
                 var enemy = null;
                 switch(enemySpawn.spawnType) {

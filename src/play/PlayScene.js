@@ -24,6 +24,8 @@ var PlayScene = cc.Scene.extend({
     initCollisions: function() {
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
             this.collisionPlayerEnemyBegin.bind(this), null, null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemySpawn,
+            this.collisionPlayerEnemySpawnBegin.bind(this), null, null, null);
     },
 
     collisionPlayerEnemyBegin: function (arbiter, space) {
@@ -31,6 +33,15 @@ var PlayScene = cc.Scene.extend({
 
         var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
         enemy.health = 0;
+        cc.log("collision detected");
+        return true;
+    },
+
+    collisionPlayerEnemySpawnBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+
+        var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
+        spawn.health = 0;
         cc.log("collision detected");
         return true;
     },
@@ -51,7 +62,7 @@ var PlayScene = cc.Scene.extend({
         this.trash = [];
 
         this.scheduleUpdate();
-        this.schedule(this.spawnEnemy,1);
+        this.schedule(this.spawnEnemy, 1);
         this.schedule(this.enemyBehavior, 0.5);
 
     },
@@ -90,10 +101,13 @@ var PlayScene = cc.Scene.extend({
     trashDeadThings: function() {
         for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var spawn = this.enemyLayer.enemySpawnList[i];
-            //todo: check if spawn alive
+            if (spawn.health == 0) {
+                this.trash.push(spawn);
+            }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health == 0) {
+                    spawn.enemyList.splice(i,1);
                     this.trash.push(enemy);
                 }
             }
