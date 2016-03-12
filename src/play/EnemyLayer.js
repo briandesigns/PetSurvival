@@ -18,9 +18,7 @@ var EnemyLayer = cc.Layer.extend({
 
     createSpawns: function() {
         for (var i = 0; i < 5; i++) {
-            this.enemySpawnList[i] = new Cave();
-            this.space.addBody(this.enemySpawnList[i].body);
-            this.space.addShape(this.enemySpawnList[i].shape);
+            this.enemySpawnList[i] = new Cave(this.space);
             this.enemySpawnList[i].body.setPos(cc.p((cc.director.getWinSize().width / 2) + (Math.random()*1000) - (Math.random()*1000), (cc.director.getWinSize().height / 2)+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
@@ -29,32 +27,53 @@ var EnemyLayer = cc.Layer.extend({
     spawnEnemy: function() {
         for (var i = 0; i< this.enemySpawnList.length; i++) {
             var enemySpawn = this.enemySpawnList[i];
-            if (enemySpawn.enemyList.length<=enemySpawn.capacity) {
+            if (enemySpawn.enemyList.length<enemySpawn.capacity) {
                 var enemy = null;
                 switch(enemySpawn.spawnType) {
                     case SPAWN_TYPE.can:
-                        enemy = new Can();
+                        enemy = new Can(this.space);
                         break;
                     case SPAWN_TYPE.dryer:
-                        enemy = new Dryer();
+                        enemy = new Dryer(this.space);
                         break;
                     case SPAWN_TYPE.vacuum:
-                        enemy = new Vacuum();
+                        enemy = new Vacuum(this.space);
                         break;
                     case SPAWN_TYPE.hydrant:
-                        enemy = new Hydrant();
+                        enemy = new Hydrant(this.space);
                         break;
                     default:
-                        enemy = new Can();
+                        enemy = new Can(this.space);
                 }
                 enemySpawn.enemyList.push(enemy);
-                this.space.addBody(enemy.body);
-                this.space.addShape(enemy.shape);
                 enemy.body.setPos(cc.p(enemySpawn.body.p.x, enemySpawn.body.p.y));
                 this.addChild(enemy.sprite);
             }
         }
 
+    },
+
+    getSpawnByShape: function(shape) {
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
+            var spawn = this.enemySpawnList[i];
+            if (spawn.shape == shape) {
+                return spawn;
+            }
+        }
+        return null;
+    },
+
+    getEnemyByShape: function(shape) {
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
+            var spawn = this.enemySpawnList[i];
+            for (var j = 0; j< spawn.enemyList.length; j++) {
+                var enemy = spawn.enemyList[j];
+                if (enemy.shape == shape) {
+                    return enemy;
+                }
+            }
+        }
+        return null;
     }
 });
 

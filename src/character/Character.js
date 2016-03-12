@@ -11,6 +11,7 @@ var Character = cc.Node.extend({
     inventory: null,
     inventoryCapacity: null,
     collisionList: null,
+    space: null,
 
 
     /** Constructor
@@ -18,7 +19,7 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity) {
+    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity, space) {
         this._super();
         this.collisionType = collisionType;
         this.sprite = sprite;
@@ -30,6 +31,7 @@ var Character = cc.Node.extend({
         this.inventory = inventory;
         this.inventoryCapacity = inventoryCapacity;
         this.collisionList = [];
+        this.space = space;
 
         var contentSize = this.sprite.getContentSize();
         this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width*0.1, contentSize.height*0.1));
@@ -37,6 +39,8 @@ var Character = cc.Node.extend({
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
+        this.space.addBody(this.body);
+        this.space.addShape(this.shape);
 
     },
 
@@ -83,6 +87,20 @@ var Character = cc.Node.extend({
         var actionTo = new cc.MoveBy(0.2, cc.p(0, -10));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
+
+    die: function() {
+        this.space.removeShape(this.shape);
+        //this.shape = null;
+        //this.sprite.removeFromParent();
+        //this.sprite = null;
+        if (this.body == null || this.sprite == null) {
+            cc.log("body or sprite is null");
+        } else {
+        }
+
+    },
+
+
 
 
 

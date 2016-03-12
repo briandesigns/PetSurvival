@@ -1,7 +1,7 @@
 var Cave = EnemySpawn.extend({
 
-    ctor: function () {
-        this._super(COLLISION_TYPE.enemySpawn, new cc.PhysicsSprite(res.spawn_cave_png), 100, 100, 100, 0.5, SPAWN_TYPE.cave);
+    ctor: function (space) {
+        this._super(COLLISION_TYPE.enemySpawn, new cc.PhysicsSprite(res.spawn_cave_png), 100, 100, 50, 0.5, SPAWN_TYPE.cave, space);
 
     }
 

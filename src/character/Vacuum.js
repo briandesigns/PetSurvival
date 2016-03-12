@@ -7,8 +7,8 @@ var Vacuum = Character.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function () {
-        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_vacuum_png), 100, 100, 100, 1.0, {}, 5)
+    ctor: function (space) {
+        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_vacuum_png), 100, 100, 100, 1.0, {}, 5, space);
     },
 
     maximizeHealth: function() {

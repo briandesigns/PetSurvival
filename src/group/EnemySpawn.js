@@ -10,6 +10,7 @@ var EnemySpawn = cc.Node.extend({
     enemyList: [],
     spriteScale: null,
     spawnType: null,
+    space: null,
 
 
     /** Constructor
@@ -17,7 +18,7 @@ var EnemySpawn = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (collisionType, sprite, healthPoint, health, capacity, spriteScale, spawnType) {
+    ctor: function (collisionType, sprite, healthPoint, health, capacity, spriteScale, spawnType, space) {
         this._super();
         this.collisionType = COLLISION_TYPE.enemySpawn;
         this.healthPoint = healthPoint;
@@ -27,6 +28,7 @@ var EnemySpawn = cc.Node.extend({
         this.sprite = sprite;
         this.sprite.setScale(this.spriteScale);
         this.spawnType = spawnType;
+        this.space = space;
 
         var contentSize = this.sprite.getContentSize();
         this.body = new cp.Body(MAX_INT, cp.momentForBox(1, contentSize.width*(this.spriteScale), contentSize.height*(this.spriteScale)));
@@ -36,6 +38,8 @@ var EnemySpawn = cc.Node.extend({
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
+        this.space.addBody(this.body);
+        this.space.addShape(this.shape);
 
     }
 

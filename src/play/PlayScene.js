@@ -8,6 +8,7 @@ var PlayScene = cc.Scene.extend({
     playerLayer: null,
     mapLayer: null,
     enemyLayer: null,
+    trash: null,
 
     initPhysics: function () {
         //1. new space object
@@ -28,9 +29,9 @@ var PlayScene = cc.Scene.extend({
     collisionPlayerEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
 
-        var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
-        var player = playerLayer.player;
-        player.character.sprite.setScale(0.5);
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        enemy.health = 0;
+        cc.log("collision detected");
         return true;
     },
 
@@ -47,9 +48,10 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.initCollisions();
         this.addChild(this.gameLayer);
+        this.trash = [];
 
         this.scheduleUpdate();
-        this.schedule(this.spawnEnemy,7);
+        this.schedule(this.spawnEnemy,1);
         this.schedule(this.enemyBehavior, 0.5);
 
     },
@@ -85,6 +87,26 @@ var PlayScene = cc.Scene.extend({
         this.enemyLayer.spawnEnemy();
     },
 
+    trashDeadThings: function() {
+        for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
+            var spawn = this.enemyLayer.enemySpawnList[i];
+            //todo: check if spawn alive
+            for (var j = 0; j < spawn.enemyList.length; j++) {
+                var enemy = spawn.enemyList[j];
+                if (enemy.health == 0) {
+                    this.trash.push(enemy);
+                }
+            }
+        }
+    },
+
+    emptyTrash: function() {
+        for ( var i = 0; i < this.trash.length; i++) {
+            this.trash[i].die();
+        }
+        this.trash = [];
+    },
+
     update: function (dt) {
         // chipmunk step, tells cocos to start chipmunk
         this.space.step(dt);
@@ -93,6 +115,9 @@ var PlayScene = cc.Scene.extend({
         var eyeX = playerLayer.getEyeX();
         var eyeY = playerLayer.getEyeY();
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
+        this.trashDeadThings();
+        this.emptyTrash();
+
 
     }
 });
