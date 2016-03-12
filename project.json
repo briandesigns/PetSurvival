@@ -35,6 +35,8 @@
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
-    "src/load/MapGenerator.js"
+    "src/load/MapGenerator.js",
+    "src/group/EnemySpawn.js",
+    "src/group/Cave.js"
   ]
 }

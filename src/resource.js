@@ -15,7 +15,8 @@ var res = {
     character_hydrant_png : "res/character/hydrant.png",
     character_dryer_png : "res/character/dryer.png",
     character_can_png : "res/character/can.png",
-    character_vacuum_png : "res/character/vacuum.png"
+    character_vacuum_png : "res/character/vacuum.png",
+    spawn_cave_png: "res/spawn/cave.png"
 
 };
 

@@ -4,6 +4,7 @@
 var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
+    players: null,
     ctor: function (space) {
         this._super();
         this.space = space;
@@ -18,16 +19,9 @@ var PlayerLayer = cc.Layer.extend({
         this._super();
 
         //create the hero sprite
-        this.player = new Player(new Dog());
-        this.space.addBody(this.player.character.body);
-        this.space.addShape(this.player.character.shape);
+        this.player = new Player(new Dog(this.space));
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
 
-        //this.player.character.sprite.attr({
-        //    x: cc.director.getWinSize().width / 2,
-        //    y: cc.director.getWinSize().height / 2
-        //});
-        //this.player.character.sprite.setScale(0.1);
         this.addChild(this.player.character.sprite);
 
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
@@ -57,7 +51,8 @@ var PlayerLayer = cc.Layer.extend({
                             this.moveDown();
                         } else if (key.toString() === "68") { //d
                             this.moveRight();
-                        } else {
+                        } else if (key.toString() === "32"){
+
                         }
                     }.bind(this)
                 },

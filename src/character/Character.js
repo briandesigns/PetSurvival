@@ -1,6 +1,6 @@
 var Character = cc.Node.extend({
 
-    type: null,
+    collisionType: null,
     body: null,
     shape: null,
     sprite: null,
@@ -10,6 +10,8 @@ var Character = cc.Node.extend({
     speed: null,
     inventory: null,
     inventoryCapacity: null,
+    collisionList: null,
+    space: null,
 
 
     /** Constructor
@@ -17,9 +19,9 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (type, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity) {
+    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity, space) {
         this._super();
-        this.type = type;
+        this.collisionType = collisionType;
         this.sprite = sprite;
         this.sprite.setScale(0.1);
         this.healthPoint = healthPoint;
@@ -28,31 +30,37 @@ var Character = cc.Node.extend({
         this.speed = speed;
         this.inventory = inventory;
         this.inventoryCapacity = inventoryCapacity;
+        this.collisionList = [];
+        this.space = space;
 
         var contentSize = this.sprite.getContentSize();
-        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width*0.1, contentSize.height*0.1));
-        this.shape = new cp.BoxShape(this.body, contentSize.width*0.1, contentSize.height*0.1);
+        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * 0.1, contentSize.height * 0.1));
+        this.shape = new cp.BoxShape(this.body, contentSize.width * 0.1, contentSize.height * 0.1);
         this.sprite.setBody(this.body);
+        this.shape.setCollisionType(this.collisionType);
+        this.shape.setSensor(false);
+        this.space.addBody(this.body);
+        this.space.addShape(this.shape);
 
     },
 
-    maximizeHealth: function() {
+    maximizeHealth: function () {
 
     },
 
-    setHealth: function(h) {
-        
-    },
-
-    setHitPoint: function(hp) {
+    setHealth: function (h) {
 
     },
 
-    dropAllItems: function() {
+    setHitPoint: function (hp) {
 
     },
 
-    dropItem: function(itemName) {
+    dropAllItems: function () {
+
+    },
+
+    dropItem: function (itemName) {
     },
 
     moveRight: function () {
@@ -80,8 +88,14 @@ var Character = cc.Node.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
+    die: function () {
+        //this.space.removeShape(this.shape);
+        //this.shape = null;
+        this.sprite.removeFromParent();
+        //this.sprite = null;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
-
+    },
 
 
 });
