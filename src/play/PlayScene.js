@@ -108,7 +108,7 @@ var PlayScene = cc.Scene.extend({
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health == 0) {
-                    //todo: this is causing problems with null
+                    //todo: this is causing problems with nulls
                     //spawn.enemyList.splice(i,1);
                     this.trash.push(enemy);
                 }
