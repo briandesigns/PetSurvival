@@ -54,7 +54,7 @@ var PlayerLayer = cc.Layer.extend({
                         } else if (key.toString() === "68") { //d
                             this.moveRight();
                         } else if (key.toString() === "32"){
-
+                            this.player.character.attackEnemies();
                         }
                     }.bind(this)
                 },

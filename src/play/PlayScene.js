@@ -116,13 +116,13 @@ var PlayScene = cc.Scene.extend({
     trashDeadThings: function () {
         for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var spawn = this.enemyLayer.enemySpawnList[i];
-            if (spawn.health == 0) {
+            if (spawn.health <= 0) {
                 //this.trash.push(spawn);
                 //todo: implement destroy spawns
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
-                if (enemy.health == 0) {
+                if (enemy.health <= 0) {
                     //todo: this is causing problems with nulls
                     //spawn.enemyList.splice(i,1);
                     this.trash.push(enemy);

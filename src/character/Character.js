@@ -104,6 +104,12 @@ var Character = cc.Node.extend({
                 cc.log("collision element removed");
             }
         }
+    },
+
+    attackEnemies: function() {
+        for (var i =0; i < this.collisionList.length; i++) {
+            this.collisionList[i].health-=this.hitPoint;
+        }
     }
 
 
