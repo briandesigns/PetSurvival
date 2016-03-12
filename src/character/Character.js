@@ -97,5 +97,14 @@ var Character = cc.Node.extend({
 
     },
 
+    removeCollisionByChar: function(char) {
+        for (var i = 0; i < this.collisionList.length; i++) {
+            if (this.collisionList[i] == char) {
+                this.collisionList.splice(i, 1);
+                cc.log("collision element removed");
+            }
+        }
+    }
+
 
 });

@@ -4,7 +4,7 @@
 var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
-    players: null,
+    playerList: null,
     ctor: function (space) {
         this._super();
         this.space = space;
@@ -20,6 +20,8 @@ var PlayerLayer = cc.Layer.extend({
 
         //create the hero sprite
         this.player = new Player(new Dog(this.space));
+        this.playerList = [];
+        this.playerList.push(this.player);;
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
 
         this.addChild(this.player.character.sprite);
@@ -60,6 +62,16 @@ var PlayerLayer = cc.Layer.extend({
             );
         }
     },
+
+    getPlayerByShape: function(shape) {
+        for (var i = 0; i < this.playerList.length; i++) {
+            if (this.playerList[i].character.shape == shape) {
+                return this.playerList[i];
+            }
+        }
+        return null;
+    },
+
     moveRight: function () {
 
         this.player.character.moveRight();

@@ -17,22 +17,37 @@ var PlayScene = cc.Scene.extend({
         this.space.gravity = cp.v(0, 0);
 
 
-
-
     },
 
-    initCollisions: function() {
+    initCollisions: function () {
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
-            this.collisionPlayerEnemyBegin.bind(this), null, null, null);
+            this.collisionPlayerEnemyBegin.bind(this), null, null, this.collisionPlayerEnemyEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemySpawn,
             this.collisionPlayerEnemySpawnBegin.bind(this), null, null, null);
+    },
+
+    collisionPlayerEnemyEnd: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        enemy.removeCollisionByChar(playerCharacter);
+        playerCharacter.removeCollisionByChar(enemy);
+        cc.log("collision detected");
+        return true;
+    },
+
+    collisionPlayerEnemyPre: function (arbiter, space) {
+
     },
 
     collisionPlayerEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
 
         var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
-        enemy.health = 0;
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        enemy.collisionList.push(playerCharacter);
+        playerCharacter.collisionList.push(enemy);
         cc.log("collision detected");
         return true;
     },
@@ -67,23 +82,23 @@ var PlayScene = cc.Scene.extend({
 
     },
 
-    enemyBehavior: function(dt) {
-        for(var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
+    enemyBehavior: function (dt) {
+        for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var enemySpawn = this.enemyLayer.enemySpawnList[i];
-            for (var j = 0; j< enemySpawn.enemyList.length; j++) {
+            for (var j = 0; j < enemySpawn.enemyList.length; j++) {
                 var enemy = enemySpawn.enemyList[j];
                 if (!true) {
                     //todo: do something when theres player present
                 } else {
                     var probability = Math.random();
                     if (probability < 0.5) {
-                        if (probability<0.1) {
+                        if (probability < 0.1) {
                             enemy.moveUp();
-                        } else if (probability>0.1 && probability<=0.2) {
+                        } else if (probability > 0.1 && probability <= 0.2) {
                             enemy.moveDown();
-                        } else if (probability>0.2 && probability<=0.3) {
+                        } else if (probability > 0.2 && probability <= 0.3) {
                             enemy.moveLeft();
-                        } else if (probability>0.3 && probability<=0.4) {
+                        } else if (probability > 0.3 && probability <= 0.4) {
                             enemy.moveRight();
                         } else {
                             //do nothing
@@ -94,11 +109,11 @@ var PlayScene = cc.Scene.extend({
         }
     },
 
-    spawnEnemy: function(dt) {
+    spawnEnemy: function (dt) {
         this.enemyLayer.spawnEnemy();
     },
 
-    trashDeadThings: function() {
+    trashDeadThings: function () {
         for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health == 0) {
@@ -116,8 +131,8 @@ var PlayScene = cc.Scene.extend({
         }
     },
 
-    emptyTrash: function() {
-        for ( var i = 0; i < this.trash.length; i++) {
+    emptyTrash: function () {
+        for (var i = 0; i < this.trash.length; i++) {
             this.trash[i].die();
         }
         this.trash = [];
