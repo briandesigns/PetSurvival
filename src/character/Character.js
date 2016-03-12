@@ -91,7 +91,7 @@ var Character = cc.Node.extend({
     die: function () {
         //this.space.removeShape(this.shape);
         //this.shape = null;
-        this.sprite.removeFromParent();
+        //this.sprite.removeFromParent();
         //this.sprite = null;
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 

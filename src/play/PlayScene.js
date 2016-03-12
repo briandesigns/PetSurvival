@@ -52,14 +52,14 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer = new cc.Layer();
         this.playerLayer = new PlayerLayer(this.space);
         this.mapLayer = new MapLayer(this.space);
-        this.enemyLayer = new EnemyLayer(this.space);
+        this.trash = [];
 
+        this.enemyLayer = new EnemyLayer(this.space);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.initCollisions();
         this.addChild(this.gameLayer);
-        this.trash = [];
 
         this.scheduleUpdate();
         this.schedule(this.spawnEnemy, 1);
@@ -73,7 +73,7 @@ var PlayScene = cc.Scene.extend({
             for (var j = 0; j< enemySpawn.enemyList.length; j++) {
                 var enemy = enemySpawn.enemyList[j];
                 if (!true) {
-                    //do something when theres player present
+                    //todo: do something when theres player present
                 } else {
                     var probability = Math.random();
                     if (probability < 0.5) {
@@ -102,12 +102,14 @@ var PlayScene = cc.Scene.extend({
         for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health == 0) {
-                this.trash.push(spawn);
+                //this.trash.push(spawn);
+                //todo: implement destroy spawns
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health == 0) {
-                    spawn.enemyList.splice(i,1);
+                    //todo: this is causing problems with null
+                    //spawn.enemyList.splice(i,1);
                     this.trash.push(enemy);
                 }
             }
