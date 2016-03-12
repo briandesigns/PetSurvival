@@ -14,6 +14,13 @@
   "jsList": [
     "src/resource.js",
     "src/globals.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/Curry-1.0.1.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/dracula_algorithms.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/dracula_graffle.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/dracula_graph.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/jquery-1.4.2.min.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/raphael-min.js",
+    "frameworks/strathausen-dracula-a6a5fa7/js/seedrandom.js",
     "src/menu/MainMenuLayer.js",
     "src/menu/MainMenuScene.js",
     "src/character/Character.js",
@@ -36,6 +43,7 @@
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
     "src/load/MapGenerator.js",
+    "src/load/MapFunChecker.js",
     "src/group/EnemySpawn.js",
     "src/group/Cave.js"
   ]

@@ -3,10 +3,6 @@ var MapLayer = cc.Layer.extend({
     maps: [],
     tileArray: [], //texture of terrain tiles
     featuresArray: [], //features like trees, rocks, etc. on tiles
-    collisionArray: [], //tiles that the user can't walk over because of trees, etc.
-    fullMapTileCount: null,
-    fullMapWidth: null,
-    fullMapHeight: null,
     mapWidth: 0,
     mapHeight: 0,
     space: null,
@@ -28,20 +24,20 @@ var MapLayer = cc.Layer.extend({
         //for our map to generate properly, these need to be (a power of 2) + 1
         var tiledMapWidth = 65;
         var tiledMapHeight = 65;
-        this.fullMapWidth = tiledMapWidth * tiledMapsWide;
-        this.fullMapHeight = tiledMapHeight * tiledMapsHigh;
-        this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
+        fullMapWidth = tiledMapWidth * tiledMapsWide;
+        fullMapHeight = tiledMapHeight * tiledMapsHigh;
+        fullMapTileCount = fullMapWidth * fullMapHeight;
 
-        this.tileArray = new Array(this.fullMapTileCount);
-        this.featuresArray = new Array(this.fullMapTileCount);
-        this.collisionArray = new Array(this.fullMapTileCount);
+        this.tileArray = new Array(fullMapTileCount);
+        this.featuresArray = new Array(fullMapTileCount);
+        collisionArray = new Array(fullMapTileCount);
 
         var terrain = new Terrain(tiledMapWidth);
         terrain.generate(0.7);
 
-        for (i = 0; i < this.fullMapTileCount; i++) {
+        for (i = 0; i < fullMapTileCount; i++) {
             this.featuresArray[i] = 1046; //fill features array with blank transparent tiles
-            this.collisionArray[i] = 0; //fill collision array with 0s (no collision)
+            collisionArray[i] = 0; //fill collision array with 0s (no collision)
 
             var terrainAsInt = parseInt(terrain.map[i] / 20);
 
@@ -51,7 +47,7 @@ var MapLayer = cc.Layer.extend({
                     break;
                 case (terrainAsInt == 0):
                     this.tileArray[i] = 323; //water
-                    this.collisionArray[i] = 1;
+                    collisionArray[i] = 1;
                     break;
                 case (terrainAsInt == 1):
                     this.tileArray[i] = 320; //sand
@@ -80,6 +76,8 @@ var MapLayer = cc.Layer.extend({
 
         this.varyAndAddFeatures();
 
+        CreateGraph();
+
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(totalTiledMaps);
         for (var i = 0; i < totalTiledMaps; i++) {
@@ -87,9 +85,9 @@ var MapLayer = cc.Layer.extend({
         }
 
         //fill the tiled map data arrays with the proper data from the input array
-        for (var j = 0; j < this.fullMapTileCount; j++) {
-            var row = parseInt((j % this.fullMapWidth) / tiledMapHeight);
-            var column = parseInt((j / this.fullMapHeight) / tiledMapWidth);
+        for (var j = 0; j < fullMapTileCount; j++) {
+            var row = parseInt((j % fullMapWidth) / tiledMapHeight);
+            var column = parseInt((j / fullMapHeight) / tiledMapWidth);
             var array = column * tiledMapsWide + row;
             tiledMapData[array].push(this.tileArray[j]);
         }
@@ -131,7 +129,7 @@ var MapLayer = cc.Layer.extend({
 
     //the next four functions safely check if an index is on another column or outside the bounds of the map before we use it
     tileLeftOf: function (index) {
-        if ((index - 1) % this.fullMapWidth != this.fullMapWidth-1) {
+        if ((index - 1) % fullMapWidth != fullMapWidth-1) {
             return this.tileArray[index - 1];
         } else {
             return 0;
@@ -139,7 +137,7 @@ var MapLayer = cc.Layer.extend({
     },
 
     tileRightOf: function (index) {
-        if ((index + 1) % this.fullMapWidth != 0) {
+        if ((index + 1) % fullMapWidth != 0) {
             return this.tileArray[index + 1];
         } else {
             return 0;
@@ -147,23 +145,23 @@ var MapLayer = cc.Layer.extend({
     },
 
     tileAbove: function (index) {
-        if (index - this.fullMapWidth >=0) {
-            return this.tileArray[index - this.fullMapWidth];
+        if (index - fullMapWidth >=0) {
+            return this.tileArray[index - fullMapWidth];
         } else {
             return 0;
         }
     },
 
     tileBelow: function (index) {
-        if (index + this.fullMapWidth < this.fullMapTileCount) {
-            return this.tileArray[index + this.fullMapWidth];
+        if (index + fullMapWidth < fullMapTileCount) {
+            return this.tileArray[index + fullMapWidth];
         } else {
             return 0;
         }
     },
 
     coordinateAtTileIndex: function (tileIndex) {
-        var xTile = tileIndex % this.fullMapWidth;
+        var xTile = tileIndex % fullMapWidth;
         var yTile = parseInt(tileIndex / this.fullWidth);
 
         var xCoordinate = xTile * 32;
@@ -174,8 +172,8 @@ var MapLayer = cc.Layer.extend({
 
     tileAtCoordinate: function (xCoord, yCoord) {
         var xTile = parseInt(xCoord / 32);
-        var yTile = parseInt(this.fullMapHeight - yCoord / 32);
-        console.log("(" + xTile + "," + yTile + ") has index: " + (xTile + yTile * this.fullMapWidth) + " with tile type " + this.tileArray[(xTile + yTile * this.fullMapWidth)] + " and collision: " + this.collisionArray[xTile + yTile * this.fullMapWidth]);
+        var yTile = parseInt(fullMapHeight - yCoord / 32);
+        console.log("(" + xTile + "," + yTile + ") has index: " + (xTile + yTile * fullMapWidth) + " with tile type " + this.tileArray[(xTile + yTile * fullMapWidth)] + " and collision: " + collisionArray[xTile + yTile * fullMapWidth]);
     },
 
     /*
@@ -212,7 +210,7 @@ var MapLayer = cc.Layer.extend({
             lastCorrections = corrections;
             corrections = 0;
 
-            for (var i = 0; i < this.fullMapTileCount; i++) {
+            for (var i = 0; i < fullMapTileCount; i++) {
 
                 //SAND SURROUNDED BY WATER
                 if (this.tileArray[i] == p) { //sand tile
@@ -224,7 +222,7 @@ var MapLayer = cc.Layer.extend({
                                         this.tileArray[i] = piql;
                                         corrections++;
                                         if (p == 323) {
-                                            this.collisionArray[i] = 1;
+                                            collisionArray[i] = 1;
                                         }
                                     }
                                 }
@@ -240,7 +238,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = pqbr;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -253,7 +251,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = pqbl;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -266,7 +264,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = pqur;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -280,7 +278,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = pqul;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -293,7 +291,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qpbr;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -306,7 +304,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qpbl;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -319,7 +317,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qpur;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -332,7 +330,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qpul;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -345,7 +343,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qapb;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -358,7 +356,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qlpr;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -371,7 +369,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qrpl;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -384,7 +382,7 @@ var MapLayer = cc.Layer.extend({
                             this.tileArray[i] = qbpa;
                             corrections++;
                             if (p == 323) {
-                                this.collisionArray[i] = 1;
+                                collisionArray[i] = 1;
                             }
                         }
                     }
@@ -397,7 +395,7 @@ var MapLayer = cc.Layer.extend({
     varyAndAddFeatures : function () {
         var terrainSeed;
         var featureSeed;
-        for (var d = 0; d < this.fullMapTileCount; d++) {
+        for (var d = 0; d < fullMapTileCount; d++) {
 
             //randomly vary sand texture
             if (this.tileArray[d] == 320) {
@@ -426,19 +424,19 @@ var MapLayer = cc.Layer.extend({
                 switch (featureSeed) {
                     case 0:
                         this.featuresArray[d] = 994; //big rock
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 1:
                         this.featuresArray[d] = 995; //small rocks
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 2:
                         this.featuresArray[d] = 996; //seaweed-y plant
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 3:
                         this.featuresArray[d] = 1012; //big fern
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 4:
                         this.featuresArray[d] = 1015; //two ferns
@@ -480,66 +478,66 @@ var MapLayer = cc.Layer.extend({
                 switch (featureSeed) {
                     case 0:
                         this.featuresArray[d] = 980; //mushroom
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 1:
                         this.featuresArray[d] = 994; //big rock
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 2:
                         this.featuresArray[d] = 995; //small rocks
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 3:
                         this.featuresArray[d] = 1017; //dark fern
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 4:
                         this.featuresArray[d] = 1018; //scattered leaves
                         break;
                     case 5:
                         this.featuresArray[d] = 1019; //flowers
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 6:
                         this.featuresArray[d] = 1020; //flowers in bush
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 7:
                         this.featuresArray[d] = 1021; //tree stump
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 8:
                         //check that we are not overlapping with other trees
-                        if (this.collisionArray[d] == 0 && this.collisionArray[d-this.fullMapWidth] == 0) {
+                        if (collisionArray[d] == 0 && collisionArray[d-fullMapWidth] == 0) {
                             this.featuresArray[d] = 1009; //skinny pine tree bottom
-                            this.featuresArray[d-this.fullMapWidth] = 993; //skinny pine tree top
-                            this.collisionArray[d] = 1;
-                            this.collisionArray[d-this.fullMapWidth] = 1;
+                            this.featuresArray[d-fullMapWidth] = 993; //skinny pine tree top
+                            collisionArray[d] = 1;
+                            collisionArray[d-fullMapWidth] = 1;
                         }
                         break;
                     case 9:
-                        if (this.collisionArray[d] == 0 && this.collisionArray[d+1] == 0 && this.collisionArray[d-this.fullMapWidth] == 0 &&this.collisionArray[d-this.fullMapWidth+1] == 0) {
+                        if (collisionArray[d] == 0 && collisionArray[d+1] == 0 && collisionArray[d-fullMapWidth] == 0 &&collisionArray[d-fullMapWidth+1] == 0) {
                             this.featuresArray[d] = 1079; //wide pine tree bottom left
                             this.featuresArray[d+1] = 1080; //bottom right
-                            this.featuresArray[d-this.fullMapWidth] = 1063; //top left
-                            this.featuresArray[d-this.fullMapWidth+1] = 1064; //top left
-                            this.collisionArray[d] = 1;
-                            this.collisionArray[d+1] = 1;
-                            this.collisionArray[d-this.fullMapWidth] = 1;
-                            this.collisionArray[d-this.fullMapWidth+1] = 1;
+                            this.featuresArray[d-fullMapWidth] = 1063; //top left
+                            this.featuresArray[d-fullMapWidth+1] = 1064; //top left
+                            collisionArray[d] = 1;
+                            collisionArray[d+1] = 1;
+                            collisionArray[d-fullMapWidth] = 1;
+                            collisionArray[d-fullMapWidth+1] = 1;
                         }
                         break;
                     case 10:
-                        if (this.collisionArray[d] == 0 && this.collisionArray[d+1] == 0 && this.collisionArray[d-this.fullMapWidth] == 0 &&this.collisionArray[d-this.fullMapWidth+1] == 0) {
+                        if (collisionArray[d] == 0 && collisionArray[d+1] == 0 && collisionArray[d-fullMapWidth] == 0 &&collisionArray[d-fullMapWidth+1] == 0) {
                             this.featuresArray[d] = 1111; //wide leafy tree bottom left
                             this.featuresArray[d+1] = 1112; //bottom right
-                            this.featuresArray[d-this.fullMapWidth] = 1095; //top left
-                            this.featuresArray[d-this.fullMapWidth+1] = 1096; //top left
-                            this.collisionArray[d] = 1;
-                            this.collisionArray[d+1] = 1;
-                            this.collisionArray[d-this.fullMapWidth] = 1;
-                            this.collisionArray[d-this.fullMapWidth+1] = 1;
+                            this.featuresArray[d-fullMapWidth] = 1095; //top left
+                            this.featuresArray[d-fullMapWidth+1] = 1096; //top left
+                            collisionArray[d] = 1;
+                            collisionArray[d+1] = 1;
+                            collisionArray[d-fullMapWidth] = 1;
+                            collisionArray[d-fullMapWidth+1] = 1;
                         }
                         break;
                     default:
@@ -576,11 +574,11 @@ var MapLayer = cc.Layer.extend({
                 switch (featureSeed) {
                     case 0:
                         this.featuresArray[d] = 994; //big rock
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 1:
                         this.featuresArray[d] = 995; //small rocks
-                        this.collisionArray[d] = 1;
+                        collisionArray[d] = 1;
                         break;
                     case 2:
                         this.featuresArray[d] = 1015; //two ferns
