@@ -40,6 +40,9 @@ var MapLayer = cc.Layer.extend({
         terrain.generate(0.7);
 
         for (i = 0; i < this.fullMapTileCount; i++) {
+            this.featuresArray[i] = 1046; //fill features array with blank transparent tiles
+            this.collisionArray[i] = 0; //fill collision array with 0s (no collision)
+
             var terrainAsInt = parseInt(terrain.map[i] / 20);
 
             switch (true) {
@@ -67,9 +70,6 @@ var MapLayer = cc.Layer.extend({
                     console.log(terrainAsInt);
 
             }
-
-            this.featuresArray[i] = 1046; //fill features array with blank transparent tiles
-            this.collisionArray[i] = 0; //fill collision array with 0s (no collision)
         }
 
         console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
@@ -175,7 +175,7 @@ var MapLayer = cc.Layer.extend({
     tileAtCoordinate: function (xCoord, yCoord) {
         var xTile = parseInt(xCoord / 32);
         var yTile = parseInt(this.fullMapHeight - yCoord / 32);
-        console.log("index at (" + xTile + "," + yTile + ") is: " + (xTile + yTile * this.fullMapWidth) + " with tile: " + this.tileArray[(xTile + yTile * this.fullMapWidth)]);
+        console.log("(" + xTile + "," + yTile + ") has index: " + (xTile + yTile * this.fullMapWidth) + " with tile type " + this.tileArray[(xTile + yTile * this.fullMapWidth)] + " and collision: " + this.collisionArray[xTile + yTile * this.fullMapWidth]);
     },
 
     /*

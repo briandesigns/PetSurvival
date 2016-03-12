@@ -21,7 +21,7 @@ var PlayerLayer = cc.Layer.extend({
         //create the hero sprite
         this.player = new Player(new Dog(this.space));
         this.playerList = [];
-        this.playerList.push(this.player);;
+        this.playerList.push(this.player);
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
 
         this.addChild(this.player.character.sprite);
@@ -31,6 +31,7 @@ var PlayerLayer = cc.Layer.extend({
                     event: cc.EventListener.KEYBOARD,
                     onKeyReleased: function (key, event) {
                         //cc.log("Key released: " + key.toString());
+                        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
 
                         if (key.toString() === "65") { //a
                             this.player.character.sprite.stopAllActions();
