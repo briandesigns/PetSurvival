@@ -21,7 +21,7 @@ var PlayerLayer = cc.Layer.extend({
         //create the hero sprite
         this.player = new Player(new Dog(this.space));
         this.playerList = [];
-        this.playerList.push(this.player);;
+        this.playerList.push(this.player);
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
 
         this.addChild(this.player.character.sprite);

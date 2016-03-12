@@ -8,6 +8,7 @@ var PlayScene = cc.Scene.extend({
     playerLayer: null,
     mapLayer: null,
     enemyLayer: null,
+    boundLayer:null,
     trash: null,
 
     initPhysics: function () {
@@ -67,19 +68,28 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer = new cc.Layer();
         this.playerLayer = new PlayerLayer(this.space);
         this.mapLayer = new MapLayer(this.space);
+        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.trash = [];
 
         this.enemyLayer = new EnemyLayer(this.space);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
+        //this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.initCollisions();
         this.addChild(this.gameLayer);
 
         this.scheduleUpdate();
         this.schedule(this.spawnEnemy, 5);
         this.schedule(this.enemyBehavior, 0.5);
+        this.scheduleOnce(this.positionPlayer);
 
+    },
+
+    positionPlayer: function(dt) {
+        var action1 = new cc.moveTo(0,cc.p(this.mapLayer.coordinateAtTileIndex(50).x,this.mapLayer.coordinateAtTileIndex(50).y));
+
+        this.playerLayer.player.character.sprite.runAction(new cc.Sequence(action1));
     },
 
     enemyBehavior: function (dt) {

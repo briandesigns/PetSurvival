@@ -32,6 +32,7 @@
     "src/object/SpeedItem.js",
     "src/play/EnemyLayer.js",
     "src/play/MapLayer.js",
+    "src/play/BoundLayer.js",
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
