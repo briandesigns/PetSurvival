@@ -77,7 +77,7 @@ var PlayScene = cc.Scene.extend({
         this.addChild(this.gameLayer);
 
         this.scheduleUpdate();
-        this.schedule(this.spawnEnemy, 1);
+        this.schedule(this.spawnEnemy, 5);
         this.schedule(this.enemyBehavior, 0.5);
 
     },
