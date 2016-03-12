@@ -75,7 +75,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
-        //this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
+        this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.initCollisions();
         this.addChild(this.gameLayer);
 
