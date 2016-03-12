@@ -6,21 +6,20 @@ var EnemyLayer = cc.Layer.extend({
     enemySpawnList: null,
     ctor: function (space) {
         this._super();
+        this.init();
         this.space = space;
         this.enemySpawnList = [];
-        this.init();
-    },
-    init: function () {
-        this._super();
-        this.enemySpawnList = [];
         this.createSpawns();
+    },
+init: function () {
+        this._super();
 
     },
 
     createSpawns: function() {
         for (var i = 0; i < 5; i++) {
             this.enemySpawnList[i] = new Cave(this.space);
-            this.enemySpawnList[i].body.setPos(cc.p((cc.director.getWinSize().width / 2) + (Math.random()*1000) - (Math.random()*1000), (cc.director.getWinSize().height / 2)+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.enemySpawnList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
     },

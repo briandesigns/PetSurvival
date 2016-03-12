@@ -162,14 +162,17 @@ var MapLayer = cc.Layer.extend({
         }
     },
 
+
+
     coordinateAtTileIndex: function (tileIndex) {
         var xTile = tileIndex % this.fullMapWidth;
-        var yTile = parseInt(tileIndex / this.fullWidth);
+        var yTile = parseInt(tileIndex / this.fullMapWidth);
 
         var xCoordinate = xTile * 32;
         var yCoordinate = yTile * 32;
-
         console.log("index " + tileIndex + " has coordinate (" + xCoordinate + "," + yCoordinate + ")");
+
+        return {x:xCoordinate, y:yCoordinate};
     },
 
     tileAtCoordinate: function (xCoord, yCoord) {
