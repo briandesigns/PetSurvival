@@ -64,20 +64,20 @@ var BoundLayer = cc.Layer.extend({
         this.space.addShape(shape5);
         checkwall.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(0).x+16, this.mapLayer.coordinateAtTileIndex(0).y+16));
 
-        for (var i = 0 ; i < this.mapLayer.collisionArray.length; i++) {
-            var tile = this.mapLayer.collisionArray[i];
-            if (tile == 1) {
-                var block = new cp.Body(MAX_INT, cp.momentForBox(1, 32, 32));
-                block.setAngVel(0);
-                block.setMoment(MAX_INT);
-                var blockShape = new cp.BoxShape(block, 32, 32);
-                blockShape.setCollisionType(COLLISION_TYPE.bounds);
-                blockShape.setSensor(false);
-                this.space.addBody(block);
-                this.space.addShape(blockShape);
-                block.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(i).x+16, this.mapLayer.coordinateAtTileIndex(i).y+16));
-            }
-        }
+        //for (var i = 0 ; i < this.mapLayer.collisionArray.length; i++) {
+        //    var tile = this.mapLayer.collisionArray[i];
+        //    if (tile == 1) {
+        //        var block = new cp.Body(MAX_INT, cp.momentForBox(1, 32, 32));
+        //        block.setAngVel(0);
+        //        block.setMoment(MAX_INT);
+        //        var blockShape = new cp.BoxShape(block, 32, 32);
+        //        blockShape.setCollisionType(COLLISION_TYPE.bounds);
+        //        blockShape.setSensor(false);
+        //        this.space.addBody(block);
+        //        this.space.addShape(blockShape);
+        //        block.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(i).x+16, this.mapLayer.coordinateAtTileIndex(i).y+16));
+        //    }
+        //}
 
     }
 });
