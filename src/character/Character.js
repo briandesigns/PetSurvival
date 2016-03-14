@@ -12,6 +12,7 @@ var Character = cc.Node.extend({
     inventoryCapacity: null,
     collisionList: null,
     space: null,
+    speed: null,
 
 
     /** Constructor
@@ -19,23 +20,25 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity, space) {
+    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventoryCapacity, space) {
         this._super();
+        var spriteScale = 0.03;
         this.collisionType = collisionType;
         this.sprite = sprite;
-        this.sprite.setScale(0.1);
+        this.sprite.setScale(spriteScale);
         this.healthPoint = healthPoint;
         this.health = health;
         this.hitPoint = hitPoint;
         this.speed = speed;
-        this.inventory = inventory;
+        this.inventory = [];
         this.inventoryCapacity = inventoryCapacity;
         this.collisionList = [];
         this.space = space;
 
+
         var contentSize = this.sprite.getContentSize();
-        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * 0.1, contentSize.height * 0.1));
-        this.shape = new cp.BoxShape(this.body, contentSize.width * 0.1, contentSize.height * 0.1);
+        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * spriteScale, contentSize.height * spriteScale));
+        this.shape = new cp.BoxShape(this.body, contentSize.width * spriteScale, contentSize.height * spriteScale);
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
@@ -66,25 +69,25 @@ var Character = cc.Node.extend({
     moveRight: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(-90);
-        var actionTo = new cc.MoveBy(0.5, cc.p(10, 0));
+        var actionTo = new cc.MoveBy(0.5, cc.p(this.speed, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveLeft: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(90);
-        var actionTo = new cc.MoveBy(0.5, cc.p(-10, 0));
+        var actionTo = new cc.MoveBy(0.5, cc.p(this.speed*-1, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveUp: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(180);
-        var actionTo = new cc.MoveBy(0.5, cc.p(0, 10));
+        var actionTo = new cc.MoveBy(0.5, cc.p(0, this.speed));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveDown: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(0);
-        var actionTo = new cc.MoveBy(0.5, cc.p(0, -10));
+        var actionTo = new cc.MoveBy(0.5, cc.p(0, this.speed*-1));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
@@ -95,6 +98,17 @@ var Character = cc.Node.extend({
         //this.sprite = null;
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
+    },
+
+    addItem: function(item) {
+        if(this.inventoryCapacity > this.inventory.length) {
+            this.inventory.push(item);
+            item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+            cc.log("item taken");
+            //todo: process the benefits
+        } else {
+            cc.log("item rejected");
+        }
     },
 
     removeCollisionByChar: function(char) {

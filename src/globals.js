@@ -6,6 +6,7 @@ if (typeof TagOfLayer == "undefined") {
     TagOfLayer.Generator = 2;
     TagOfLayer.Enemy = 3;
     TagOfLayer.Bound = 4;
+    TagOfLayer.Item = 5;
 }
 
 //items types

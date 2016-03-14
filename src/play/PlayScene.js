@@ -9,6 +9,7 @@ var PlayScene = cc.Scene.extend({
     mapLayer: null,
     enemyLayer: null,
     boundLayer:null,
+    itemLayer:null,
     trash: null,
 
     initPhysics: function () {
@@ -24,22 +25,9 @@ var PlayScene = cc.Scene.extend({
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
             this.collisionPlayerEnemyBegin.bind(this), null, null, this.collisionPlayerEnemyEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemySpawn,
-            this.collisionPlayerEnemySpawnBegin.bind(this), null, null, null);
-    },
-
-    collisionPlayerEnemyEnd: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        enemy.removeCollisionByChar(playerCharacter);
-        playerCharacter.removeCollisionByChar(enemy);
-        cc.log("collision detected");
-        return true;
-    },
-
-    collisionPlayerEnemyPre: function (arbiter, space) {
-
+            this.collisionPlayerEnemySpawnBegin.bind(this), null, null, this.collisionPlayerEnemySpawnEnd.bind(this));
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.item,
+            this.collisionPlayerItemBegin.bind(this), null, null);
     },
 
     collisionPlayerEnemyBegin: function (arbiter, space) {
@@ -53,14 +41,49 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    collisionPlayerEnemyEnd: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        enemy.removeCollisionByChar(playerCharacter);
+        playerCharacter.removeCollisionByChar(enemy);
+        cc.log("collision resolved");
+        return true;
+    },
+
     collisionPlayerEnemySpawnBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
 
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
-        spawn.health = 0;
+        this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
         cc.log("collision detected");
         return true;
     },
+
+    collisionPlayerEnemySpawnEnd: function(arbiter, space) {
+        var shapes = arbiter.getShapes();
+
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        playerCharacter.removeCollisionByChar(enemy);
+        cc.log("collision resolved");
+        return true;
+    },
+
+    collisionPlayerItemBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+
+        var item = this.itemLayer.getItemByShape(shapes[1]);
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        playerCharacter.addItem(item);
+        cc.log("collision detected");
+        return true;
+    },
+
+
+
+
 
     onEnter: function () {
         this._super();
@@ -69,6 +92,7 @@ var PlayScene = cc.Scene.extend({
         this.playerLayer = new PlayerLayer(this.space);
         this.mapLayer = new MapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
+        this.itemLayer = new ItemLayer(this.space);
         this.trash = [];
 
         this.enemyLayer = new EnemyLayer(this.space);
@@ -76,6 +100,9 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
+        this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
+        var zoomAction = new cc.scaleBy(1,1.5,1.5);
+        this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.initCollisions();
         this.addChild(this.gameLayer);
 
@@ -87,7 +114,7 @@ var PlayScene = cc.Scene.extend({
     },
 
     positionPlayer: function(dt) {
-        var action1 = new cc.moveTo(0,cc.p(this.mapLayer.coordinateAtTileIndex(50).x,this.mapLayer.coordinateAtTileIndex(50).y));
+        var action1 = new cc.moveTo(0,cc.p(this.mapLayer.coordinateAtTileIndex(0).x,this.mapLayer.coordinateAtTileIndex(0).y));
 
         this.playerLayer.player.character.sprite.runAction(new cc.Sequence(action1));
     },
@@ -153,8 +180,8 @@ var PlayScene = cc.Scene.extend({
         this.space.step(dt);
         //moves the map in the opposite direction of player movement
         var playerLayer = this.gameLayer.getChildByTag(TagOfLayer.Player);
-        var eyeX = playerLayer.getEyeX();
-        var eyeY = playerLayer.getEyeY();
+        var eyeX = playerLayer.getEyeX()*2.25;
+        var eyeY = playerLayer.getEyeY()*2.25;
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
         this.trashDeadThings();
         this.emptyTrash();
