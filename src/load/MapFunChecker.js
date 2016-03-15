@@ -41,32 +41,47 @@ function CreateGraph() {
         });
     }
 */
-    var distance = new Array(graph.nodes.length);
-    for (i in graph.nodes) {
-        distance[i] = Infinity;
+
+    var minimumDistance = new Array(graph.nodes.length);
+
+    for (var startNode in graph.nodes) {
+        minimumDistance[startNode.id] = new Array(graph.nodes.length);
+
+        for (var endNode in graph.nodes) {
+            minimumDistance[startNode.id][endNode.id] = Infinity;
+        }
+
+        for (var endNode in graph.nodes) {
+            var queue = [];
+            minimumDistance[startNode.id][endNode.id] = 0;
+            queue.push(graph.nodes[endNode]);
+            while (queue.length > 0) {
+                var current = queue.shift();
+                //console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
+                current.edges.forEach(function (edge) {
+                    var nextNode = (current === edge.target) ? edge.source : edge.target;
+                    //console.log("Found next node " + nextNode.id);
+                    if (minimumDistance[startNode.id][nextNode.id] == Infinity) {
+                        minimumDistance[startNode.id][nextNode.id] = minimumDistance[startNode][current.id] + 1;
+                        //console.log("Distance: " + (minimumDistance[startNode][current.id] + 1));
+                        queue.push(nextNode);
+                        //console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
+                    }
+                });
+            }
+        }
     }
 
-    //for (i in graph.nodes) {
-        var queue = [];
-        distance[i] = 0;
-        queue.push(graph.nodes[i]);
-        while (queue.length > 0) {
-            var current = queue.shift();
-            //console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
-            current.edges.forEach(function(edge) {
-                var nextNode = (current === edge.target) ? edge.source : edge.target;
-                //console.log("Found next node " + nextNode.id);
-                if (distance[nextNode.id] == Infinity) {
-                    distance[nextNode.id] = distance[current.id] + 1;
-                    queue.push(nextNode);
-                    //console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
-                }
-            });
-        }
-    //}
+    console.log(minimumDistance[0][0]);
 
-    for (i in distance) {
-        console.log(distance[i]);
+    var max = 0;
+    for (i=0; i<; i++) {
+        for (j=0; j<minimumDistance.length; j++) {
+            if (minimumDistance[i][j] > max) {
+                max = minimumDistance[i][j];
+                console.log(maxDistance);
+            }
+        }
     }
 /*
     for (i=0; i<distance.length; i++) {
