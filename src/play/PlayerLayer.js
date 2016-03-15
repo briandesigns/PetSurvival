@@ -58,6 +58,14 @@ var PlayerLayer = cc.Layer.extend({
                             this.player.character.attackEnemies();
                         } else if (key.toString() === "49") { //1
                             this.player.character.removeItem(1);
+                        } else if (key.toString() === "50") { //2
+                            this.player.character.removeItem(2);
+                        } else if (key.toString() === "51") { //3
+                            this.player.character.removeItem(3);
+                        } else if (key.toString() === "52") { //4
+                            this.player.character.removeItem(4);
+                        } else if (key.toString() === "53") { //5
+                            this.player.character.removeItem(5);
                         }
                     }.bind(this)
                 },

@@ -112,9 +112,9 @@ var Character = cc.Node.extend({
     },
 
     removeItem: function(itemNumber) {
-        if(this.inventory[itemNumber] != null) {
-            var item = this.inventory[itemNumber];
-            this.inventory.splice(itemNumber,1);
+        if(this.inventory[itemNumber-1] != null) {
+            var item = this.inventory[itemNumber-1];
+            this.inventory.splice(itemNumber-1,1);
             item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
         }
     },

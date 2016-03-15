@@ -17,6 +17,8 @@ var PlayScene = cc.Scene.extend({
     enemyLayer: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
+    locationLayer:null,
+    hudLayer:null,
     trash: null, //a buffer to contain all elements that should be eliminated from map after death
 
     /**
@@ -37,6 +39,8 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerEnemySpawnBegin.bind(this), null, null, this.collisionPlayerEnemySpawnEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.item,
             this.collisionPlayerItemBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.end,
+            this.collisionPlayerGoalBegin.bind(this), null, null);
     },
 
     /**
@@ -120,12 +124,19 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    collisionPlayerGoalBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        cc.log("End of Game");
+        cc.log("collision detected");
+        return true;
+    },
+
     /**
      * Move player to Spawn point and zoom into the player
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        var moveAction = new cc.moveTo(1, cc.p(this.mapLayer.coordinateAtTileIndex(0).x, this.mapLayer.coordinateAtTileIndex(0).y));
+        var moveAction = new cc.moveTo(1, cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
         this.playerLayer.player.character.sprite.runAction(new cc.Sequence(moveAction));
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
@@ -218,13 +229,17 @@ var PlayScene = cc.Scene.extend({
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.itemLayer = new ItemLayer(this.space);
         this.enemyLayer = new EnemyLayer(this.space);
+        this.locationLayer = new LocationLayer(this.space, this.mapLayer);
+        this.hudLayer = new HudLayer();
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
+        this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
         this.initCollisions();
         this.addChild(this.gameLayer);
+        this.addChild(this.hudLayer);
         this.scheduleUpdate();//execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds

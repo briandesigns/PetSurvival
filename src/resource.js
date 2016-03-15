@@ -21,6 +21,8 @@ var res = {
     spawn_dryer_png: "res/spawn/DryerSpawn.png",
     spawn_hydrant_png: "res/spawn/HydrantSpawn.png",
     spawn_vacuum_png: "res/spawn/VacuumSpawn.png",
+    spawn_red_flag_png: "res/spawn/redFlag.png",
+    spawn_blue_flag_png: "res/spawn/blueFlag.png",
     object_food_png: "res/object/Food.png",
     object_health_point_png: "res/object/HealthPoint.png",
     object_hit_point_png: "res/object/HitPoint.png",

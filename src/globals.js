@@ -7,6 +7,7 @@ if (typeof TagOfLayer == "undefined") {
     TagOfLayer.Enemy = 3;
     TagOfLayer.Bound = 4;
     TagOfLayer.Item = 5;
+    TagOfLayer.Location = 6;
 }
 
 //items types
@@ -24,9 +25,10 @@ if (typeof COLLISION_TYPE == "undefined") {
     COLLISION_TYPE.player = 0;
     COLLISION_TYPE.enemy = 1;
     COLLISION_TYPE.item = 2;
-    COLLISION_TYPE.goal = 3;
+    COLLISION_TYPE.end = 3;
     COLLISION_TYPE.bounds = 4;
     COLLISION_TYPE.enemySpawn = 5;
+    COLLISION_TYPE.start = 6;
 
 }
 
