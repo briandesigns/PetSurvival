@@ -34,20 +34,20 @@ var BoundLayer = cc.Layer.extend({
         this.space.addShape(shape2);
         rightWall.setPos(cc.p(65*32+32, 65*32/2));
 
-        var topWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32*65, 64));
+        var topWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32*65+128, 64));
         topWall.setAngVel(0);
         topWall.setMoment(MAX_INT);
-        var shape3 = new cp.BoxShape(topWall, 32*65, 64);
+        var shape3 = new cp.BoxShape(topWall, 32*65+128, 64);
         shape3.setCollisionType(COLLISION_TYPE.bounds);
         shape3.setSensor(false);
         this.space.addBody(topWall);
         this.space.addShape(shape3);
         topWall.setPos(cc.p(65*32/2, 65*32+32));
 
-        var bottomWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32*65, 64));
+        var bottomWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32*65+128, 64));
         bottomWall.setAngVel(0);
         bottomWall.setMoment(MAX_INT);
-        var shape4 = new cp.BoxShape(bottomWall, 32*65, 64);
+        var shape4 = new cp.BoxShape(bottomWall, 32*65+128, 64);
         shape4.setCollisionType(COLLISION_TYPE.bounds);
         shape4.setSensor(false);
         this.space.addBody(bottomWall);

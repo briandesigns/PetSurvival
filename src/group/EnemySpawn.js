@@ -18,10 +18,9 @@ var EnemySpawn = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (collisionType, sprite, healthPoint, health, capacity, spriteScale, spawnType, space) {
+    ctor: function (collisionType, sprite, health, capacity, spriteScale, spawnType, space) {
         this._super();
         this.collisionType = COLLISION_TYPE.enemySpawn;
-        this.healthPoint = healthPoint;
         this.health = health;
         this.capacity = capacity;
         this.spriteScale = spriteScale;

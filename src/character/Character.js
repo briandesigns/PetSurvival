@@ -12,7 +12,7 @@ var Character = cc.Node.extend({
     inventoryCapacity: null,
     collisionList: null,
     space: null,
-    speed: null,
+    spriteScale: null,
 
 
     /** Constructor
@@ -22,10 +22,10 @@ var Character = cc.Node.extend({
      */
     ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventoryCapacity, space) {
         this._super();
-        var spriteScale = 0.03;
+        this.spriteScale = 0.03;
         this.collisionType = collisionType;
         this.sprite = sprite;
-        this.sprite.setScale(spriteScale);
+        this.sprite.setScale(this.spriteScale);
         this.healthPoint = healthPoint;
         this.health = health;
         this.hitPoint = hitPoint;
@@ -37,8 +37,8 @@ var Character = cc.Node.extend({
 
 
         var contentSize = this.sprite.getContentSize();
-        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * spriteScale, contentSize.height * spriteScale));
-        this.shape = new cp.BoxShape(this.body, contentSize.width * spriteScale, contentSize.height * spriteScale);
+        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale));
+        this.shape = new cp.BoxShape(this.body, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale);
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
@@ -108,6 +108,14 @@ var Character = cc.Node.extend({
             //todo: process the benefits
         } else {
             cc.log("item rejected");
+        }
+    },
+
+    removeItem: function(itemNumber) {
+        if(this.inventory[itemNumber] != null) {
+            var item = this.inventory[itemNumber];
+            this.inventory.splice(itemNumber,1);
+            item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
         }
     },
 

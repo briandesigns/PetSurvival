@@ -154,7 +154,7 @@ var PlayScene = cc.Scene.extend({
         for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health <= 0) {
-                //this.trash.push(spawn);
+                this.trash.push(spawn);
                 //todo: implement destroy spawns
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
