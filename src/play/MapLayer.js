@@ -169,8 +169,8 @@ var MapLayer = cc.Layer.extend({
         var yTile = parseInt(tileIndex / this.fullMapWidth);
 
         var xCoordinate = xTile * 32;
-        var yCoordinate = yTile * 32;
-        console.log("index " + tileIndex + " has coordinate (" + xCoordinate + "," + yCoordinate + ")");
+        var yCoordinate = this.fullMapHeight*32-((yTile+1) * 32);
+        //console.log("index " + tileIndex + " has coordinate (" + xCoordinate + "," + yCoordinate + ")");
 
         return {x:xCoordinate, y:yCoordinate};
     },
@@ -226,7 +226,7 @@ var MapLayer = cc.Layer.extend({
                                     if (this.tileArray[i] != piql) {
                                         this.tileArray[i] = piql;
                                         corrections++;
-                                        if (p == 323) {
+                                        if (q == 323) {
                                             this.collisionArray[i] = 1;
                                         }
                                     }
@@ -242,8 +242,8 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != pqbr) {
                             this.tileArray[i] = pqbr;
                             corrections++;
-                            if (p == 323) {
-                                this.collisionArray[i] = 1;
+                            if (q == 323) {
+                                this.collisionArray[i] = 0;
                             }
                         }
                     }
@@ -255,8 +255,8 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != pqbl) {
                             this.tileArray[i] = pqbl;
                             corrections++;
-                            if (p == 323) {
-                                this.collisionArray[i] = 1;
+                            if (q == 323) {
+                                this.collisionArray[i] = 0;
                             }
                         }
                     }
@@ -268,8 +268,8 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != pqur) {
                             this.tileArray[i] = pqur;
                             corrections++;
-                            if (p == 323) {
-                                this.collisionArray[i] = 1;
+                            if (q == 323) {
+                                this.collisionArray[i] = 0;
                             }
                         }
                     }
@@ -282,8 +282,8 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != pqul) {
                             this.tileArray[i] = pqul;
                             corrections++;
-                            if (p == 323) {
-                                this.collisionArray[i] = 1;
+                            if (q == 323) {
+                                this.collisionArray[i] = 0;
                             }
                         }
                     }
@@ -295,7 +295,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qpbr) {
                             this.tileArray[i] = qpbr;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -308,7 +308,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qpbl) {
                             this.tileArray[i] = qpbl;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -321,7 +321,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qpur) {
                             this.tileArray[i] = qpur;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -334,7 +334,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qpul) {
                             this.tileArray[i] = qpul;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -347,7 +347,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qapb) {
                             this.tileArray[i] = qapb;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -360,7 +360,8 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qlpr) {
                             this.tileArray[i] = qlpr;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
+                                console.log("water left, sand right. adding to collision Array");
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -373,7 +374,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qrpl) {
                             this.tileArray[i] = qrpl;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
@@ -386,7 +387,7 @@ var MapLayer = cc.Layer.extend({
                         if (this.tileArray[i] != qbpa) {
                             this.tileArray[i] = qbpa;
                             corrections++;
-                            if (p == 323) {
+                            if (q == 323) {
                                 this.collisionArray[i] = 1;
                             }
                         }
