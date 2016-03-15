@@ -101,8 +101,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
-        var zoomAction = new cc.scaleBy(1,1.5,1.5);
-        this.gameLayer.runAction(new cc.Sequence(zoomAction));
+
         this.initCollisions();
         this.addChild(this.gameLayer);
 
@@ -114,9 +113,10 @@ var PlayScene = cc.Scene.extend({
     },
 
     positionPlayer: function(dt) {
-        var action1 = new cc.moveTo(0,cc.p(this.mapLayer.coordinateAtTileIndex(0).x,this.mapLayer.coordinateAtTileIndex(0).y));
-
-        this.playerLayer.player.character.sprite.runAction(new cc.Sequence(action1));
+        var moveAction = new cc.moveTo(1,cc.p(this.mapLayer.coordinateAtTileIndex(0).x,this.mapLayer.coordinateAtTileIndex(0).y));
+        this.playerLayer.player.character.sprite.runAction(new cc.Sequence(moveAction));
+        var zoomAction = new cc.scaleBy(1,1.5,1.5);
+        this.gameLayer.runAction(new cc.Sequence(zoomAction));
     },
 
     enemyBehavior: function (dt) {
