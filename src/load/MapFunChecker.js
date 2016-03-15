@@ -7,13 +7,13 @@
 //traverse the map horizontally and vertically to find 2 tiles in a row to create an edge between
 function CreateGraph() {
     var graph = new Graph();
-    var lastValue = 0;
+    var lastValue = 1;
     var lastIndex = null;
 
     //traverse map horizontally
     for (var i=0; i<fullMapTileCount; i+=fullMapWidth) {
         for (var j=0; j<fullMapWidth; j++) {
-            if (collisionArray[i+j] == 1 && lastValue == 1) {
+            if (collisionArray[i+j] == 0 && lastValue == 0) {
                 graph.addEdge((i+j), lastIndex);
             }
             lastValue = collisionArray[i+j];
@@ -24,7 +24,7 @@ function CreateGraph() {
     //traverse map vertically
     for (i=0; i<fullMapWidth; i++) {
         for (j=0; j<fullMapTileCount; j+=fullMapWidth) {
-            if (collisionArray[i+j] && lastValue == 1) {
+            if (collisionArray[i+j] == 0 && lastValue == 0) {
                 graph.addEdge((i+j), lastIndex);
             }
             lastValue = collisionArray[i+j];
@@ -32,10 +32,42 @@ function CreateGraph() {
         }
     }
 
-    //we want to run BFS from every vertex in the graph, and keep track of the longest distance
-    //console.log("Nodes: " + graph.nodes);
-    var minimumDistance = new Array(graph.nodes.length);
+    /*
+    var distance = [];
+    for (i in graph.nodes) {
+        var node = graph.nodes[i];
+        node.edges.forEach(function(e) {
+            console.log("hey");
+        });
+    }
+*/
 
+    var distance = [];
+    for (i in graph.nodes) {
+        var queue = [];
+        distance[i] = 0;
+        queue.push(graph.nodes[i]);
+        while (queue.length > 0) {
+            var current = queue.shift();
+            console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
+            current.edges.forEach(function(edge) {
+                var nextNode = (current === edge.target) ? edge.source : edge.target;
+                console.log("Found next node " + nextNode.id);
+                if (distance[nextNode.id] != Infinity) {
+                    distance[nextNode.id] = distance[current.id] + 1;
+                    queue.push(nextNode);
+                    console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
+                }
+            });
+        }
+    }
+/*
+    for (i=0; i<distance.length; i++) {
+        console.log(distance[i]);
+    }*/
+
+    //we want to run BFS from every vertex in the graph, and keep track of the longest distance
+/*
     for (startNode in graph.nodes) {
         minimumDistance[startNode] = new Array(graph.nodes.length);
 
@@ -47,10 +79,10 @@ function CreateGraph() {
         minimumDistance[startNode][startNode] = 0;
         queue.push(startNode);
 
-        while (queue.length == 0){
+        while (queue.length != 0){
             var current = queue.shift();
 
-            startNode.edges.forEach(function (edge) {
+            startNode.edges.forEach(function(edge) {
                 var endNode = (startNode === target) ? edge.source : edge.target; //get source or target depending on what startNode is
                 if (minimumDistance[startNode][endNode] != Infinity) {
                     minimumDistance[startNode][endNode] = minimumDistance[startNode][current] + 1;
@@ -71,7 +103,7 @@ function CreateGraph() {
         }
     }
     //console.log(minimumDistance[0]);
-
+*/
 /*
     //Floyd-Warshall algorithm
     for (node in graph.nodes) {

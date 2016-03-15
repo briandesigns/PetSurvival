@@ -487,7 +487,7 @@ function log(a) {console.log&&console.log(a);}
  *
  * If you want to use more shapes, you'll have to put them into a set.
  *
- */
+ *//*
 Raphael.el.tooltip = function (tp) {
     this.tp = tp;
     this.tp.o = {x: 0, y: 0};
@@ -506,7 +506,7 @@ Raphael.el.tooltip = function (tp) {
             this.unmousemove();
         });
     return this;
-};
+};*/
 
 /* For IE */
 if (!Array.prototype.forEach)
