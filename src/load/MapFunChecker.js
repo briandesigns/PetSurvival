@@ -41,25 +41,32 @@ function CreateGraph() {
         });
     }
 */
-
-    var distance = [];
+    var distance = new Array(graph.nodes.length);
     for (i in graph.nodes) {
+        distance[i] = Infinity;
+    }
+
+    //for (i in graph.nodes) {
         var queue = [];
         distance[i] = 0;
         queue.push(graph.nodes[i]);
         while (queue.length > 0) {
             var current = queue.shift();
-            console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
+            //console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
             current.edges.forEach(function(edge) {
                 var nextNode = (current === edge.target) ? edge.source : edge.target;
-                console.log("Found next node " + nextNode.id);
-                if (distance[nextNode.id] != Infinity) {
+                //console.log("Found next node " + nextNode.id);
+                if (distance[nextNode.id] == Infinity) {
                     distance[nextNode.id] = distance[current.id] + 1;
                     queue.push(nextNode);
-                    console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
+                    //console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
                 }
             });
         }
+    //}
+
+    for (i in distance) {
+        console.log(distance[i]);
     }
 /*
     for (i=0; i<distance.length; i++) {
