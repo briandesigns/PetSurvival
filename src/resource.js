@@ -16,7 +16,17 @@ var res = {
     character_dryer_png : "res/character/dryer.png",
     character_can_png : "res/character/can.png",
     character_vacuum_png : "res/character/vacuum.png",
-    spawn_cave_png: "res/spawn/cave.png"
+    spawn_cave_png: "res/spawn/cave.png",
+    spawn_can_png: "res/spawn/CanSpawn.png",
+    spawn_dryer_png: "res/spawn/DryerSpawn.png",
+    spawn_hydrant_png: "res/spawn/HydrantSpawn.png",
+    spawn_vacuum_png: "res/spawn/VacuumSpawn.png",
+    spawn_red_flag_png: "res/spawn/redFlag.png",
+    spawn_blue_flag_png: "res/spawn/blueFlag.png",
+    object_food_png: "res/object/Food.png",
+    object_health_point_png: "res/object/HealthPoint.png",
+    object_hit_point_png: "res/object/HitPoint.png",
+    object_speed_point_png: "res/object/SpeedPoint.png"
 
 };
 

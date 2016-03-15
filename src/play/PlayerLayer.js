@@ -10,10 +10,10 @@ var PlayerLayer = cc.Layer.extend({
         this.space = space;
         this.init();
 
-        this._debugNode = new cc.PhysicsDebugNode(this.space);
-        this._debugNode.setVisible(true);
+        //this._debugNode = new cc.PhysicsDebugNode(this.space);
+        //this._debugNode.setVisible(true);
         // Parallax ratio and offset
-        this.addChild(this._debugNode, 10);
+        //this.addChild(this._debugNode, 10);
     },
     init: function () {
         this._super();
@@ -33,29 +33,39 @@ var PlayerLayer = cc.Layer.extend({
                         //cc.log("Key released: " + key.toString());
                         this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
 
-                        if (key.toString() === "65") { //a
+                        if (key.toString() === "37") { //left
                             this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "87") { //w
+                        } else if (key.toString() === "38") { //up
                             this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "83") { //s
+                        } else if (key.toString() === "40") { //down
                             this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "68") { //d
+                        } else if (key.toString() === "39") { //right
                             this.player.character.sprite.stopAllActions();
                         } else {
                         }
                     }.bind(this),
                     onKeyPressed: function (key, event) {
                         //cc.log("Key pressed: " + key.toString());
-                        if (key.toString() === "65") { //a
+                        if (key.toString() === "37") { //left
                             this.moveLeft();
-                        } else if (key.toString() === "87") { //w
+                        } else if (key.toString() === "38") { //up
                             this.moveUp();
-                        } else if (key.toString() === "83") { //s
+                        } else if (key.toString() === "40") { //down
                             this.moveDown();
-                        } else if (key.toString() === "68") { //d
+                        } else if (key.toString() === "39") { //right
                             this.moveRight();
-                        } else if (key.toString() === "32"){
+                        } else if (key.toString() === "32"){ //space
                             this.player.character.attackEnemies();
+                        } else if (key.toString() === "49") { //1
+                            this.player.character.removeItem(1);
+                        } else if (key.toString() === "50") { //2
+                            this.player.character.removeItem(2);
+                        } else if (key.toString() === "51") { //3
+                            this.player.character.removeItem(3);
+                        } else if (key.toString() === "52") { //4
+                            this.player.character.removeItem(4);
+                        } else if (key.toString() === "53") { //5
+                            this.player.character.removeItem(5);
                         }
                     }.bind(this)
                 },

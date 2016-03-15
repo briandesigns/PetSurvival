@@ -36,8 +36,17 @@
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
+    "src/play/ItemLayer.js",
+    "src/play/LocationLayer.js",
+    "src/play/HudLayer.js",
     "src/load/MapGenerator.js",
     "src/group/EnemySpawn.js",
-    "src/group/Cave.js"
+    "src/group/HydrantSpawn.js",
+    "src/group/VacuumSpawn.js",
+    "src/group/DryerSpawn.js",
+    "src/group/CanSpawn.js",
+    "src/location/Location.js",
+    "src/location/StartPoint.js",
+    "src/location/EndPoint.js"
   ]
 }

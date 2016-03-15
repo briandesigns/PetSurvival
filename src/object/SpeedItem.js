@@ -5,8 +5,9 @@ var SpeedItem = Item.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (name, sprite, speedBoost) {
-        this._super(name, sprite, ITEM_TYPE.speed);
+    ctor: function (speedBoost, space) {
+        this._super(new cc.PhysicsSprite(res.object_speed_point_png), ITEM_TYPE.speed, space);
         this.speedBoost = speedBoost;
+
     },
 })
