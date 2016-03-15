@@ -26,8 +26,8 @@ var MapLayer = cc.Layer.extend({
         var totalTiledMaps = tiledMapsWide * tiledMapsHigh;
 
         //for our map to generate properly, these need to be (a power of 2) + 1
-        var tiledMapWidth = 65;
-        var tiledMapHeight = 65;
+        var tiledMapWidth = 33;
+        var tiledMapHeight = 33;
         this.fullMapWidth = tiledMapWidth * tiledMapsWide;
         this.fullMapHeight = tiledMapHeight * tiledMapsHigh;
         this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
