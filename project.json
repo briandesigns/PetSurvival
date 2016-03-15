@@ -39,7 +39,14 @@
     "src/play/ItemLayer.js",
     "src/load/MapGenerator.js",
     "src/group/EnemySpawn.js",
-    "src/group/Cave.js"
+    "src/group/HydrantSpawn.js",
+    "src/group/VacuumSpawn.js",
+    "src/group/DryerSpawn.js",
+    "src/group/CanSpawn.js"
+
+
+
+
 
   ]
 }

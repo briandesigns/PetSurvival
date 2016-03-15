@@ -17,8 +17,11 @@ init: function () {
     },
 
     createSpawns: function() {
-        for (var i = 0; i < 5; i++) {
-            this.enemySpawnList[i] = new Cave(this.space);
+        this.enemySpawnList[0] = new HydrantSpawn(this.space);
+        this.enemySpawnList[1] = new DryerSpawn(this.space);
+        this.enemySpawnList[2] = new CanSpawn(this.space);
+        this.enemySpawnList[3] = new VacuumSpawn(this.space);
+        for (var i = 0; i < 4; i++) {
             this.enemySpawnList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
