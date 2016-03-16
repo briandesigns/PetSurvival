@@ -66,7 +66,7 @@ var Character = cc.Node.extend({
                 return false;
             }
         } else {
-            if (this.health < -h) {
+            if (this.health < -1*h) {
                 this.health = 0;
                 return true;
             } else {
@@ -141,7 +141,7 @@ var Character = cc.Node.extend({
             }
         } else if (item.itemType === ITEM_TYPE.healthBoost){
             if(this.changeHealth(item.healthBoost)) {
-                item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
+                item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
             }
         } else {
             cc.log("item rejected");
@@ -181,7 +181,7 @@ var Character = cc.Node.extend({
 
     attackEnemies: function() {
         for (var i =0; i < this.collisionList.length; i++) {
-            this.collisionList[i].changeHealth(-this.hitPoint);
+            this.collisionList[i].changeHealth(-1*this.hitPoint);
         }
     }
 
