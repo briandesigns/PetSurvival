@@ -51,8 +51,29 @@ var Character = cc.Node.extend({
 
     },
 
-    setHealth: function (h) {
-
+    changeHealth: function (h) {
+        if (h>0) {
+            if (this.health < this.healthPoint) {
+                var lostHealth = this.healthPoint - this.health;
+                if (h <= lostHealth) {
+                    this.health+=h;
+                } else {
+                    this.health+=lostHealth;
+                }
+                return true;
+            } else {
+                cc.log("food rejected, don't need it");
+                return false;
+            }
+        } else {
+            if (this.health < -h) {
+                this.health = 0;
+                return true;
+            } else {
+                this.health+=h;
+                return true;
+            }
+        }
     },
 
     setHitPoint: function (hp) {
@@ -100,12 +121,28 @@ var Character = cc.Node.extend({
 
     },
 
+    //todo: these conditions are not cleaned up
     addItem: function(item) {
-        if(this.inventoryCapacity > this.inventory.length) {
+        if(this.inventoryCapacity > this.inventory.length && (item.itemType !== ITEM_TYPE.healthBoost)) {
+            cc.log(item.itemType);
             this.inventory.push(item);
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
             cc.log("item taken");
-            //todo: process the benefits
+            switch(item.itemType) {
+                case ITEM_TYPE.healthPoint:
+                    this.healthPoint+= item.healthPointBenefit;
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    this.hitPoint+= item.hitPointBenefit;
+                    break;
+                case ITEM_TYPE.speed:
+                    this.speed+= item.speedBenefit;
+                    break;
+            }
+        } else if (item.itemType === ITEM_TYPE.healthBoost){
+            if(this.changeHealth(item.healthBoost)) {
+                item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
+            }
         } else {
             cc.log("item rejected");
         }
@@ -114,6 +151,20 @@ var Character = cc.Node.extend({
     removeItem: function(itemNumber) {
         if(this.inventory[itemNumber-1] != null) {
             var item = this.inventory[itemNumber-1];
+            switch(item.itemType) {
+                case ITEM_TYPE.healthPoint:
+                    this.healthPoint-= item.healthPointBenefit;
+                    if (this.healthPoint < this.health) {
+                        this.changeHealth(this.healthPoint-this.health);
+                    }
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    this.hitPoint-= item.hitPointBenefit;
+                    break;
+                case ITEM_TYPE.speed:
+                    this.speed-= item.speedBenefit;
+                    break;
+            }
             this.inventory.splice(itemNumber-1,1);
             item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
         }
@@ -130,7 +181,7 @@ var Character = cc.Node.extend({
 
     attackEnemies: function() {
         for (var i =0; i < this.collisionList.length; i++) {
-            this.collisionList[i].health-=this.hitPoint;
+            this.collisionList[i].changeHealth(-this.hitPoint);
         }
     }
 

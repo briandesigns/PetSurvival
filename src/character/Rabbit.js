@@ -8,7 +8,7 @@ var Rabbit = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_rabbit_png), 100, 100, 100, 4, 5, space);
+        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_rabbit_png), PLAYER_STATS.baseHealth-20, PLAYER_STATS.baseHealthPoint-20, PLAYER_STATS.baseHitPoint-5, PLAYER_STATS.baseSpeed+1, PLAYER_STATS.inventoryCapacity, space);
     },
 
     maximizeHealth: function() {

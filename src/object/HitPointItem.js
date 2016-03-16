@@ -6,8 +6,8 @@ var HitPointItem = Item.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (hitPointBenefit, space) {
+    ctor: function (space) {
         this._super(new cc.PhysicsSprite(res.object_hit_point_png), ITEM_TYPE.hitPoint, space);
-        this.hitPointBenefit = hitPointBenefit;
+        this.hitPointBenefit = ITEM_STATS.hitPointBenefit;
     }
 });

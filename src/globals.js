@@ -43,3 +43,33 @@ if (typeof SPAWN_TYPE == "undefined") {
     SPAWN_TYPE.vacuum = 3;
     SPAWN_TYPE.cave = 4;
 }
+
+//player character stats
+if (typeof PLAYER_STATS == "undefined") {
+    var PLAYER_STATS = {};
+    PLAYER_STATS.baseHealth = 100;
+    PLAYER_STATS.baseHealthPoint = 100;
+    PLAYER_STATS.inventoryCapacity = 5;
+    PLAYER_STATS.baseHitPoint = 15;
+    PLAYER_STATS.baseSpeed = 3;
+}
+
+//enemy character stats
+if (typeof ENEMY_STATS == "undefined") {
+    var ENEMY_STATS = {};
+    ENEMY_STATS.baseHealth = 100;
+    ENEMY_STATS.baseHealthPoint = 100;
+    ENEMY_STATS.inventoryCapacity = 1;
+    ENEMY_STATS.baseHitPoint = 2;
+    ENEMY_STATS.baseSpeed = 5;
+}
+
+//item stats
+if (typeof ITEM_STATS == "undefined") {
+    var ITEM_STATS = {};
+    ITEM_STATS.healthBoost = 20;
+    ITEM_STATS.healthPointBenefit = 10;
+    ITEM_STATS.hitPointBenefit = 5;
+    ITEM_STATS.speedBenefit = 1;
+}
+

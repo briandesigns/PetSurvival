@@ -8,7 +8,7 @@ var Pig = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_pig_png), 100, 100, 100, 2,  5, space);
+        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_pig_png), PLAYER_STATS.baseHealth+20, PLAYER_STATS.baseHealthPoint+20, PLAYER_STATS.baseHitPoint-5, PLAYER_STATS.baseSpeed-2,  PLAYER_STATS.inventoryCapacity+3, space);
     },
 
     maximizeHealth: function() {
