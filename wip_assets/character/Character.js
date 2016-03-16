@@ -65,8 +65,8 @@ var Character = cc.Node.extend({
         this.direction = "down";    // as reference for attack direction
 
     // moving up animation
-        animframes = [];
-        str = name + "-up-normal.png" ;
+        var animframes = [];
+        var str = name + "-up-normal.png" ;
         var frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         str= name + "-up-move.png"
