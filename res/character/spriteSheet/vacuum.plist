@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>down-attack.png</key>
+            <key>vacuum-down-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{838,1236},{579,1159}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{579,1159}</string>
             </dict>
-            <key>down-move.png</key>
+            <key>vacuum-down-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{838,1236},{579,1159}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{579,1159}</string>
             </dict>
-            <key>down-normal.png</key>
+            <key>vacuum-down-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{838,1236},{579,1159}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{579,1159}</string>
             </dict>
-            <key>left-attack.png</key>
+            <key>vacuum-left-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{835,1144}}</string>
@@ -56,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>left-move.png</key>
+            <key>vacuum-left-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{835,1144}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>left-normal.png</key>
+            <key>vacuum-left-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{835,1144}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>right-attack.png</key>
+            <key>vacuum-right-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,838},{835,1144}}</string>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>right-move.png</key>
+            <key>vacuum-right-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,838},{835,1144}}</string>
@@ -108,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>right-normal.png</key>
+            <key>vacuum-right-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,838},{835,1144}}</string>
@@ -121,7 +121,7 @@
                 <key>sourceSize</key>
                 <string>{835,1144}</string>
             </dict>
-            <key>up-attack.png</key>
+            <key>vacuum-up-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1147,1},{601,1233}}</string>
@@ -134,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{601,1233}</string>
             </dict>
-            <key>up-move.png</key>
+            <key>vacuum-up-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1147,1},{601,1233}}</string>
@@ -147,7 +147,7 @@
                 <key>sourceSize</key>
                 <string>{601,1233}</string>
             </dict>
-            <key>up-normal.png</key>
+            <key>vacuum-up-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1147,1},{601,1233}}</string>

@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>down-attack.png</key>
+            <key>pig-down-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{997,849},{392,709}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{392,709}</string>
             </dict>
-            <key>down-move.png</key>
+            <key>pig-down-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1708,849},{388,713}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{388,713}</string>
             </dict>
-            <key>down-normal.png</key>
+            <key>pig-down-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2423,849},{388,657}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{388,657}</string>
             </dict>
-            <key>left-attack.png</key>
+            <key>pig-left-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{916,496}}</string>
@@ -56,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{916,496}</string>
             </dict>
-            <key>left-move.png</key>
+            <key>pig-left-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2179,1},{846,529}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{846,529}</string>
             </dict>
-            <key>left-normal.png</key>
+            <key>pig-left-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{997,1},{846,589}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{846,589}</string>
             </dict>
-            <key>right-attack.png</key>
+            <key>pig-right-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{499,1},{916,496}}</string>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{916,496}</string>
             </dict>
-            <key>right-move.png</key>
+            <key>pig-right-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2710,1},{846,529}}</string>
@@ -108,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{846,529}</string>
             </dict>
-            <key>right-normal.png</key>
+            <key>pig-right-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1588,1},{846,589}}</string>
@@ -121,7 +121,7 @@
                 <key>sourceSize</key>
                 <string>{846,589}</string>
             </dict>
-            <key>up-attack.png</key>
+            <key>pig-up-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{3241,430},{423,677}}</string>
@@ -134,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{423,677}</string>
             </dict>
-            <key>up-move.png</key>
+            <key>pig-up-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{3241,1},{427,677}}</string>
@@ -147,7 +147,7 @@
                 <key>sourceSize</key>
                 <string>{427,677}</string>
             </dict>
-            <key>up-normal.png</key>
+            <key>pig-up-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{3666,430},{419,677}}</string>

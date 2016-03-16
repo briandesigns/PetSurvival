@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>down-attack.png</key>
+            <key>dryer-down-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1975,1},{833,962}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{833,962}</string>
             </dict>
-            <key>down-move.png</key>
+            <key>dryer-down-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1975,1},{833,962}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{833,962}</string>
             </dict>
-            <key>down-normal.png</key>
+            <key>dryer-down-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1975,1},{833,962}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{833,962}</string>
             </dict>
-            <key>left-attack.png</key>
+            <key>dryer-left-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{985,880}}</string>
@@ -56,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>left-move.png</key>
+            <key>dryer-left-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{985,880}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>left-normal.png</key>
+            <key>dryer-left-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{985,880}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>right-attack.png</key>
+            <key>dryer-right-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{988,1},{985,880}}</string>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>right-move.png</key>
+            <key>dryer-right-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{988,1},{985,880}}</string>
@@ -108,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>right-normal.png</key>
+            <key>dryer-right-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{988,1},{985,880}}</string>
@@ -121,7 +121,7 @@
                 <key>sourceSize</key>
                 <string>{985,880}</string>
             </dict>
-            <key>up-attack.png</key>
+            <key>dryer-up-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2939,1},{581,1133}}</string>
@@ -134,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{581,1133}</string>
             </dict>
-            <key>up-move.png</key>
+            <key>dryer-up-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2939,1},{581,1133}}</string>
@@ -147,7 +147,7 @@
                 <key>sourceSize</key>
                 <string>{581,1133}</string>
             </dict>
-            <key>up-normal.png</key>
+            <key>dryer-up-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2939,1},{581,1133}}</string>

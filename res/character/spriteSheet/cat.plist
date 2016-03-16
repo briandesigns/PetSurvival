@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>down-attack.png</key>
+            <key>cat-down-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{925,1},{591,886}}</string>
@@ -17,7 +17,7 @@
                 <key>sourceSize</key>
                 <string>{591,886}</string>
             </dict>
-            <key>down-move.png</key>
+            <key>cat-down-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,1},{524,971}}</string>
@@ -30,7 +30,7 @@
                 <key>sourceSize</key>
                 <string>{524,971}</string>
             </dict>
-            <key>down-normal.png</key>
+            <key>cat-down-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1,974},{459,875}}</string>
@@ -43,7 +43,7 @@
                 <key>sourceSize</key>
                 <string>{459,875}</string>
             </dict>
-            <key>left-attack.png</key>
+            <key>cat-left-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1518,1},{874,604}}</string>
@@ -56,7 +56,7 @@
                 <key>sourceSize</key>
                 <string>{874,604}</string>
             </dict>
-            <key>left-move.png</key>
+            <key>cat-left-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{878,904},{858,567}}</string>
@@ -69,7 +69,7 @@
                 <key>sourceSize</key>
                 <string>{858,567}</string>
             </dict>
-            <key>left-normal.png</key>
+            <key>cat-left-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2614,861},{791,607}}</string>
@@ -82,7 +82,7 @@
                 <key>sourceSize</key>
                 <string>{791,607}</string>
             </dict>
-            <key>right-attack.png</key>
+            <key>cat-right-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{1738,877},{874,604}}</string>
@@ -95,7 +95,7 @@
                 <key>sourceSize</key>
                 <string>{874,604}</string>
             </dict>
-            <key>right-move.png</key>
+            <key>cat-right-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2124,1},{858,567}}</string>
@@ -108,7 +108,7 @@
                 <key>sourceSize</key>
                 <string>{858,567}</string>
             </dict>
-            <key>right-normal.png</key>
+            <key>cat-right-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{3055,1},{791,607}}</string>
@@ -121,7 +121,7 @@
                 <key>sourceSize</key>
                 <string>{791,607}</string>
             </dict>
-            <key>up-attack.png</key>
+            <key>cat-up-attack.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{527,1},{396,901}}</string>
@@ -134,7 +134,7 @@
                 <key>sourceSize</key>
                 <string>{396,901}</string>
             </dict>
-            <key>up-move.png</key>
+            <key>cat-up-move.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{2693,1},{360,792}}</string>
@@ -147,7 +147,7 @@
                 <key>sourceSize</key>
                 <string>{360,792}</string>
             </dict>
-            <key>up-normal.png</key>
+            <key>cat-up-normal.png</key>
             <dict>
                 <key>frame</key>
                 <string>{{3407,610},{328,786}}</string>
