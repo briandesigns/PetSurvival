@@ -17,8 +17,8 @@ var PlayScene = cc.Scene.extend({
     enemyLayer: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
-    locationLayer:null,
-    hudLayer:null,
+    locationLayer: null,
+    hudLayer: null,
     trash: null, //a buffer to contain all elements that should be eliminated from map after death
 
     /**
@@ -140,6 +140,8 @@ var PlayScene = cc.Scene.extend({
         this.playerLayer.player.character.sprite.runAction(new cc.Sequence(moveAction));
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
+        this.hudLayer.updateHealth();
+        this.hudLayer.updateInventory();
     },
 
     /**
@@ -153,25 +155,22 @@ var PlayScene = cc.Scene.extend({
             var enemySpawn = this.enemyLayer.enemySpawnList[i];
             for (var j = 0; j < enemySpawn.enemyList.length; j++) {
                 var enemy = enemySpawn.enemyList[j];
-                if(enemy.collisionList.length>0) {
-                    //while(enemy.collisionList.length !=0) {
-                        enemy.attackEnemies();
-                    //}
-                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 80) {
-                    //while(enemy.distanceFromChar(this.playerLayer.player.character) > 2) {
-                        if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
-                            enemy.moveLeft();
-                        } else {
-                            enemy.moveRight();
-                        }
-                        if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
-                            enemy.moveDown();
-                        } else {
-                            enemy.moveUp();
-                        }
+                if (enemy.collisionList.length > 0) {
+                    enemy.attackEnemies();
+                    this.hudLayer.updateHealth();
+                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
+                    if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
+                        enemy.moveLeft();
+                    } else {
+                        enemy.moveRight();
+                    }
+                    if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
+                        enemy.moveDown();
+                    } else {
+                        enemy.moveUp();
+                    }
 
-                    //}
-                }  else {
+                } else {
                     var probability = Math.random();
                     if (probability < 0.5) {
                         if (probability < 0.1) {
@@ -252,7 +251,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
         this.initCollisions();
         this.addChild(this.gameLayer);
-        this.addChild(this.hudLayer,0, TagOfLayer.Hud);
+        this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
         this.scheduleUpdate();//execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
