@@ -115,6 +115,9 @@ var Character = cc.Node.extend({
         //this.shape = null;
         //this.sprite.removeFromParent();
         //this.sprite = null;
+        for(var i=0; i<this.inventory.length;i++) {
+            this.removeItem(i+1);
+        }
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
     },
 

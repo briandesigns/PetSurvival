@@ -41,6 +41,8 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerItemBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.end,
             this.collisionPlayerGoalBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
+            this.collisionEnemyItemBegin.bind(this), null, null);
     },
 
     /**
@@ -131,8 +133,17 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    collisionEnemyItemBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[0]);
+        var item = this.itemLayer.getItemByShape(shapes[1]);
+        enemy.addItem(item);
+        cc.log("collision detected");
+        return true;
+    },
+
     /**
-     * Move player to Spawn point and zoom into the player
+     * Move player to Spawn point and zoom into the player and init hud
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
