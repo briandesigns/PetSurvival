@@ -8,6 +8,7 @@ if (typeof TagOfLayer == "undefined") {
     TagOfLayer.Bound = 4;
     TagOfLayer.Item = 5;
     TagOfLayer.Location = 6;
+    TagOfLayer.Hud = 7;
 }
 
 //items types

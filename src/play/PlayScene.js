@@ -224,13 +224,13 @@ var PlayScene = cc.Scene.extend({
         this.initPhysics();
         this.trash = [];
         this.gameLayer = new cc.Layer();
+        this.hudLayer = new HudLayer();
         this.playerLayer = new PlayerLayer(this.space);
         this.mapLayer = new MapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.itemLayer = new ItemLayer(this.space);
         this.enemyLayer = new EnemyLayer(this.space);
         this.locationLayer = new LocationLayer(this.space, this.mapLayer);
-        this.hudLayer = new HudLayer();
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);

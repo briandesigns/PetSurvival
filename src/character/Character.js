@@ -34,8 +34,6 @@ var Character = cc.Node.extend({
         this.inventoryCapacity = inventoryCapacity;
         this.collisionList = [];
         this.space = space;
-
-
         var contentSize = this.sprite.getContentSize();
         this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale));
         this.shape = new cp.BoxShape(this.body, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale);
