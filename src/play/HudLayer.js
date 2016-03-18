@@ -92,6 +92,7 @@ var HudLayer = cc.Layer.extend({
                 }
             } else {
                 var itemType = playerLayer.player.character.inventory[i].itemType;
+                this.removeChild(this.itemContentList[i]);
                 switch(itemType) {
                     case ITEM_TYPE.healthPoint:
                         this.itemContentList[i] = new cc.Sprite(res.object_health_point_png);
@@ -106,7 +107,7 @@ var HudLayer = cc.Layer.extend({
                         cc.log("just added speed point item to invbox");
                         break;
                 }
-                this.itemContentList[i].setScale(0.05);
+                this.itemContentList[i].setScale(0.1);
                 this.itemContentList[i].attr({x:this.itemBoxList[i].getPositionX(), y:this.itemBoxList[i].getPositionY()});
                 this.addChild(this.itemContentList[i]);
             }

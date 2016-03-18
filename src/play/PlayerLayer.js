@@ -105,7 +105,6 @@ var PlayerLayer = cc.Layer.extend({
         return this.player.character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
     },
 
-    //todo: these conditions are not cleaned up
     addItem: function (item) {
         this.player.character.addItem(item);
         var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
@@ -113,9 +112,10 @@ var PlayerLayer = cc.Layer.extend({
     },
 
     removeItem: function (itemNumber) {
-        this.player.character.removeItem(itemNumber);
-        var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
-        hudLayer.updateInventory();
+        if(this.player.character.removeItem(itemNumber)) {
+            var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
+            hudLayer.updateInventory();
+        }
     }
 
 

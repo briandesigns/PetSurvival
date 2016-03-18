@@ -165,6 +165,10 @@ var Character = cc.Node.extend({
             }
             this.inventory.splice(itemNumber-1,1);
             item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
+            return true;
+        }
+        else {
+            return false;
         }
     },
 
