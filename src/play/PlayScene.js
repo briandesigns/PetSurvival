@@ -157,7 +157,7 @@ var PlayScene = cc.Scene.extend({
                     //while(enemy.collisionList.length !=0) {
                         enemy.attackEnemies();
                     //}
-                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 60.0) {
+                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 80) {
                     //while(enemy.distanceFromChar(this.playerLayer.player.character) > 2) {
                         if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
                             enemy.moveLeft();
