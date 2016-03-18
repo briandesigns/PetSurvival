@@ -29,9 +29,7 @@ var PlayerLayer = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyReleased: function (key, event) {
-                        //cc.log("Key released: " + key.toString());
                         this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
-
                         if (key.toString() === "37") { //left
                             this.player.character.sprite.stopAllActions();
                         } else if (key.toString() === "38") { //up
@@ -44,7 +42,6 @@ var PlayerLayer = cc.Layer.extend({
                         }
                     }.bind(this),
                     onKeyPressed: function (key, event) {
-                        //cc.log("Key pressed: " + key.toString());
                         if (key.toString() === "37") { //left
                             this.moveLeft();
                         } else if (key.toString() === "38") { //up

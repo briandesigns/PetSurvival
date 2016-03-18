@@ -74,6 +74,7 @@ var PlayScene = cc.Scene.extend({
         enemy.removeCollisionByChar(playerCharacter);
         playerCharacter.removeCollisionByChar(enemy);
         cc.log("collision resolved");
+        this.hudLayer.updateHealth();
         return true;
     },
 
@@ -152,9 +153,25 @@ var PlayScene = cc.Scene.extend({
             var enemySpawn = this.enemyLayer.enemySpawnList[i];
             for (var j = 0; j < enemySpawn.enemyList.length; j++) {
                 var enemy = enemySpawn.enemyList[j];
-                if (!true) {
-                    //todo: do something when theres player present
-                } else {
+                if(enemy.collisionList.length>0) {
+                    //while(enemy.collisionList.length !=0) {
+                        enemy.attackEnemies();
+                    //}
+                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 60.0) {
+                    //while(enemy.distanceFromChar(this.playerLayer.player.character) > 2) {
+                        if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
+                            enemy.moveLeft();
+                        } else {
+                            enemy.moveRight();
+                        }
+                        if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
+                            enemy.moveDown();
+                        } else {
+                            enemy.moveUp();
+                        }
+
+                    //}
+                }  else {
                     var probability = Math.random();
                     if (probability < 0.5) {
                         if (probability < 0.1) {

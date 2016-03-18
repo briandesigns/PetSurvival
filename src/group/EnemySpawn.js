@@ -44,14 +44,13 @@ var EnemySpawn = cc.Node.extend({
     },
 
     die: function () {
-        //todo: come up with actual way of removing elements
-        this.space.removeShape(this.shape);
-        this.shape = null;
-        this.sprite.removeFromParent();
-        this.sprite = null;
-        this.space.removeBody(this.body);
-        this.body = null;
-        //this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+        //this.space.removeShape(this.shape);
+        //this.shape = null;
+        //this.sprite.removeFromParent();
+        //this.sprite = null;
+        //this.space.removeBody(this.body);
+        //this.body = null;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
     },
 

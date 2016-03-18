@@ -116,7 +116,6 @@ var Character = cc.Node.extend({
         //this.sprite.removeFromParent();
         //this.sprite = null;
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
-
     },
 
     //todo: these conditions are not cleaned up
@@ -185,6 +184,12 @@ var Character = cc.Node.extend({
         for (var i =0; i < this.collisionList.length; i++) {
             this.collisionList[i].changeHealth(-1*this.hitPoint);
         }
+    },
+
+    distanceFromChar: function(char) {
+        var charX = char.body.p.x;
+        var charY = char.body.p.y;
+        return Math.sqrt(Math.pow(this.body.p.x-charX, 2) + Math.pow(this.body.p.y-charY,2));
     }
 
 
