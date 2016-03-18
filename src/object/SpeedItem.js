@@ -7,7 +7,7 @@ var SpeedItem = Item.extend({
      */
     ctor: function (space) {
         this._super(new cc.PhysicsSprite(res.object_speed_point_png), ITEM_TYPE.speed, space);
-        this.speedBoost = ITEM_STATS.speedBenefit;
+        this.speedBoost = ITEM_STATS.speedBoost;
 
-    },
-})
+    }
+});

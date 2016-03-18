@@ -70,6 +70,6 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.healthBoost = 20;
     ITEM_STATS.healthPointBenefit = 10;
     ITEM_STATS.hitPointBenefit = 5;
-    ITEM_STATS.speedBenefit = 1;
+    ITEM_STATS.speedBoost = 1;
 }
 

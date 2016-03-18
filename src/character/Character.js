@@ -136,7 +136,7 @@ var Character = cc.Node.extend({
                     this.hitPoint+= item.hitPointBenefit;
                     break;
                 case ITEM_TYPE.speed:
-                    this.speed+= item.speedBenefit;
+                    this.speed+= item.speedBoost;
                     break;
             }
         } else if (item.itemType === ITEM_TYPE.healthBoost){
@@ -162,7 +162,7 @@ var Character = cc.Node.extend({
                     this.hitPoint-= item.hitPointBenefit;
                     break;
                 case ITEM_TYPE.speed:
-                    this.speed-= item.speedBenefit;
+                    this.speed-= item.speedBoost;
                     break;
             }
             this.inventory.splice(itemNumber-1,1);

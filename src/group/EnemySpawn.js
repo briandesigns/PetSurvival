@@ -53,6 +53,31 @@ var EnemySpawn = cc.Node.extend({
 
     },
 
+    changeHealth: function (h) {
+        if (h>0) {
+            if (this.health < this.healthPoint) {
+                var lostHealth = this.healthPoint - this.health;
+                if (h <= lostHealth) {
+                    this.health+=h;
+                } else {
+                    this.health+=lostHealth;
+                }
+                return true;
+            } else {
+                cc.log("food rejected, don't need it");
+                return false;
+            }
+        } else {
+            if (this.health < -1*h) {
+                this.health = 0;
+                return true;
+            } else {
+                this.health+=h;
+                return true;
+            }
+        }
+    }
+
 
 
 
