@@ -118,8 +118,7 @@ var PlayScene = cc.Scene.extend({
     collisionPlayerItemBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var item = this.itemLayer.getItemByShape(shapes[1]);
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        playerCharacter.addItem(item);
+        this.playerLayer.addItem(item);
         cc.log("collision detected");
         return true;
     },
@@ -239,7 +238,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
         this.initCollisions();
         this.addChild(this.gameLayer);
-        this.addChild(this.hudLayer);
+        this.addChild(this.hudLayer,0, TagOfLayer.Hud);
         this.scheduleUpdate();//execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds

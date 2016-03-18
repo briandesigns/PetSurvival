@@ -21,7 +21,7 @@ var PlayerLayer = cc.Layer.extend({
         this.player = new Player(new Dog(this.space));
         this.playerList = [];
         this.playerList.push(this.player);
-        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
+        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
 
         this.addChild(this.player.character.sprite);
 
@@ -53,18 +53,18 @@ var PlayerLayer = cc.Layer.extend({
                             this.moveDown();
                         } else if (key.toString() === "39") { //right
                             this.moveRight();
-                        } else if (key.toString() === "32"){ //space
+                        } else if (key.toString() === "32") { //space
                             this.player.character.attackEnemies();
                         } else if (key.toString() === "49") { //1
-                            this.player.character.removeItem(1);
+                            this.removeItem(1);
                         } else if (key.toString() === "50") { //2
-                            this.player.character.removeItem(2);
+                            this.removeItem(2);
                         } else if (key.toString() === "51") { //3
-                            this.player.character.removeItem(3);
+                            this.removeItem(3);
                         } else if (key.toString() === "52") { //4
-                            this.player.character.removeItem(4);
+                            this.removeItem(4);
                         } else if (key.toString() === "53") { //5
-                            this.player.character.removeItem(5);
+                            this.removeItem(5);
                         }
                     }.bind(this)
                 },
@@ -73,7 +73,7 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
-    getPlayerByShape: function(shape) {
+    getPlayerByShape: function (shape) {
         for (var i = 0; i < this.playerList.length; i++) {
             if (this.playerList[i].character.shape == shape) {
                 return this.playerList[i];
@@ -103,6 +103,21 @@ var PlayerLayer = cc.Layer.extend({
     },
     getEyeY: function () {
         return this.player.character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
+    },
+
+    //todo: these conditions are not cleaned up
+    addItem: function (item) {
+        this.player.character.addItem(item);
+        var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
+        hudLayer.updateInventory();
+    },
+
+    removeItem: function (itemNumber) {
+        this.player.character.removeItem(itemNumber);
+        var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
+        hudLayer.updateInventory();
     }
+
+
 });
 

@@ -26,7 +26,8 @@ var res = {
     object_food_png: "res/object/Food.png",
     object_health_point_png: "res/object/HealthPoint.png",
     object_hit_point_png: "res/object/HitPoint.png",
-    object_speed_point_png: "res/object/SpeedPoint.png"
+    object_speed_point_png: "res/object/SpeedPoint.png",
+    hud_inventory_png: "res/hud/inventory.png"
 
 };
 
