@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+
+  "PlayScene": {
+    "space":{}, //don't need to save
+    "BoundLayer": {}, //don't need to save
+    "EnemyLayer": {},
+    "HudLayer":{},
+    "ItemLayer":{},
+    "LocationLayer":{},
+    "MapLayer":{},
+    "PlayerLayer":{}
+  }
+}

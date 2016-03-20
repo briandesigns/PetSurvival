@@ -1,6 +1,3 @@
-/**
- * Created by brian on 2/13/16.
- */
 var MainMenuLayer = cc.Layer.extend({
     ctor: function () {
         this._super();

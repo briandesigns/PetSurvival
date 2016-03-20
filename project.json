@@ -16,6 +16,7 @@
     "src/globals.js",
     "src/menu/MainMenuLayer.js",
     "src/menu/MainMenuScene.js",
+    "src/menu/PauseMenuLayer.js",
     "src/character/Character.js",
     "src/character/Dog.js",
     "src/character/Pig.js",

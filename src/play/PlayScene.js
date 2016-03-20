@@ -43,6 +43,30 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerGoalBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
             this.collisionEnemyItemBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.bounds,
+            this.collisionPlayerBoundsBegin.bind(this), null, null);
+    },
+
+    collisionPlayerBoundsBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var shape = shapes[1];
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        var deltaX;
+        var deltaY;
+        if (shape.body.p.x > playerCharacter.sprite.getPositionX()) {
+            deltaX = -5;
+        } else {
+            deltaX = 5;
+        }
+        if (shape.body.p.y > playerCharacter.sprite.getPositionY()) {
+            deltaY = -5;
+
+        } else {
+            deltaY = 5;
+        }
+        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX()+deltaX, playerCharacter.sprite.getPositionY() + deltaY));
+        cc.log("just bumped u back a lil");
+        return true;
     },
 
     /**
@@ -141,6 +165,7 @@ var PlayScene = cc.Scene.extend({
         cc.log("collision detected");
         return true;
     },
+
 
     /**
      * Move player to Spawn point and zoom into the player and init hud

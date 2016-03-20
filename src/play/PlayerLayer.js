@@ -5,9 +5,12 @@ var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
     playerList: null,
+    isPaused: null,
+    pauseMenuLayer: null,
     ctor: function (space) {
         this._super();
         this.space = space;
+        this.isPaused = false;
         this.init();
 
         //this._debugNode = new cc.PhysicsDebugNode(this.space);
@@ -16,7 +19,6 @@ var PlayerLayer = cc.Layer.extend({
     },
     init: function () {
         this._super();
-
         //create the hero sprite
         this.player = new Player(new Dog(this.space));
         this.playerList = [];
@@ -62,6 +64,18 @@ var PlayerLayer = cc.Layer.extend({
                             this.removeItem(4);
                         } else if (key.toString() === "53") { //5
                             this.removeItem(5);
+                        } else if (key.toString() === "27") { //esc
+                            if (this.isPaused == false) {
+                                cc.director.pause();
+                                this.isPaused = true;
+                                this.pauseMenuLayer = new PauseMenuLayer();
+                                this.pauseMenuLayer.init();
+                                this.getParent().getParent().addChild(this.pauseMenuLayer);
+                            } else {
+                                cc.director.resume();
+                                this.isPaused = false;
+                                this.getParent().getParent().removeChild(this.pauseMenuLayer);
+                            }
                         }
                     }.bind(this)
                 },
@@ -109,7 +123,7 @@ var PlayerLayer = cc.Layer.extend({
     },
 
     removeItem: function (itemNumber) {
-        if(this.player.character.removeItem(itemNumber)) {
+        if (this.player.character.removeItem(itemNumber)) {
             var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
             hudLayer.updateInventory();
         }
