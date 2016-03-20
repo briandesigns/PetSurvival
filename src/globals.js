@@ -30,6 +30,7 @@ if (typeof COLLISION_TYPE == "undefined") {
     COLLISION_TYPE.bounds = 4;
     COLLISION_TYPE.enemySpawn = 5;
     COLLISION_TYPE.start = 6;
+    COLLISION_TYPE.wall = 7;
 
 }
 
@@ -52,7 +53,7 @@ if (typeof PLAYER_STATS == "undefined") {
     PLAYER_STATS.baseHealthPoint = 100;
     PLAYER_STATS.inventoryCapacity = 5;
     PLAYER_STATS.baseHitPoint = 15;
-    PLAYER_STATS.baseSpeed = 3;
+    PLAYER_STATS.baseSpeed = 1.2;
 }
 
 //enemy character stats
@@ -62,7 +63,7 @@ if (typeof ENEMY_STATS == "undefined") {
     ENEMY_STATS.baseHealthPoint = 100;
     ENEMY_STATS.inventoryCapacity = 1;
     ENEMY_STATS.baseHitPoint = 2;
-    ENEMY_STATS.baseSpeed = 5;
+    ENEMY_STATS.baseSpeed = 8;
 }
 
 //item stats
@@ -71,6 +72,6 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.healthBoost = 20;
     ITEM_STATS.healthPointBenefit = 10;
     ITEM_STATS.hitPointBenefit = 5;
-    ITEM_STATS.speedBoost = 1;
+    ITEM_STATS.speedBoost = 0.2;
 }
 

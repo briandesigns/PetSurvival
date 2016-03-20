@@ -18,7 +18,7 @@ var BoundLayer = cc.Layer.extend({
         leftWall.setAngVel(0);
         leftWall.setMoment(MAX_INT);
         var shape = new cp.BoxShape(leftWall, 64, 32 * 65);
-        shape.setCollisionType(COLLISION_TYPE.bounds);
+        shape.setCollisionType(COLLISION_TYPE.wall);
         shape.setSensor(false);
         this.space.addBody(leftWall);
         this.space.addShape(shape);
@@ -28,7 +28,7 @@ var BoundLayer = cc.Layer.extend({
         rightWall.setAngVel(0);
         rightWall.setMoment(MAX_INT);
         var shape2 = new cp.BoxShape(rightWall, 64, 32 * 65);
-        shape2.setCollisionType(COLLISION_TYPE.bounds);
+        shape2.setCollisionType(COLLISION_TYPE.wall);
         shape2.setSensor(false);
         this.space.addBody(rightWall);
         this.space.addShape(shape2);
@@ -38,7 +38,7 @@ var BoundLayer = cc.Layer.extend({
         topWall.setAngVel(0);
         topWall.setMoment(MAX_INT);
         var shape3 = new cp.BoxShape(topWall, 32 * 65 + 128, 64);
-        shape3.setCollisionType(COLLISION_TYPE.bounds);
+        shape3.setCollisionType(COLLISION_TYPE.wall);
         shape3.setSensor(false);
         this.space.addBody(topWall);
         this.space.addShape(shape3);
@@ -48,7 +48,7 @@ var BoundLayer = cc.Layer.extend({
         bottomWall.setAngVel(0);
         bottomWall.setMoment(MAX_INT);
         var shape4 = new cp.BoxShape(bottomWall, 32 * 65 + 128, 64);
-        shape4.setCollisionType(COLLISION_TYPE.bounds);
+        shape4.setCollisionType(COLLISION_TYPE.wall);
         shape4.setSensor(false);
         this.space.addBody(bottomWall);
         this.space.addShape(shape4);

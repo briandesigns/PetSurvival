@@ -22,6 +22,7 @@ var EnemySpawn = cc.Node.extend({
         this._super();
         this.collisionType = COLLISION_TYPE.enemySpawn;
         this.health = health;
+        this.healthPoint = ENEMY_STATS.baseHealthPoint;
         this.capacity = capacity;
         this.spriteScale = spriteScale;
         this.sprite = sprite;

@@ -1,21 +1,72 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true
-  },
-  "exclude": [
-    "node_modules"
-  ],
-
   "PlayScene": {
-    "space":{}, //don't need to save
+    "space": {}, //don't need to save
     "BoundLayer": {}, //don't need to save
-    "EnemyLayer": {},
-    "HudLayer":{},
-    "ItemLayer":{},
-    "LocationLayer":{},
-    "MapLayer":{},
-    "PlayerLayer":{}
+    "HudLayer": {}, //don't need to save
+    "ItemLayer": {
+      "itemList": {
+        "item": {
+          "itemType": "string",
+          "location": {
+            "x": "int",
+            "y": "int"
+          }
+
+        }
+      }
+    },
+    "EnemyLayer": {
+      "enemySpawnList": {
+        "enemySpawn": {
+          "health": "int",
+          "spawnType": "string",
+          "enemyList": {
+            "character": {
+              "subtype": "string",
+              "position": {
+                "x": "int",
+                "y": "int"
+              },
+              "healthPoint": "int",
+              "health": "int",
+              "hitpoint": "int",
+              "speed": "int",
+              "inventory": "list of name of items"
+            }
+          }
+        }
+      }
+    },
+    "LocationLayer": {
+      "start": {
+        "x" : "int",
+        "y" : "int"
+      },
+      "end": {
+        "x": "int",
+        "y": "int"
+      }
+    },
+    "MapLayer": {
+      "mapFile": "tmx file"
+    },
+    "PlayerLayer": {
+      "Player": {
+        "character": {
+          "subtype": "string",
+          "position": {
+            "x" : "int",
+            "y" : "int"
+          },
+          "healthPoint": "int",
+          "health": "int",
+          "hitpoint": "int",
+          "speed":"int",
+          "inventory": "list of name of items", //find the items in the item list and set them aside
+        }
+      }
+    },
+    "gameLayer": {}, //don't need to save
+    "hasMovedVertically": {} //don't need to save
   }
 }

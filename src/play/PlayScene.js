@@ -20,6 +20,7 @@ var PlayScene = cc.Scene.extend({
     locationLayer: null,
     hudLayer: null,
     trash: null, //a buffer to contain all elements that should be eliminated from map after death
+    hasMovedVertically: null,
 
     /**
      * Set environment for for physical bodies and set environment gravity
@@ -43,28 +44,30 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerGoalBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
             this.collisionEnemyItemBegin.bind(this), null, null);
-        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.bounds,
-            this.collisionPlayerBoundsBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
+            this.collisionPlayerWallBegin.bind(this), null, null);
     },
 
-    collisionPlayerBoundsBegin: function (arbiter, space) {
+    collisionPlayerWallBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var shape = shapes[1];
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         var deltaX;
         var deltaY;
         if (shape.body.p.x > playerCharacter.sprite.getPositionX()) {
-            deltaX = -5;
+            deltaX = -2;
         } else {
-            deltaX = 5;
+            deltaX = 2;
         }
         if (shape.body.p.y > playerCharacter.sprite.getPositionY()) {
-            deltaY = -5;
+            deltaY = -2;
 
         } else {
-            deltaY = 5;
+            deltaY = 2;
         }
         playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX()+deltaX, playerCharacter.sprite.getPositionY() + deltaY));
+        playerCharacter.sprite.stopAllActions();
+
         cc.log("just bumped u back a lil");
         return true;
     },
@@ -172,8 +175,7 @@ var PlayScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        var moveAction = new cc.moveTo(1, cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
-        this.playerLayer.player.character.sprite.runAction(new cc.Sequence(moveAction));
+        this.playerLayer.player.character.sprite.setPosition(cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
@@ -195,15 +197,21 @@ var PlayScene = cc.Scene.extend({
                     enemy.attackEnemies();
                     this.hudLayer.updateHealth();
                 } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
-                    if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
-                        enemy.moveLeft();
+                    if (this.hasMovedVertically == true) {
+                        if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
+                            enemy.moveLeft();
+                        } else {
+                            enemy.moveRight();
+                        }
+                        this.hasMovedVertically = false;
+
                     } else {
-                        enemy.moveRight();
-                    }
-                    if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
-                        enemy.moveDown();
-                    } else {
-                        enemy.moveUp();
+                        if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
+                            enemy.moveDown();
+                        } else {
+                            enemy.moveUp();
+                        }
+                        this.hasMovedVertically = true;
                     }
 
                 } else {
@@ -271,6 +279,7 @@ var PlayScene = cc.Scene.extend({
         this._super();
         this.initPhysics();
         this.trash = [];
+        this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
         this.playerLayer = new PlayerLayer(this.space);

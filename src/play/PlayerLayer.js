@@ -7,6 +7,7 @@ var PlayerLayer = cc.Layer.extend({
     playerList: null,
     isPaused: null,
     pauseMenuLayer: null,
+    inMotion: null,
     ctor: function (space) {
         this._super();
         this.space = space;
@@ -20,6 +21,7 @@ var PlayerLayer = cc.Layer.extend({
     init: function () {
         this._super();
         //create the hero sprite
+        this.inMotion = false;
         this.player = new Player(new Dog(this.space));
         this.playerList = [];
         this.playerList.push(this.player);
@@ -31,7 +33,7 @@ var PlayerLayer = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyReleased: function (key, event) {
-                        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
+                        //this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
                         if (key.toString() === "37") { //left
                             this.player.character.sprite.stopAllActions();
                         } else if (key.toString() === "38") { //up
@@ -45,13 +47,29 @@ var PlayerLayer = cc.Layer.extend({
                     }.bind(this),
                     onKeyPressed: function (key, event) {
                         if (key.toString() === "37") { //left
-                            this.moveLeft();
+                            if(this.inMotion == false) {
+                                this.inMotion = true;
+                                this.moveLeft();
+                                this.inMotion = false ;
+                            }
                         } else if (key.toString() === "38") { //up
-                            this.moveUp();
+                            if(this.inMotion == false) {
+                                this.inMotion = true;
+                                this.moveUp();
+                                this.inMotion = false ;
+                            }
                         } else if (key.toString() === "40") { //down
-                            this.moveDown();
+                            if(this.inMotion == false) {
+                                this.inMotion = true;
+                                this.moveDown();
+                                this.inMotion = false ;
+                            }
                         } else if (key.toString() === "39") { //right
-                            this.moveRight();
+                            if(this.inMotion == false) {
+                                this.inMotion = true;
+                                this.moveRight();
+                                this.inMotion = false ;
+                            }
                         } else if (key.toString() === "32") { //space
                             this.player.character.attackEnemies();
                         } else if (key.toString() === "49") { //1
