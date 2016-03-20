@@ -1,15 +1,19 @@
 var ItemLayer = cc.Layer.extend({
     space: null,
     itemList: null,
-    ctor: function (space) {
+    ctor: function (space, itemList) {
         this._super();
         this.space = space;
-        this.itemList = [];
+        this.itemList = itemList;
         this.init();
     },
     init: function () {
         this._super();
-        this.createItems();
+
+        if (this.itemList == null) {
+            this.itemList = [];
+            this.createItems();
+        }
 
     },
 

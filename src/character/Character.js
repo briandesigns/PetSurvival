@@ -74,17 +74,6 @@ var Character = cc.Node.extend({
         }
     },
 
-    setHitPoint: function (hp) {
-
-    },
-
-    dropAllItems: function () {
-
-    },
-
-    dropItem: function (itemName) {
-    },
-
     moveRight: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(-90);

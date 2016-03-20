@@ -10,30 +10,5 @@ var Cat = Character.extend({
     ctor: function (space) {
         this._super(COLLISION_TYPE.player,new cc.PhysicsSprite(res.character_cat_png), PLAYER_STATS.baseHealth, PLAYER_STATS.baseHealthPoint, PLAYER_STATS.baseHitPoint, PLAYER_STATS.baseSpeed, PLAYER_STATS.inventoryCapacity, space);
 
-    },
-
-    maximizeHealth: function() {
-
-    },
-
-    setHealth: function(h) {
-
-    },
-
-    setHitPoint: function(hp) {
-
-    },
-
-    dropAllItems: function() {
-
-    },
-
-    dropItem: function(itemName) {
-
     }
-
-
-
-
-
 });

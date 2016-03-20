@@ -282,10 +282,10 @@ var PlayScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-        this.playerLayer = new PlayerLayer(this.space);
+        this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
         this.mapLayer = new MapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
-        this.itemLayer = new ItemLayer(this.space);
+        this.itemLayer = new ItemLayer(this.space, null);
         this.enemyLayer = new EnemyLayer(this.space);
         this.locationLayer = new LocationLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
