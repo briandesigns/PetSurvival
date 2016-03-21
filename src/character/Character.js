@@ -13,6 +13,7 @@ var Character = cc.Node.extend({
     collisionList: null,
     space: null,
     spriteScale: null,
+    characterType: null,
 
 
     /** Constructor

@@ -18,8 +18,12 @@
     "EnemyLayer": {
       "enemySpawnList": {
         "enemySpawn": {
-          "health": "int",
           "spawnType": "string",
+          "position": {
+            "x": "int",
+            "y": "int"
+          },
+          "health": "int",
           "enemyList": {
             "character": {
               "subtype": "string",
@@ -63,6 +67,7 @@
           "hitpoint": "int",
           "speed":"int",
           "inventory": "list of name of items", //find the items in the item list and set them aside
+          "inventoryCapacity": "int"
         }
       }
     },

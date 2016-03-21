@@ -46,13 +46,17 @@ if (typeof SPAWN_TYPE == "undefined") {
     SPAWN_TYPE.cave = 4;
 }
 
-//Player Types
-if (typeof PLAYER_TYPE == "undefined") {
-    var PLAYER_TYPE = {};
-    PLAYER_TYPE.dog = 0;
-    PLAYER_TYPE.cat = 1;
-    PLAYER_TYPE.rabbit = 2;
-    PLAYER_TYPE.pig = 3;
+//character Types
+if (typeof CHAR_TYPE == "undefined") {
+    var CHAR_TYPE = {};
+    CHAR_TYPE.dog = 0;
+    CHAR_TYPE.cat = 1;
+    CHAR_TYPE.rabbit = 2;
+    CHAR_TYPE.pig = 3;
+    CHAR_TYPE.can = 4;
+    CHAR_TYPE.dryer = 5;
+    CHAR_TYPE.hydrant = 6;
+    CHAR_TYPE.vacuum = 7;
 }
 
 //player character stats

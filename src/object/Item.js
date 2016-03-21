@@ -1,4 +1,5 @@
 var Item = cc.Node.extend({
+    itemID: null,
     collisionType: null,
     name: null,
     sprite: null,

@@ -9,5 +9,7 @@ var Dog = Character.extend({
      */
     ctor: function (space) {
         this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_dog_png), PLAYER_STATS.baseHealth, PLAYER_STATS.baseHealthPoint, PLAYER_STATS.baseHitPoint, PLAYER_STATS.baseSpeed, PLAYER_STATS.inventoryCapacity, space);
+        this.characterType = CHAR_TYPE.dog;
+
     }
 });
