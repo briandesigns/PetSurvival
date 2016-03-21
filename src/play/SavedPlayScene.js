@@ -5,7 +5,7 @@
  * this class contains the main method called update that controls the execution of our game
  * from frame to frame
  */
-var PlayScene = cc.Scene.extend({
+var SavedPlayScene = cc.Scene.extend({
 
     /**
      * instance fields
@@ -65,7 +65,7 @@ var PlayScene = cc.Scene.extend({
         } else {
             deltaY = 2;
         }
-        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX() + deltaX, playerCharacter.sprite.getPositionY() + deltaY));
+        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX()+deltaX, playerCharacter.sprite.getPositionY() + deltaY));
         playerCharacter.sprite.stopAllActions();
 
         cc.log("just bumped u back a lil");
@@ -286,7 +286,7 @@ var PlayScene = cc.Scene.extend({
         this.mapLayer = new MapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.itemLayer = new ItemLayer(this.space, null);
-        this.enemyLayer = new EnemyLayer(this.space, null);
+        this.enemyLayer = new EnemyLayer(this.space,null);
         this.locationLayer = new LocationLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
@@ -301,10 +301,7 @@ var PlayScene = cc.Scene.extend({
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
-    },
 
-    onExit: function () {
-        this._super();
     },
 
     /**

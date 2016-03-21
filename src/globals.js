@@ -46,6 +46,15 @@ if (typeof SPAWN_TYPE == "undefined") {
     SPAWN_TYPE.cave = 4;
 }
 
+//Player Types
+if (typeof PLAYER_TYPE == "undefined") {
+    var PLAYER_TYPE = {};
+    PLAYER_TYPE.dog = 0;
+    PLAYER_TYPE.cat = 1;
+    PLAYER_TYPE.rabbit = 2;
+    PLAYER_TYPE.pig = 3;
+}
+
 //player character stats
 if (typeof PLAYER_STATS == "undefined") {
     var PLAYER_STATS = {};
@@ -74,4 +83,18 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.hitPointBenefit = 5;
     ITEM_STATS.speedBoost = 0.2;
 }
+
+//map size
+if (typeof MAP_SIZE == "undefined") {
+    var MAP_SIZE = {};
+    MAP_SIZE.small = 0;
+    MAP_SIZE.medium = 1;
+    MAP_SIZE.big = 2;
+}
+
+var mapSize;
+
+var playerType;
+
+
 

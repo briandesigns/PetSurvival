@@ -37,6 +37,7 @@
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
+    "src/play/SavedPlayScene.js",
     "src/play/ItemLayer.js",
     "src/play/LocationLayer.js",
     "src/play/HudLayer.js",
@@ -48,6 +49,7 @@
     "src/group/CanSpawn.js",
     "src/location/Location.js",
     "src/location/StartPoint.js",
-    "src/location/EndPoint.js"
+    "src/location/EndPoint.js",
+    "src/save/SavePlayer.js"
   ]
 }

@@ -6,6 +6,8 @@ var res = {
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     menu_button_normal_resume: "res/menu/menu_button_normal_resume.png",
     menu_button_normal_save: "res/menu/menu_button_normal_save.png",
+    menu_button_normal_load: "res/menu/menu_button_normal_load.png",
+    menu_button_normal_main: "res/menu/menu_button_normal_main.png",
     pause_menu_background: "res/menu/pause_menu_background.png",
     terrain_jpg : "res/map/terrain.jpg",
     terrain2_png : "res/map/terrain2.png",

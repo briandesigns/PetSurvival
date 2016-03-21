@@ -14,14 +14,23 @@ var PauseMenuLayer = cc.Layer.extend({
         var menuItemResume = new cc.MenuItemSprite(
             new cc.Sprite(res.menu_button_normal_resume), // normal state image
             null, // select state image
-            this.onResume, this
+            this.onResume,
+            this
         );
         var menuItemSave = new cc.MenuItemSprite(
             new cc.Sprite(res.menu_button_normal_save),
             null,
-            this.onSave, this
+            this.onSave,
+            this
         );
-        var menu = new cc.Menu(menuItemResume, menuItemSave);  //7. create the menu
+        var menuItemMainMenu = new cc.MenuItemSprite(
+            new cc.Sprite(res.menu_button_normal_main),
+            null,
+            this.onMain,
+            this
+        );
+        var menu = new cc.Menu(menuItemResume, menuItemSave, menuItemMainMenu);  //7. create the
+        // menu
         menu.setPosition(centerpos);
         menu.alignItemsVerticallyWithPadding(12);
         this.addChild(menu);
@@ -35,5 +44,10 @@ var PauseMenuLayer = cc.Layer.extend({
 
     onSave: function () {
         cc.log("==onSave clicked");
+    },
+
+    onMain: function () {
+
+        //cc.director.popScene(new MainMenuScene());
     }
 });

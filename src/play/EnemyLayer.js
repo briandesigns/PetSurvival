@@ -4,15 +4,19 @@
 var EnemyLayer = cc.Layer.extend({
     space: null,
     enemySpawnList: null,
-    ctor: function (space) {
+    ctor: function (space, enemySpawnList) {
         this._super();
-        this.init();
         this.space = space;
-        this.enemySpawnList = [];
-        this.createSpawns();
+        this.enemySpawnList = enemySpawnList;
+        this.init();
+
     },
 init: function () {
         this._super();
+    if (this.enemySpawnList == null) {
+        this.enemySpawnList = [];
+        this.createSpawns();
+    }
 
     },
 
