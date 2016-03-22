@@ -16,6 +16,15 @@ init: function () {
     if (this.enemySpawnList == null) {
         this.enemySpawnList = [];
         this.createSpawns();
+    } else {
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
+            var spawn = this.enemySpawnList[i];
+            this.addChild(spawn.sprite);
+            for (var j = 0; j < spawn.enemyList.length; j++) {
+                var enemy = spawn.enemyList[j];
+                this.addChild(enemy.sprite);
+            }
+        }
     }
 
     },
