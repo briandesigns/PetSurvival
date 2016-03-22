@@ -134,6 +134,7 @@ var buildCSV = function () {
 };
 
 var buildInvString = function (inventory) {
+    cc.log("inventory length" + inventory.length);
     var string="";
     for (var i = 0; i < inventory.length; i++) {
         string += inventory[i].itemID;

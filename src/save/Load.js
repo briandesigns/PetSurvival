@@ -74,10 +74,15 @@ var loadEnemies = function (space, itemLayer) {
     return spawnList;
 };
 
+//todo: for all token processing code, make sure that undefined is not added when token is
+// actually empty but still counted as 1
 var buildInventory = function (invTokens, itemLayer) {
     var inventory = [];
+    cc.log("inv token length: " + invTokens.length);
     for (var i = 0; i < invTokens.length; i++) {
-        inventory.push(itemLayer.getItemByID(parseInt(invTokens[i])));
+        if (parseInt(invTokens[i] != undefined)) {
+            inventory.push(itemLayer.getItemByID(parseInt(invTokens[i])));
+        }
     }
     return inventory;
 
