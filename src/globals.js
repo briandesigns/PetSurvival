@@ -14,10 +14,10 @@ if (typeof TagOfLayer == "undefined") {
 //items types
 if (typeof ITEM_TYPE == "undefined") {
     var ITEM_TYPE = {};
-    ITEM_TYPE.healthPoint = "healthPoint";
-    ITEM_TYPE.hitPoint = "hitPoint";
-    ITEM_TYPE.speed = "speed";
-    ITEM_TYPE.healthBoost = "healthBoost";
+    ITEM_TYPE.healthPoint = 0;
+    ITEM_TYPE.hitPoint = 1;
+    ITEM_TYPE.speed = 2;
+    ITEM_TYPE.healthBoost = 3;
 }
 
 //collision types

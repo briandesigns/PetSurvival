@@ -20,7 +20,7 @@ var MainMenuLayer = cc.Layer.extend({
         var menuItemLoad = new cc.MenuItemSprite(
             new cc.Sprite(res.menu_button_normal_load),
             null,
-            this.onload,
+            this.onLoad,
             this
         );
         var menu = new cc.Menu(menuItemSingleplayer, menuItemLoad);  //7. create the menu

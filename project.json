@@ -50,6 +50,7 @@
     "src/location/Location.js",
     "src/location/StartPoint.js",
     "src/location/EndPoint.js",
-    "src/save/SavePlayer.js"
+    "src/save/Save.js",
+    "src/save/Load.js"
   ]
 }

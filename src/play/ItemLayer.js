@@ -13,6 +13,10 @@ var ItemLayer = cc.Layer.extend({
         if (this.itemList == null) {
             this.itemList = [];
             this.createItems();
+        } else {
+            for (var i = 0; i < this.itemList.length; i++) {
+                this.addChild(this.itemList[i].sprite);
+            }
         }
 
     },
@@ -52,6 +56,15 @@ var ItemLayer = cc.Layer.extend({
             }
         }
         return null;
+    },
+
+    getItemByID: function (id) {
+        for (var i = 0; i < this.itemList.length; i++) {
+            var item = this.itemList[i];
+            if (item.itemID == id) {
+                return item;
+            }
+        }
     }
 
 });

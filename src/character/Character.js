@@ -113,6 +113,7 @@ var Character = cc.Node.extend({
 
     //todo: these conditions are not cleaned up
     addItem: function(item) {
+        cc.log("inventoryCapacity is: " + this.inventoryCapacity + "inventory.Length is:" + this.inventory.length);
         if(this.inventoryCapacity > this.inventory.length && (item.itemType !== ITEM_TYPE.healthBoost)) {
             cc.log(item.itemType);
             this.inventory.push(item);

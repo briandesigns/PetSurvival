@@ -175,7 +175,11 @@ var SavedPlayScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        this.playerLayer.player.character.sprite.setPosition(cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
+        var dict = cc.sys.localStorage;
+        var string = dict.getItem("playerChar");
+        var tokens = string.split(",");
+        var posTokens = tokens[2].split(";");
+        this.playerLayer.player.character.sprite.setPosition(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
@@ -282,12 +286,14 @@ var SavedPlayScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-        this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+
+        this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
+        this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
+        cc.log("got here");
         this.mapLayer = new MapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
-        this.itemLayer = new ItemLayer(this.space, null);
         this.enemyLayer = new EnemyLayer(this.space,null);
-        this.locationLayer = new LocationLayer(this.space, this.mapLayer);
+        this.locationLayer = new LocationLayer(this.space, this.mapLayer, null, null);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
