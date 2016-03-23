@@ -16,6 +16,7 @@ var Character = cc.Class.extend({
     spriteScale: null,
     characterType: null,
     speedDuration: null,
+    score: null,
 
 
     /** Constructor
@@ -35,6 +36,7 @@ var Character = cc.Class.extend({
         this.hitPoint = hitPoint;
         this.speed = speed;
         this.inventory = [];
+        this.score = 0;
         this.inventoryCapacity = inventoryCapacity;
         this.collisionList = [];
         this.speedDuration = speedDuration;

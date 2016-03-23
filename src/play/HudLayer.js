@@ -115,7 +115,7 @@ var HudLayer = cc.Layer.extend({
         this.labelHealth.setString("Health: " + playerLayer.player.character.health);
         this.labelHealthPoint.setString("HealthPoint: " + playerLayer.player.character.healthPoint);
         this.labelHitPoint.setString("HitPoint: " + playerLayer.player.character.hitPoint);
-        this.labelSpeed.setString("Speed: " + playerLayer.player.character.speed);
+        this.labelSpeed.setString("Speed: " + playerLayer.player.character.speed.toFixed(2));
 
     }
 

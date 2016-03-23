@@ -40,7 +40,6 @@
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
-    "src/play/SavedPlayScene.js",
     "src/play/ItemLayer.js",
     "src/play/LocationLayer.js",
     "src/play/HudLayer.js",

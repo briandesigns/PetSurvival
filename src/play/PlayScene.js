@@ -279,11 +279,13 @@ var PlayScene = cc.Scene.extend({
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health <= 0) {
                 this.trash.push(spawn);
+                this.playerLayer.character.score += spawn.healthPoint;
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health <= 0) {
                     this.trash.push(enemy);
+                    this.playerLayer.character.score += spawn.healthPoint;
                     //spawn.enemyList.splice(j,1);
                 }
             }
