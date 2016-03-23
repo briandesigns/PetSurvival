@@ -4,9 +4,14 @@ var MapLayer = cc.Layer.extend({
     tileArray: [], //texture of terrain tiles
     featuresArray: [], //features like trees, rocks, etc. on tiles
     collisionArray: [], //tiles that the user can't walk over because of trees, etc.
-    fullMapTileCount: null,
+    tiledMapsWide: null,
+    tiledMapsHigh: null,
+    totalTiledMaps: null,
+    tiledMapWidth: null,
+    tiledMapHeight: null,
     fullMapWidth: null,
     fullMapHeight: null,
+    fullMapTileCount: null,
     mapWidth: 0,
     mapHeight: 0,
     space: null,
@@ -21,22 +26,22 @@ var MapLayer = cc.Layer.extend({
         this._super();
 
         //width == height otherwise the map will not load
-        var tiledMapsWide = 1;
-        var tiledMapsHigh = 1;
-        var totalTiledMaps = tiledMapsWide * tiledMapsHigh;
+        this.tiledMapsWide = 1;
+        this.tiledMapsHigh = 1;
+        this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
 
         //for our map to generate properly, these need to be (a power of 2) + 1
-        var tiledMapWidth = 65;
-        var tiledMapHeight = 65;
-        this.fullMapWidth = tiledMapWidth * tiledMapsWide;
-        this.fullMapHeight = tiledMapHeight * tiledMapsHigh;
+        this.tiledMapWidth = 65;
+        this.tiledMapHeight = 65;
+        this.fullMapWidth = this.tiledMapWidth * this.tiledMapsWide;
+        this.fullMapHeight = this.tiledMapHeight * this.tiledMapsHigh;
         this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
 
         this.tileArray = new Array(this.fullMapTileCount);
         this.featuresArray = new Array(this.fullMapTileCount);
         this.collisionArray = new Array(this.fullMapTileCount);
 
-        var terrain = new Terrain(tiledMapWidth);
+        var terrain = new Terrain(this.tiledMapWidth);
         terrain.generate(0.7);
 
         for (i = 0; i < this.fullMapTileCount; i++) {
@@ -81,32 +86,32 @@ var MapLayer = cc.Layer.extend({
         this.varyAndAddFeatures();
 
         //an array of empty tiled map data arrays
-        var tiledMapData = new Array(totalTiledMaps);
-        for (var i = 0; i < totalTiledMaps; i++) {
+        var tiledMapData = new Array(this.totalTiledMaps);
+        for (var i = 0; i < this.totalTiledMaps; i++) {
             tiledMapData[i] = [];
         }
 
         //fill the tiled map data arrays with the proper data from the input array
         for (var j = 0; j < this.fullMapTileCount; j++) {
-            var row = parseInt((j % this.fullMapWidth) / tiledMapHeight);
-            var column = parseInt((j / this.fullMapHeight) / tiledMapWidth);
-            var array = column * tiledMapsWide + row;
+            var row = parseInt((j % this.fullMapWidth) / this.tiledMapHeight);
+            var column = parseInt((j / this.fullMapHeight) / this.tiledMapWidth);
+            var array = column * this.tiledMapsWide + row;
             tiledMapData[array].push(this.tileArray[j]);
         }
 
-        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"484\" name=\"terrain2\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain2.png\" trans=\"ffffff\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"967\" name=\"terrain3\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"256\" columns=\"16\">\r\n  <image source=\"terrain3.png\" trans=\"ffffff\" width=\"512\" height=\"512\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
-        var divider = "<\/data>\r\n <\/layer>\r\n <layer name=\"UpperTerrain\" width=\"" + tiledMapWidth + "\" height=\"" + tiledMapHeight + "\" offsetx=\"448\" offsety=\"251\">\r\n  <data encoding=\"csv\">";
+        var header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<map version=\"1.0\" orientation=\"orthogonal\" renderorder=\"right-down\" width=\"" + this.tiledMapWidth + "\" height=\"" + this.tiledMapHeight + "\" tilewidth=\"32\" tileheight=\"32\" nextobjectid=\"1\">\r\n <tileset firstgid=\"1\" name=\"terrain\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain.jpg\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"484\" name=\"terrain2\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"483\" columns=\"21\">\r\n  <image source=\"terrain2.png\" trans=\"ffffff\" width=\"672\" height=\"736\"\/>\r\n <\/tileset>\r\n <tileset firstgid=\"967\" name=\"terrain3\" tilewidth=\"32\" tileheight=\"32\" tilecount=\"256\" columns=\"16\">\r\n  <image source=\"terrain3.png\" trans=\"ffffff\" width=\"512\" height=\"512\"\/>\r\n <\/tileset>\r\n <layer name=\"Tile Layer 1\" width=\"" + this.tiledMapWidth + "\" height=\"" + this.tiledMapHeight + "\">\r\n  <data encoding=\"csv\">\r\n";
+        var divider = "<\/data>\r\n <\/layer>\r\n <layer name=\"UpperTerrain\" width=\"" + this.tiledMapWidth + "\" height=\"" + this.tiledMapHeight + "\" offsetx=\"448\" offsety=\"251\">\r\n  <data encoding=\"csv\">";
         var footer = "<\/data>\r\n <\/layer>\r\n<\/map>\r\n";
         var mapAsTmxStrings = [];
 
         //attach headers and footers to our arrays to form tmx strings
-        for (var k = 0; k < totalTiledMaps; k++) {
+        for (var k = 0; k < this.totalTiledMaps; k++) {
             var mapArrayAsString = tiledMapData[k].toString();
             mapAsTmxStrings.push(header.concat(mapArrayAsString, divider, this.featuresArray.toString(), footer));
         }
 
         //create tiled map objects
-        for (i = 0; i < totalTiledMaps; i++) {
+        for (i = 0; i < this.totalTiledMaps; i++) {
             var map = new cc.TMXTiledMap.create(mapAsTmxStrings[i], "res/map");
             this.maps.push(map);
         }
@@ -115,9 +120,9 @@ var MapLayer = cc.Layer.extend({
         this.mapHeight = this.maps[0].getContentSize().height;
 
         //set the position of tiled maps in a square grid
-        for (i = 0; i < totalTiledMaps; i++) {
-            var xPosition = (this.mapWidth * i) % (this.mapWidth * tiledMapsWide);
-            var yPosition = this.mapHeight * parseInt(i / tiledMapsHigh);
+        for (i = 0; i < this.totalTiledMaps; i++) {
+            var xPosition = (this.mapWidth * i) % (this.mapWidth * this.tiledMapsWide);
+            var yPosition = this.mapHeight * parseInt(i / this.tiledMapsHigh);
 
             this.maps[i].setPosition(cc.p(xPosition, yPosition));
             this.addChild(this.maps[i]);
