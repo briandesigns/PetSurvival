@@ -8,26 +8,8 @@ var Dryer = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_dryer_png), 100, 100, 100, 5,  5, space);
-    },
-
-    maximizeHealth: function() {
-
-    },
-
-    setHealth: function(h) {
-
-    },
-
-    setHitPoint: function(hp) {
-
-    },
-
-    dropAllItems: function() {
-
-    },
-
-    dropItem: function(itemName) {
+        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_dryer_png), ENEMY_STATS.baseHealth-30, ENEMY_STATS.baseHealthPoint-30, ENEMY_STATS.baseHitPoint-1, ENEMY_STATS.baseSpeed+3, ENEMY_STATS.baseSpeedDuration, ENEMY_STATS.inventoryCapacity, space);
+        this.characterType = CHAR_TYPE.dryer;
 
     }
 });

@@ -17,9 +17,11 @@ var PlayScene = cc.Scene.extend({
     enemyLayer: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
-    locationLayer:null,
-    hudLayer:null,
+    locationLayer: null,
+    hudLayer: null,
     trash: null, //a buffer to contain all elements that should be eliminated from map after death
+    hasMovedVertically: null,
+    isLoadGame: null,
 
     /**
      * Set environment for for physical bodies and set environment gravity
@@ -27,6 +29,11 @@ var PlayScene = cc.Scene.extend({
     initPhysics: function () {
         this.space = new cp.Space();
         this.space.gravity = cp.v(0, 0);
+    },
+
+    ctor: function (isloadGame) {
+        this._super();
+        this.isLoadGame = isloadGame;
     },
 
     /**
@@ -41,6 +48,52 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerItemBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.end,
             this.collisionPlayerGoalBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
+            this.collisionEnemyItemBegin.bind(this), null, null);
+        //this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
+        //    this.collisionPlayerWallBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
+            this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
+    },
+
+    collisionProjectileEnemyBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var proj = this.playerLayer.getProjectileByShape(shapes[0]);
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        proj.collisionList.push(enemy);
+        proj.attackEnemies();
+        proj.die();
+        return true;
+    },
+
+    collisionProjectileEnemyEnd: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var proj = this.playerLayer.getProjectileByShape(shapes[0]);
+        proj.removeCollisionByChar(enemy);
+        return true;
+    },
+
+    collisionPlayerWallBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var shape = shapes[1];
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        var deltaX;
+        var deltaY;
+        if (shape.body.p.x > playerCharacter.sprite.getPositionX()) {
+            deltaX = -2;
+        } else {
+            deltaX = 2;
+        }
+        if (shape.body.p.y > playerCharacter.sprite.getPositionY()) {
+            deltaY = -2;
+
+        } else {
+            deltaY = 2;
+        }
+        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX() + deltaX, playerCharacter.sprite.getPositionY() + deltaY));
+        playerCharacter.sprite.stopAllActions();
+        return true;
     },
 
     /**
@@ -56,7 +109,6 @@ var PlayScene = cc.Scene.extend({
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.collisionList.push(playerCharacter);
         playerCharacter.collisionList.push(enemy);
-        cc.log("collision detected");
         return true;
     },
 
@@ -73,7 +125,7 @@ var PlayScene = cc.Scene.extend({
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.removeCollisionByChar(playerCharacter);
         playerCharacter.removeCollisionByChar(enemy);
-        cc.log("collision resolved");
+        this.hudLayer.updateHealth();
         return true;
     },
 
@@ -88,7 +140,6 @@ var PlayScene = cc.Scene.extend({
         var shapes = arbiter.getShapes();
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
         this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
-        cc.log("collision detected");
         return true;
     },
 
@@ -104,7 +155,6 @@ var PlayScene = cc.Scene.extend({
         var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         playerCharacter.removeCollisionByChar(enemy);
-        cc.log("collision resolved");
         return true;
     },
 
@@ -118,28 +168,47 @@ var PlayScene = cc.Scene.extend({
     collisionPlayerItemBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var item = this.itemLayer.getItemByShape(shapes[1]);
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        playerCharacter.addItem(item);
-        cc.log("collision detected");
+        this.playerLayer.addItem(item);
         return true;
     },
 
     collisionPlayerGoalBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         cc.log("End of Game");
-        cc.log("collision detected");
         return true;
     },
 
+    collisionEnemyItemBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[0]);
+        var item = this.itemLayer.getItemByShape(shapes[1]);
+        enemy.addItem(item);
+        return true;
+    },
+
+
     /**
-     * Move player to Spawn point and zoom into the player
+     * Move player to Spawn point and zoom into the player and init hud
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        var moveAction = new cc.moveTo(1, cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
-        this.playerLayer.player.character.sprite.runAction(new cc.Sequence(moveAction));
+        if (this.isLoadGame) {
+            var dict = cc.sys.localStorage;
+            var string = dict.getItem("playerChar");
+            var tokens = string.split(",");
+            var posTokens = tokens[2].split(";");
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                parseFloat(posTokens[0]),
+                parseFloat(posTokens[1])));
+        } else {
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                this.locationLayer.start.body.p.x,
+                this.locationLayer.start.body.p.y));
+        }
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
+        this.hudLayer.updateHealth();
+        this.hudLayer.updateInventory();
     },
 
     /**
@@ -153,8 +222,27 @@ var PlayScene = cc.Scene.extend({
             var enemySpawn = this.enemyLayer.enemySpawnList[i];
             for (var j = 0; j < enemySpawn.enemyList.length; j++) {
                 var enemy = enemySpawn.enemyList[j];
-                if (!true) {
-                    //todo: do something when theres player present
+                if (enemy.collisionList.length > 0) {
+                    enemy.attackEnemies();
+                    this.hudLayer.updateHealth();
+                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
+                    if (this.hasMovedVertically == true) {
+                        if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
+                            enemy.moveLeft();
+                        } else {
+                            enemy.moveRight();
+                        }
+                        this.hasMovedVertically = false;
+
+                    } else {
+                        if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
+                            enemy.moveDown();
+                        } else {
+                            enemy.moveUp();
+                        }
+                        this.hasMovedVertically = true;
+                    }
+
                 } else {
                     var probability = Math.random();
                     if (probability < 0.5) {
@@ -191,14 +279,12 @@ var PlayScene = cc.Scene.extend({
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health <= 0) {
                 this.trash.push(spawn);
-                //todo: implement destroy spawns
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health <= 0) {
-                    //todo: this is causing problems with nulls
-                    //spawn.enemyList.splice(i,1);
                     this.trash.push(enemy);
+                    //spawn.enemyList.splice(j,1);
                 }
             }
         }
@@ -223,14 +309,23 @@ var PlayScene = cc.Scene.extend({
         this._super();
         this.initPhysics();
         this.trash = [];
+        this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
-        this.playerLayer = new PlayerLayer(this.space);
-        this.mapLayer = new MapLayer(this.space);
-        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
-        this.itemLayer = new ItemLayer(this.space);
-        this.enemyLayer = new EnemyLayer(this.space);
-        this.locationLayer = new LocationLayer(this.space, this.mapLayer);
         this.hudLayer = new HudLayer();
+        if (this.isLoadGame) {
+            this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
+            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
+            this.mapLayer = new MapLayer(this.space);
+            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space));
+        } else {
+            this.itemLayer = new ItemLayer(this.space, null);
+            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+            this.mapLayer = new MapLayer(this.space);
+            this.enemyLayer = new EnemyLayer(this.space, null);
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
+        }
+        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
@@ -239,12 +334,15 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
         this.initCollisions();
         this.addChild(this.gameLayer);
-        this.addChild(this.hudLayer);
+        this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
         this.scheduleUpdate();//execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
+    },
 
+    onExit: function () {
+        this._super();
     },
 
     /**
@@ -260,5 +358,6 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
         this.trashDeadThings();//put things that died in trash
         this.emptyTrash(); //remove dead things
+
     }
 });

@@ -16,6 +16,7 @@
     "src/globals.js",
     "src/menu/MainMenuLayer.js",
     "src/menu/MainMenuScene.js",
+    "src/menu/PauseMenuLayer.js",
     "src/character/Character.js",
     "src/character/Dog.js",
     "src/character/Pig.js",
@@ -30,12 +31,16 @@
     "src/object/HealthBoostItem.js",
     "src/object/HitPointItem.js",
     "src/object/SpeedItem.js",
+    "src/object/PineConeItem.js",
+    "src/object/Projectile.js",
+    "src/object/PineConeProjectile.js",
     "src/play/EnemyLayer.js",
     "src/play/MapLayer.js",
     "src/play/BoundLayer.js",
     "src/play/Player.js",
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
+    "src/play/SavedPlayScene.js",
     "src/play/ItemLayer.js",
     "src/play/LocationLayer.js",
     "src/play/HudLayer.js",
@@ -47,6 +52,8 @@
     "src/group/CanSpawn.js",
     "src/location/Location.js",
     "src/location/StartPoint.js",
-    "src/location/EndPoint.js"
+    "src/location/EndPoint.js",
+    "src/save/Save.js",
+    "src/save/Load.js"
   ]
 }

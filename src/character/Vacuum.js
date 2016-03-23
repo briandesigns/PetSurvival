@@ -8,26 +8,8 @@ var Vacuum = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_vacuum_png), 100, 100, 100, 5,  5, space);
-    },
-
-    maximizeHealth: function() {
-
-    },
-
-    setHealth: function(h) {
-
-    },
-
-    setHitPoint: function(hp) {
-
-    },
-
-    dropAllItems: function() {
-
-    },
-
-    dropItem: function(itemName) {
+        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_vacuum_png), ENEMY_STATS.baseHealth-20, ENEMY_STATS.baseHealthPoint-20, ENEMY_STATS.baseHitPoint+1, ENEMY_STATS.baseSpeed+1, ENEMY_STATS.baseSpeedDuration, ENEMY_STATS.inventoryCapacity, space);
+        this.characterType = CHAR_TYPE.vacuum;
 
     }
 });

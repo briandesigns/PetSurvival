@@ -6,8 +6,8 @@ var HealthBoostItem = Item.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (healthBoost, space) {
+    ctor: function (space) {
         this._super(new cc.PhysicsSprite(res.object_food_png), ITEM_TYPE.healthBoost, space);
-        this.healthBoost = healthBoost;
+        this.healthBoost = ITEM_STATS.healthBoost;
     }
 });

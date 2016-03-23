@@ -4,15 +4,28 @@
 var EnemyLayer = cc.Layer.extend({
     space: null,
     enemySpawnList: null,
-    ctor: function (space) {
+    ctor: function (space, enemySpawnList) {
         this._super();
-        this.init();
         this.space = space;
-        this.enemySpawnList = [];
-        this.createSpawns();
+        this.enemySpawnList = enemySpawnList;
+        this.init();
+
     },
 init: function () {
         this._super();
+    if (this.enemySpawnList == null) {
+        this.enemySpawnList = [];
+        this.createSpawns();
+    } else {
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
+            var spawn = this.enemySpawnList[i];
+            this.addChild(spawn.sprite);
+            for (var j = 0; j < spawn.enemyList.length; j++) {
+                var enemy = spawn.enemyList[j];
+                this.addChild(enemy.sprite);
+            }
+        }
+    }
 
     },
 
@@ -22,7 +35,9 @@ init: function () {
         this.enemySpawnList[2] = new CanSpawn(this.space);
         this.enemySpawnList[3] = new VacuumSpawn(this.space);
         for (var i = 0; i < 4; i++) {
-            this.enemySpawnList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.enemySpawnList[i].body.setPos(cc.p(
+                1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
     },

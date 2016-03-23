@@ -1,4 +1,4 @@
-var Location = cc.Node.extend({
+var Location = cc.Class.extend({
 
     collisionType: null,
     body: null,
@@ -13,7 +13,6 @@ var Location = cc.Node.extend({
      * @param {cc.p}
      */
     ctor: function (collisionType, sprite, spriteScale, space) {
-        this._super();
         this.collisionType = collisionType;
         this.spriteScale = spriteScale;
         this.sprite = sprite;

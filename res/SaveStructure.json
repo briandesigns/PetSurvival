@@ -1,0 +1,77 @@
+{
+  "PlayScene": {
+    "space": {}, //don't need to save
+    "BoundLayer": {}, //don't need to save
+    "HudLayer": {}, //don't need to save
+    "ItemLayer": {
+      "itemList": {
+        "item": {
+          "itemType": "string",
+          "location": {
+            "x": "int",
+            "y": "int"
+          }
+
+        }
+      }
+    },
+    "EnemyLayer": {
+      "enemySpawnList": {
+        "enemySpawn": {
+          "spawnType": "string",
+          "position": {
+            "x": "int",
+            "y": "int"
+          },
+          "health": "int",
+          "enemyList": {
+            "character": {
+              "subtype": "string",
+              "position": {
+                "x": "int",
+                "y": "int"
+              },
+              "healthPoint": "int",
+              "health": "int",
+              "hitpoint": "int",
+              "speed": "int",
+              "inventory": "list of name of items"
+            }
+          }
+        }
+      }
+    },
+    "LocationLayer": {
+      "start": {
+        "x" : "int",
+        "y" : "int"
+      },
+      "end": {
+        "x": "int",
+        "y": "int"
+      }
+    },
+    "MapLayer": {
+      "mapFile": "tmx file"
+    },
+    "PlayerLayer": {
+      "Player": {
+        "character": {
+          "subtype": "string",
+          "position": {
+            "x" : "int",
+            "y" : "int"
+          },
+          "healthPoint": "int",
+          "health": "int",
+          "hitpoint": "int",
+          "speed":"int",
+          "inventory": "list of name of items", //find the items in the item list and set them aside
+          "inventoryCapacity": "int"
+        }
+      }
+    },
+    "gameLayer": {}, //don't need to save
+    "hasMovedVertically": {} //don't need to save
+  }
+}

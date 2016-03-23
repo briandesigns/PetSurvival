@@ -4,48 +4,51 @@
 var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
+    projectileList: null,
     playerList: null,
-    ctor: function (space) {
+    isPaused: null,
+    pauseMenuLayer: null,
+    inMotion: null,
+    ctor: function (space, character) {
         this._super();
         this.space = space;
+        this.isPaused = false;
+        this.player = new Player(character);
         this.init();
 
-        this._debugNode = new cc.PhysicsDebugNode(this.space);
-        this._debugNode.setVisible(true);
-        // Parallax ratio and offset
-        this.addChild(this._debugNode, 10);
+        //this._debugNode = new cc.PhysicsDebugNode(this.space);
+        //this._debugNode.setVisible(true);
+        //this.addChild(this._debugNode, 10);
+
     },
     init: function () {
         this._super();
-
         //create the hero sprite
-        this.player = new Player(new Dog(this.space));
+        this.inMotion = false;
         this.playerList = [];
+        this.projectileList = [];
         this.playerList.push(this.player);
-        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2)) ;
+        this.player.character.body.setPos(
+            cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
 
         this.addChild(this.player.character.sprite);
 
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
-                    onKeyReleased: function (key, event) {
-                        //cc.log("Key released: " + key.toString());
-                        this.getParent().getChildByTag(TagOfLayer.Map).tileAtCoordinate(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
-
-                        if (key.toString() === "37") { //left
-                            this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "38") { //up
-                            this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "40") { //down
-                            this.player.character.sprite.stopAllActions();
-                        } else if (key.toString() === "39") { //right
-                            this.player.character.sprite.stopAllActions();
-                        } else {
-                        }
-                    }.bind(this),
+                    //onKeyReleased: function (key, event) {
+                    //    if (key.toString() === "37") { //left
+                    //        this.player.character.sprite.stopAllActions();
+                    //    } else if (key.toString() === "38") { //up
+                    //        this.player.character.sprite.stopAllActions();
+                    //    } else if (key.toString() === "40") { //down
+                    //        this.player.character.sprite.stopAllActions();
+                    //    } else if (key.toString() === "39") { //right
+                    //        this.player.character.sprite.stopAllActions();
+                    //    } else {
+                    //    }
+                    //}.bind(this),
                     onKeyPressed: function (key, event) {
-                        //cc.log("Key pressed: " + key.toString());
                         if (key.toString() === "37") { //left
                             this.moveLeft();
                         } else if (key.toString() === "38") { //up
@@ -54,18 +57,22 @@ var PlayerLayer = cc.Layer.extend({
                             this.moveDown();
                         } else if (key.toString() === "39") { //right
                             this.moveRight();
-                        } else if (key.toString() === "32"){ //space
+                        } else if (key.toString() === "32") { //space
                             this.player.character.attackEnemies();
                         } else if (key.toString() === "49") { //1
-                            this.player.character.removeItem(1);
+                            this.removeItem(1);
                         } else if (key.toString() === "50") { //2
-                            this.player.character.removeItem(2);
+                            this.removeItem(2);
                         } else if (key.toString() === "51") { //3
-                            this.player.character.removeItem(3);
+                            this.removeItem(3);
                         } else if (key.toString() === "52") { //4
-                            this.player.character.removeItem(4);
+                            this.removeItem(4);
                         } else if (key.toString() === "53") { //5
-                            this.player.character.removeItem(5);
+                            this.removeItem(5);
+                        } else if (key.toString() === "65") { //A
+                            this.throwProjectile();
+                        } else if (key.toString() === "27") { //esc
+                            this.showPauseMenu();
                         }
                     }.bind(this)
                 },
@@ -74,7 +81,7 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
-    getPlayerByShape: function(shape) {
+    getPlayerByShape: function (shape) {
         for (var i = 0; i < this.playerList.length; i++) {
             if (this.playerList[i].character.shape == shape) {
                 return this.playerList[i];
@@ -84,19 +91,35 @@ var PlayerLayer = cc.Layer.extend({
     },
 
     moveRight: function () {
-
-        this.player.character.moveRight();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveRight();
+            this.inMotion = false;
+        }
     },
     moveLeft: function () {
-        this.player.character.moveLeft();
-
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveLeft();
+            this.inMotion = false;
+        }
     },
     moveUp: function () {
-        this.player.character.moveUp();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveUp();
+            this.inMotion = false;
+        }
+
 
     },
     moveDown: function () {
-        this.player.character.moveDown();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveDown();
+            this.inMotion = false;
+        }
+
 
     },
     getEyeX: function () {
@@ -104,6 +127,74 @@ var PlayerLayer = cc.Layer.extend({
     },
     getEyeY: function () {
         return this.player.character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
+    },
+
+    addItem: function (item) {
+        this.player.character.addItem(item);
+        var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
+        hudLayer.updateInventory();
+    },
+
+    removeItem: function (itemNumber) {
+        if (this.player.character.removeItem(itemNumber)) {
+            var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
+            hudLayer.updateInventory();
+        }
+    },
+
+    getProjectileByShape: function (shape) {
+        for (var i = 0; i < this.projectileList.length; i++) {
+            if (this.projectileList[i].shape == shape) {
+                return this.projectileList[i];
+            }
+        }
+    },
+
+    throwProjectile: function () {
+        if (this.player.character.projectileCount > 0) {
+            var proj = new PineConeProjectile(this.space);
+            this.projectileList.push(proj);
+            this.addChild(proj.sprite);
+            cc.log("rotation" +this.player.character.sprite.getRotation());
+            if (Math.abs(this.player.character.sprite.getRotation() - (-90)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX() + 15,
+                    this.player.character.sprite.getPositionY()));
+                proj.moveRight();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (90)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX() - 15,
+                    this.player.character.sprite.getPositionY()));
+                proj.moveLeft();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (180)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX(),
+                    this.player.character.sprite.getPositionY() + 15));
+                proj.moveUp();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (0)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX(),
+                    this.player.character.sprite.getPositionY()-15));
+                proj.moveDown();
+            }
+            this.player.character.projectileCount-=1;
+        }
+    },
+
+    showPauseMenu: function () {
+        if (this.isPaused == false) {
+            cc.director.pause();
+            this.isPaused = true;
+            this.pauseMenuLayer = new PauseMenuLayer();
+            this.pauseMenuLayer.init();
+            this.getParent().getParent().addChild(this.pauseMenuLayer);
+        } else {
+            cc.director.resume();
+            this.isPaused = false;
+            this.getParent().getParent().removeChild(this.pauseMenuLayer);
+        }
     }
+
+
 });
 

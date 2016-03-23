@@ -4,6 +4,11 @@ var res = {
     menu_button_selected_singleplayer : "res/menu/menu_button_selected_singleplayer.png",
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
+    menu_button_normal_resume: "res/menu/menu_button_normal_resume.png",
+    menu_button_normal_save: "res/menu/menu_button_normal_save.png",
+    menu_button_normal_load: "res/menu/menu_button_normal_load.png",
+    menu_button_normal_main: "res/menu/menu_button_normal_main.png",
+    pause_menu_background: "res/menu/pause_menu_background.png",
     terrain_jpg : "res/map/terrain.jpg",
     terrain2_png : "res/map/terrain2.png",
     terrain3_png : "res/map/terrain3.png",
@@ -26,7 +31,9 @@ var res = {
     object_food_png: "res/object/Food.png",
     object_health_point_png: "res/object/HealthPoint.png",
     object_hit_point_png: "res/object/HitPoint.png",
-    object_speed_point_png: "res/object/SpeedPoint.png"
+    object_speed_point_png: "res/object/SpeedPoint.png",
+    object_pine_cone_png: "res/object/PineCone.png",
+    hud_inventory_png: "res/hud/inventory.png"
 
 };
 
