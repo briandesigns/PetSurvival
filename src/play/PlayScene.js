@@ -46,6 +46,26 @@ var PlayScene = cc.Scene.extend({
             this.collisionEnemyItemBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
             this.collisionPlayerWallBegin.bind(this), null, null);
+        this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
+            this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
+    },
+
+    collisionProjectileEnemyBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var proj = this.playerLayer.getProjectileByShape(shapes[0]);
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        proj.collisionList.push(enemy);
+        proj.attackEnemies();
+        proj.die();
+        return true;
+    },
+
+    collisionProjectileEnemyEnd: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var proj = this.playerLayer.getProjectileByShape(shapes[0]);
+        proj.removeCollisionByChar(enemy);
+        return true;
     },
 
     collisionPlayerWallBegin: function (arbiter, space) {

@@ -4,6 +4,7 @@
 var PlayerLayer = cc.Layer.extend({
     space: null,
     player: null,
+    projectileList: null,
     playerList: null,
     isPaused: null,
     pauseMenuLayer: null,
@@ -24,6 +25,7 @@ var PlayerLayer = cc.Layer.extend({
         //create the hero sprite
         this.inMotion = false;
         this.playerList = [];
+        this.projectileList = [];
         this.playerList.push(this.player);
         this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
 
@@ -81,6 +83,24 @@ var PlayerLayer = cc.Layer.extend({
                             this.removeItem(4);
                         } else if (key.toString() === "53") { //5
                             this.removeItem(5);
+                        } else if (key.toString() === "65") { //A
+                            var proj = new PineConeProjectile(this.space);
+                            this.projectileList.push(proj);
+                            this.addChild(proj.sprite);
+                            cc.log("rotation" +this.player.character.sprite.getRotation());
+                            if (Math.abs(this.player.character.sprite.getRotation() - (-90)) < 2) {
+                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX() + 15, this.player.character.sprite.getPositionY()));
+                                proj.moveRight();
+                            } else if (Math.abs(this.player.character.sprite.getRotation() - (90)) < 2) {
+                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX() - 15, this.player.character.sprite.getPositionY()));
+                                proj.moveLeft();
+                            } else if (Math.abs(this.player.character.sprite.getRotation() - (180)) < 2) {
+                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY() + 15));
+                                proj.moveUp();
+                            } else if (Math.abs(this.player.character.sprite.getRotation() - (0)) < 2) {
+                                    proj.body.setPos(cc.p(this.player.character.sprite.getPositionX(),this.player.character.sprite.getPositionY()-15));
+                                    proj.moveDown();
+                            }
                         } else if (key.toString() === "27") { //esc
                             if (this.isPaused == false) {
                                 cc.director.pause();
@@ -143,6 +163,14 @@ var PlayerLayer = cc.Layer.extend({
         if (this.player.character.removeItem(itemNumber)) {
             var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
             hudLayer.updateInventory();
+        }
+    },
+
+    getProjectileByShape: function (shape) {
+        for (var i = 0; i < this.projectileList.length; i++) {
+            if (this.projectileList[i].shape == shape) {
+                return this.projectileList[i];
+            }
         }
     }
 

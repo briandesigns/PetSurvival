@@ -35,9 +35,11 @@ var SavedPlayScene = cc.Scene.extend({
      */
     initCollisions: function () {
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
-            this.collisionPlayerEnemyBegin.bind(this), null, null, this.collisionPlayerEnemyEnd.bind(this));
+            this.collisionPlayerEnemyBegin.bind(this), null, null,
+            this.collisionPlayerEnemyEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemySpawn,
-            this.collisionPlayerEnemySpawnBegin.bind(this), null, null, this.collisionPlayerEnemySpawnEnd.bind(this));
+            this.collisionPlayerEnemySpawnBegin.bind(this), null, null,
+            this.collisionPlayerEnemySpawnEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.item,
             this.collisionPlayerItemBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.end,
@@ -65,7 +67,8 @@ var SavedPlayScene = cc.Scene.extend({
         } else {
             deltaY = 2;
         }
-        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX()+deltaX, playerCharacter.sprite.getPositionY() + deltaY));
+        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX()+deltaX,
+            playerCharacter.sprite.getPositionY() + deltaY));
         playerCharacter.sprite.stopAllActions();
 
         cc.log("just bumped u back a lil");
@@ -179,7 +182,9 @@ var SavedPlayScene = cc.Scene.extend({
         var string = dict.getItem("playerChar");
         var tokens = string.split(",");
         var posTokens = tokens[2].split(";");
-        this.playerLayer.player.character.sprite.setPosition(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+        this.playerLayer.player.character.sprite.setPosition(cc.p(
+            parseFloat(posTokens[0]),
+            parseFloat(posTokens[1])));
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
@@ -200,7 +205,8 @@ var SavedPlayScene = cc.Scene.extend({
                 if (enemy.collisionList.length > 0) {
                     enemy.attackEnemies();
                     this.hudLayer.updateHealth();
-                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
+                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100
+                    && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
                     if (this.hasMovedVertically == true) {
                         if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
                             enemy.moveLeft();

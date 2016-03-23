@@ -35,7 +35,9 @@ init: function () {
         this.enemySpawnList[2] = new CanSpawn(this.space);
         this.enemySpawnList[3] = new VacuumSpawn(this.space);
         for (var i = 0; i < 4; i++) {
-            this.enemySpawnList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.enemySpawnList[i].body.setPos(cc.p(
+                1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
     },

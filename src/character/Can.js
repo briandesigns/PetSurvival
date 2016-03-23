@@ -8,7 +8,7 @@ var Can = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_can_png), ENEMY_STATS.baseHealth, ENEMY_STATS.baseHealthPoint, ENEMY_STATS.baseHitPoint, ENEMY_STATS.baseSpeed, ENEMY_STATS.inventoryCapacity, space);
+        this._super(COLLISION_TYPE.enemy, new cc.PhysicsSprite(res.character_can_png), ENEMY_STATS.baseHealth, ENEMY_STATS.baseHealthPoint, ENEMY_STATS.baseHitPoint, ENEMY_STATS.baseSpeed, ENEMY_STATS.baseSpeedDuration, ENEMY_STATS.inventoryCapacity, space);
         this.characterType = CHAR_TYPE.can;
 
     }

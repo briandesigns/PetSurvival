@@ -9,11 +9,13 @@ var Character = cc.Node.extend({
     hitPoint: null,
     speed: null,
     inventory: null,
+    pineConeCount: null,
     inventoryCapacity: null,
     collisionList: null,
     space: null,
     spriteScale: null,
     characterType: null,
+    speedDuration: null,
 
 
     /** Constructor
@@ -21,23 +23,28 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventoryCapacity, space) {
+    ctor: function (collisionType, sprite, healthPoint, health,
+                    hitPoint, speed, speedDuration, inventoryCapacity, space) {
         this._super();
         this.spriteScale = 0.03;
         this.collisionType = collisionType;
         this.sprite = sprite;
         this.sprite.setScale(this.spriteScale);
         this.healthPoint = healthPoint;
+        this.pineConeCount = 0;
         this.health = health;
         this.hitPoint = hitPoint;
         this.speed = speed;
         this.inventory = [];
         this.inventoryCapacity = inventoryCapacity;
         this.collisionList = [];
+        this.speedDuration = speedDuration;
         this.space = space;
         var contentSize = this.sprite.getContentSize();
-        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale));
-        this.shape = new cp.BoxShape(this.body, contentSize.width * this.spriteScale, contentSize.height * this.spriteScale);
+        this.body = new cp.Body(1, cp.momentForBox(1, contentSize.width * this.spriteScale,
+            contentSize.height * this.spriteScale));
+        this.shape = new cp.BoxShape(this.body, contentSize.width * this.spriteScale,
+            contentSize.height * this.spriteScale);
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
@@ -78,25 +85,25 @@ var Character = cc.Node.extend({
     moveRight: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(-90);
-        var actionTo = new cc.MoveBy(0.5, cc.p(this.speed, 0));
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(this.speed, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveLeft: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(90);
-        var actionTo = new cc.MoveBy(0.5, cc.p(this.speed*-1, 0));
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(this.speed*-1, 0));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveUp: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(180);
-        var actionTo = new cc.MoveBy(0.5, cc.p(0, this.speed));
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(0, this.speed));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
     moveDown: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(0);
-        var actionTo = new cc.MoveBy(0.5, cc.p(0, this.speed*-1));
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(0, this.speed*-1));
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
@@ -108,16 +115,19 @@ var Character = cc.Node.extend({
         for(var i=0; i<this.inventory.length;i++) {
             this.removeItem(i+1);
         }
-        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+            (cc.director.getWinSize().height * 10))) ;
+        this.getParent().removeChild(this);
     },
 
-    //todo: these conditions are not cleaned up
     addItem: function(item) {
         cc.log("inventoryCapacity is: " + this.inventoryCapacity + "inventory.Length is:" + this.inventory.length);
-        if(this.inventoryCapacity > this.inventory.length && (item.itemType !== ITEM_TYPE.healthBoost)) {
+        if(this.inventoryCapacity > this.inventory.length &&
+            (item.itemType !== ITEM_TYPE.healthBoost && item.itemType !== ITEM_TYPE.pineCone)) {
             cc.log(item.itemType);
             this.inventory.push(item);
-            item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+            item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+                (cc.director.getWinSize().height * 10))) ;
             cc.log("item taken");
             switch(item.itemType) {
                 case ITEM_TYPE.healthPoint:
@@ -132,8 +142,13 @@ var Character = cc.Node.extend({
             }
         } else if (item.itemType === ITEM_TYPE.healthBoost){
             if(this.changeHealth(item.healthBoost)) {
-                item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+                item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+                    (cc.director.getWinSize().height * 10))) ;
             }
+        } else if (item.itemType === ITEM_TYPE.pineCone){
+            this.pineConeCount+=10;
+            item.body.setPos(cc.p((cc.director.getWinSize().width * 10),
+                (cc.director.getWinSize().height * 10)));
         } else {
             cc.log("item rejected");
         }
@@ -157,7 +172,8 @@ var Character = cc.Node.extend({
                     break;
             }
             this.inventory.splice(itemNumber-1,1);
-            item.body.setPos(cc.p(this.body.p.x , this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
+            item.body.setPos(cc.p(this.body.p.x ,
+                this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
             return true;
         }
         else {

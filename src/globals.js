@@ -18,6 +18,7 @@ if (typeof ITEM_TYPE == "undefined") {
     ITEM_TYPE.hitPoint = 1;
     ITEM_TYPE.speed = 2;
     ITEM_TYPE.healthBoost = 3;
+    ITEM_TYPE.pineCone = 4;
 }
 
 //collision types
@@ -31,6 +32,7 @@ if (typeof COLLISION_TYPE == "undefined") {
     COLLISION_TYPE.enemySpawn = 5;
     COLLISION_TYPE.start = 6;
     COLLISION_TYPE.wall = 7;
+    COLLISION_TYPE.projectile = 8;
 
 }
 
@@ -67,6 +69,7 @@ if (typeof PLAYER_STATS == "undefined") {
     PLAYER_STATS.inventoryCapacity = 5;
     PLAYER_STATS.baseHitPoint = 15;
     PLAYER_STATS.baseSpeed = 1.2;
+    PLAYER_STATS.baseSpeedDuration = 0.03;
 }
 
 //enemy character stats
@@ -77,6 +80,16 @@ if (typeof ENEMY_STATS == "undefined") {
     ENEMY_STATS.inventoryCapacity = 1;
     ENEMY_STATS.baseHitPoint = 2;
     ENEMY_STATS.baseSpeed = 8;
+    ENEMY_STATS.baseSpeedDuration = 0.5;
+}
+
+//enemy spawn stats
+if (typeof SPAWN_STATS == "undefined") {
+    var SPAWN_STATS = {};
+    SPAWN_STATS.baseHealth = 500;
+    SPAWN_STATS.baseHealthPoint = 500;
+    SPAWN_STATS.baseCapacity = 5;
+    SPAWN_STATS.baseSpriteScale = 0.07;
 }
 
 //item stats
@@ -86,6 +99,7 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.healthPointBenefit = 10;
     ITEM_STATS.hitPointBenefit = 5;
     ITEM_STATS.speedBoost = 0.2;
+    ITEM_STATS.pineConeDamage = 20;
 }
 
 //map size

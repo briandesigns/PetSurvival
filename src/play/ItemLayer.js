@@ -24,25 +24,36 @@ var ItemLayer = cc.Layer.extend({
     createItems: function() {
         for (var i = 0; i < 15; i++) {
             this.itemList[i] = new HealthBoostItem(this.space);
-            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.itemList[i].itemID = i;
             this.addChild(this.itemList[i].sprite);
         }
         for (i = 15; i<20; i++) {
             this.itemList[i] = new HealthPointItem(this.space);
-            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.itemList[i].itemID = i;
             this.addChild(this.itemList[i].sprite);
         }
         for (i = 20; i<25; i++) {
             this.itemList[i] = new HitPointItem(this.space);
-            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.itemList[i].itemID = i;
             this.addChild(this.itemList[i].sprite);
         }
         for ( i = 25; i<30; i++) {
             this.itemList[i] = new SpeedItem(this.space);
-            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000), 1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            this.itemList[i].itemID = i;
+            this.addChild(this.itemList[i].sprite);
+        }
+        for ( i = 30; i<40; i++) {
+            this.itemList[i] = new PineConeItem(this.space);
+            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
+                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
             this.itemList[i].itemID = i;
             this.addChild(this.itemList[i].sprite);
         }
