@@ -94,6 +94,45 @@ var loadLocations = function (space) {
     return {start: start, end: end};
 };
 
+var loadTmxMap = function () {
+    var dict = cc.sys.localStorage;
+
+    var mapAsTmxStrings = [];
+    var tmxMapCount = dict.getItem("tmxMapCount");
+
+    for (var i = 0; i < tmxMapCount; i++) {
+        var tmxMap = dict.getItem("tmxMap" + i);
+        cc.log("loading: tmxMap " + i);
+        mapAsTmxStrings.push(tmxMap);
+    }
+
+    return mapAsTmxStrings;
+};
+
+var loadCollisionArray = function () {
+    var dict = cc.sys.localStorage;
+
+    var collisionArrayString = dict.getItem("collisionArray");
+    var collisionArray = collisionArrayString.split(",");
+
+    return collisionArray;
+};
+
+var loadTiledMapsWide = function () {
+    var dict = cc.sys.localStorage;
+    return dict.getItem("tiledMapsWide");
+};
+
+var loadTiledMapsHigh = function () {
+    var dict = cc.sys.localStorage;
+    return dict.getItem("tiledMapsHigh");
+};
+
+var loadTotalTiledMaps = function () {
+    var dict = cc.sys.localStorage;
+    return dict.getItem("totalTiledMaps");
+
+};
 
 var buildInventory = function (invTokens, itemLayer) {
     var inventory = [];

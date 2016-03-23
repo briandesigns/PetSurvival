@@ -327,13 +327,13 @@ var PlayScene = cc.Scene.extend({
         if (this.isLoadGame) {
             this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
             this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
-            this.mapLayer = new MapLayer(this.space);
+            this.mapLayer = new MapLayer(this.space, loadTmxMap(), loadCollisionArray(), loadTiledMapsWide(), loadTiledMapsHigh(), loadTotalTiledMaps());
             this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space));
         } else {
             this.itemLayer = new ItemLayer(this.space, null);
             this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
-            this.mapLayer = new MapLayer(this.space);
+            this.mapLayer = new MapLayer(this.space, null, null, null, null, null);
             this.enemyLayer = new EnemyLayer(this.space, null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
         }

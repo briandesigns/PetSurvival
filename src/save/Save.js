@@ -128,18 +128,26 @@ var saveLocations = function (locationLayer) {
 var saveMap = function (mapLayer) {
     var dict = cc.sys.localStorage;
 
-    var tiledMapWidth = mapLayer.tiledMapWidth;
-    var tiledMapHeight = mapLayer.tiledMapHeight;
+    //var tiledMapWidth = mapLayer.tiledMapWidth;
+    //var tiledMapHeight = mapLayer.tiledMapHeight;
+    var tiledMapsWide = mapLayer.tiledMapsWide;
+    var tiledMapsHigh = mapLayer.tiledMapsHigh;
+    var totalTiledMaps = mapLayer.totalTiledMaps;
     var collisionArray = mapLayer.collisionArray;
+
+    //dict.setItem("tiledMapWidth", tiledMapWidth);
+    //dict.setItem("tiledMapHeight", tiledMapHeight);
+    dict.setItem("tiledMapsWide", tiledMapsWide);
+    dict.setItem("tiledMapsHigh", tiledMapsHigh);
+    dict.setItem("totalTiledMaps", totalTiledMaps);
+    dict.setItem("collisionArray", buildMapArrayString(collisionArray));
+
     var mapAsTmxStrings = mapLayer.mapAsTmxStrings;
-
-    var mapAttributesString = buildCSV("map", tiledMapWidth, tiledMapHeight, buildMapArrayString(collisionArray));
-    dict.setItem("mapAttributes", mapAttributesString);
-
     for (var i = 0; i < mapAsTmxStrings.length; i++) {
         dict.setItem("tmxMap"+i, mapAsTmxStrings[i]);
         cc.log(dict.getItem("tmxMap"+i));
     }
+    dict.setItem("tmxMapCount", mapAsTmxStrings.length);
 };
 
 var buildCSV = function () {
