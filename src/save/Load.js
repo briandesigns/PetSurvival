@@ -150,6 +150,7 @@ var loadChar = function (space, itemLayer, dictName) {
     char.speed = parseFloat(tokens[6]);
     char.inventory = buildInventory(invTokens, itemLayer);
     char.inventoryCapacity = parseInt(tokens[8]);
+    char.score = parseInt(tokens[9]);
     return char;
 
 };

@@ -1,9 +1,9 @@
 var MapLayer = cc.Layer.extend({
     map: null,
-    maps: [],
-    tileArray: [], //texture of terrain tiles
-    featuresArray: [], //features like trees, rocks, etc. on tiles
-    collisionArray: [], //tiles that the user can't walk over because of trees, etc.
+    maps: null,
+    tileArray: null, //texture of terrain tiles
+    featuresArray: null, //features like trees, rocks, etc. on tiles
+    collisionArray: null, //tiles that the user can't walk over because of trees, etc.
     tiledMapsWide: null,
     tiledMapsHigh: null,
     totalTiledMaps: null,
@@ -24,7 +24,10 @@ var MapLayer = cc.Layer.extend({
 
     init: function () {
         this._super();
-
+        this.maps = [];
+        this.tileArray = [];
+        this.featuresArray = [];
+        this.collisionArray = [];
         //width == height otherwise the map will not load
         this.tiledMapsWide = 1;
         this.tiledMapsHigh = 1;
@@ -131,7 +134,7 @@ var MapLayer = cc.Layer.extend({
         //this.map = new cc.TMXTiledMap(res.testmap_tmx);
         //this.addChild(this.map);
 
-        this.scheduleUpdate();
+        //this.scheduleUpdate();
     },
 
     //the next four functions safely check if an index is on another column or outside the bounds of the map before we use it

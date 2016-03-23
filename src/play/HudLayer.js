@@ -28,23 +28,28 @@ var HudLayer = cc.Layer.extend({
 
         this.labelHealth = new cc.LabelTTF("Health:", "Helvetica", 20);
         this.labelHealth.setColor(cc.color(255,255,255));//black color
-        this.labelHealth.setPosition(cc.p(70, winsize.height - 20));
+        this.labelHealth.setPosition(cc.p(90, winsize.height - 20));
         this.addChild(this.labelHealth);
 
         this.labelHealthPoint = new cc.LabelTTF("HealthPoint:", "Helvetica", 20);
         this.labelHealthPoint.setColor(cc.color(255,255,255));//black color
-        this.labelHealthPoint.setPosition(cc.p(70, winsize.height - 40));
+        this.labelHealthPoint.setPosition(cc.p(90, winsize.height - 40));
         this.addChild(this.labelHealthPoint);
 
         this.labelSpeed = new cc.LabelTTF("Speed:", "Helvetica", 20);
         this.labelSpeed.setColor(cc.color(255,255,255));//black color
-        this.labelSpeed.setPosition(cc.p(70, winsize.height - 60));
+        this.labelSpeed.setPosition(cc.p(90, winsize.height - 60));
         this.addChild(this.labelSpeed);
 
         this.labelHitPoint = new cc.LabelTTF("HitPoint:", "Helvetica", 20);
         this.labelHitPoint.setColor(cc.color(255,255,255));//black color
-        this.labelHitPoint.setPosition(cc.p(70, winsize.height - 80));
+        this.labelHitPoint.setPosition(cc.p(90, winsize.height - 80));
         this.addChild(this.labelHitPoint);
+
+        this.labelScore = new cc.LabelTTF("Score:", "Helvetica", 20);
+        this.labelScore.setColor(cc.color(255,255,255));//black color
+        this.labelScore.setPosition(cc.p(90, winsize.height - 100));
+        this.addChild(this.labelScore);
 
         this.itemBoxList = [];
 
@@ -82,6 +87,11 @@ var HudLayer = cc.Layer.extend({
         this.labelHealth.setString("Health: " + playerLayer.player.character.health);
     },
 
+    updateScore: function () {
+        var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
+        this.labelScore.setString("Score: " + playerLayer.player.character.score);
+    },
+
     //called when adding and deleting items
     updateInventory: function() {
         var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
@@ -115,7 +125,7 @@ var HudLayer = cc.Layer.extend({
         this.labelHealth.setString("Health: " + playerLayer.player.character.health);
         this.labelHealthPoint.setString("HealthPoint: " + playerLayer.player.character.healthPoint);
         this.labelHitPoint.setString("HitPoint: " + playerLayer.player.character.hitPoint);
-        this.labelSpeed.setString("Speed: " + playerLayer.player.character.speed);
+        this.labelSpeed.setString("Speed: " + playerLayer.player.character.speed.toFixed(1));
 
     }
 

@@ -13,7 +13,8 @@ var savePlayerChar = function (playerLayer) {
         char.hitPoint,
         char.speed,
         buildInvString(char.inventory),
-        char.inventoryCapacity
+        char.inventoryCapacity,
+        char.score
     );
     var dict = cc.sys.localStorage;
     dict.setItem("playerChar", string);

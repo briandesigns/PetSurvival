@@ -17,6 +17,7 @@
     "src/menu/MainMenuLayer.js",
     "src/menu/MainMenuScene.js",
     "src/menu/PauseMenuLayer.js",
+    "src/menu/OverMenuLayer.js",
     "src/character/Character.js",
     "src/character/Dog.js",
     "src/character/Pig.js",
