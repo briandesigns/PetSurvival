@@ -31,11 +31,11 @@ var MainMenuLayer = cc.Layer.extend({
 
     onPlay: function () {
         cc.log("==Creating New Game");
-        cc.director.runScene(new PlayScene());
+        cc.director.runScene(new PlayScene(false));
     },
 
     onLoad: function () {
        cc.log("Load Saved Game");
-        cc.director.runScene(new SavedPlayScene());
+        cc.director.runScene(new PlayScene(true));
     }
 });

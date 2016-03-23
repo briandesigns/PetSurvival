@@ -110,7 +110,7 @@ var saveLocations = function (locationLayer) {
     );
     var stringEnd= buildCSV(
         "end",
-        "(" + end.sprite.getPositionX()+";"+ end.sprite.getPositionY()+")"
+        end.sprite.getPositionX()+";"+ end.sprite.getPositionY()
     );
     var dict = cc.sys.localStorage;
     dict.setItem("start", stringStart);

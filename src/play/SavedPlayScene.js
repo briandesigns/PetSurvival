@@ -292,13 +292,12 @@ var SavedPlayScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-
         this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
         this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
         this.mapLayer = new MapLayer(this.space);
-        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
         this.locationLayer = new LocationLayer(this.space, this.mapLayer, null, null);
+        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);

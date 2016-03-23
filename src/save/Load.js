@@ -1,5 +1,10 @@
 var loadPlayerChar = function (space, itemLayer) {
-    return loadChar(space, itemLayer, "playerChar");
+    var char = loadChar(space, itemLayer, "playerChar");
+    cc.log("inventory lenght is:" + char.inventory.length);
+    for (var i = 0; i < char.inventory.length; i++) {
+        cc.log("player has inventory type:" + char.inventory[i].itemType);
+    }
+    return char;
 };
 
 var loadItems = function (space) {
@@ -74,13 +79,27 @@ var loadEnemies = function (space, itemLayer) {
     return spawnList;
 };
 
-//todo: for all token processing code, make sure that undefined is not added when token is
-// actually empty but still counted as 1
+var loadLocations = function (space) {
+    var dict = cc.sys.localStorage;
+    var startString = dict.getItem("start");
+    var startTokens = startString.split(",");
+    var posTokens = startTokens[1].split(";");
+    var start = new StartPoint(space);
+    start.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+    var endString = dict.getItem("end");
+    var endTokens = endString.split(",");
+    posTokens = endTokens[1].split(";");
+    var end = new EndPoint(space);
+    end.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+    return {start: start, end: end};
+};
+
+
 var buildInventory = function (invTokens, itemLayer) {
     var inventory = [];
-    cc.log("inv token length: " + invTokens.length);
     for (var i = 0; i < invTokens.length; i++) {
-        if (parseInt(invTokens[i] != undefined)) {
+        cc.log(parseInt(invTokens[i]));
+        if (invTokens[i] != "") {
             inventory.push(itemLayer.getItemByID(parseInt(invTokens[i])));
         }
     }

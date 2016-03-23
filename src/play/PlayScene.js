@@ -21,6 +21,7 @@ var PlayScene = cc.Scene.extend({
     hudLayer: null,
     trash: null, //a buffer to contain all elements that should be eliminated from map after death
     hasMovedVertically: null,
+    isLoadGame: null,
 
     /**
      * Set environment for for physical bodies and set environment gravity
@@ -28,6 +29,11 @@ var PlayScene = cc.Scene.extend({
     initPhysics: function () {
         this.space = new cp.Space();
         this.space.gravity = cp.v(0, 0);
+    },
+
+    ctor: function (isloadGame) {
+        this._super();
+        this.isLoadGame = isloadGame;
     },
 
     /**
@@ -186,7 +192,19 @@ var PlayScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        this.playerLayer.player.character.sprite.setPosition(cc.p(this.locationLayer.start.body.p.x, this.locationLayer.start.body.p.y));
+        if (this.isLoadGame) {
+            var dict = cc.sys.localStorage;
+            var string = dict.getItem("playerChar");
+            var tokens = string.split(",");
+            var posTokens = tokens[2].split(";");
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                parseFloat(posTokens[0]),
+                parseFloat(posTokens[1])));
+        } else {
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                this.locationLayer.start.body.p.x,
+                this.locationLayer.start.body.p.y));
+        }
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
@@ -294,12 +312,20 @@ var PlayScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-        this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
-        this.mapLayer = new MapLayer(this.space);
+        if (this.isLoadGame) {
+            this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
+            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
+            this.mapLayer = new MapLayer(this.space);
+            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space));
+        } else {
+            this.itemLayer = new ItemLayer(this.space, null);
+            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+            this.mapLayer = new MapLayer(this.space);
+            this.enemyLayer = new EnemyLayer(this.space, null);
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
+        }
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
-        this.itemLayer = new ItemLayer(this.space, null);
-        this.enemyLayer = new EnemyLayer(this.space, null);
-        this.locationLayer = new LocationLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);

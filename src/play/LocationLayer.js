@@ -4,12 +4,14 @@ var LocationLayer = cc.Layer.extend({
     start: null,
     end: null,
 
-    ctor: function (space, mapLayer,start,end) {
+    ctor: function (space, mapLayer,locations) {
         this._super();
         this.space = space;
         this.mapLayer = mapLayer;
-        this.start = start;
-        this.end = end;
+        if (locations != null) {
+            this.start = locations.start;
+            this.end = locations.end;
+        }
         this.init();
     },
 
