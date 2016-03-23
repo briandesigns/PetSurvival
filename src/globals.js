@@ -110,8 +110,6 @@ if (typeof MAP_SIZE == "undefined") {
     MAP_SIZE.big = 2;
 }
 
-var mapSize;
-
 var playerType;
 
 

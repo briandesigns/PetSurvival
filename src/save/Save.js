@@ -120,7 +120,26 @@ var saveLocations = function (locationLayer) {
 
 };
 
+/**
+ * @param mapLayer
+ */
 
+var saveMap = function (mapLayer) {
+    var dict = cc.sys.localStorage;
+
+    var tiledMapWidth = mapLayer.tiledMapWidth;
+    var tiledMapHeight = mapLayer.tiledMapHeight;
+    var collisionArray = mapLayer.collisionArray;
+    var mapAsTmxStrings = mapLayer.mapAsTmxStrings;
+
+    var mapAttributesString = buildCSV("map", tiledMapWidth, tiledMapHeight, buildMapArrayString(collisionArray));
+    dict.setItem("mapAttributes", mapAttributesString);
+
+    for (var i = 0; i < mapAsTmxStrings.length; i++) {
+        dict.setItem("tmxMap"+i, mapAsTmxStrings[i]);
+        cc.log(dict.getItem("tmxMap"+i));
+    }
+};
 
 var buildCSV = function () {
     var string = "";
@@ -143,4 +162,16 @@ var buildInvString = function (inventory) {
         }
     }
     return string;
+};
+
+var buildMapArrayString = function (mapArray) {
+    cc.log("map array length" + mapArray.length);
+    var string="";
+    for (var i=0; i<mapArray.length; i++) {
+        string += mapArray[i];
+        if (i != mapArray.length - 1) {
+            string += ";";
+        }
+    }
+    return string
 };

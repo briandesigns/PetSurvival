@@ -49,6 +49,7 @@ var PauseMenuLayer = cc.Layer.extend({
         saveEnemySpawns(this.getParent().enemyLayer);
         saveEnemies(this.getParent().enemyLayer);
         saveLocations(this.getParent().locationLayer);
+        saveMap(this.getParent().mapLayer);
     },
 
     onMain: function () {
