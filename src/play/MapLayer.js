@@ -160,7 +160,7 @@ var MapLayer = cc.Layer.extend({
             return 0;
         }
     },
-    
+
     coordinateAtTileIndex: function (tileIndex) {
         var xTile = tileIndex % this.fullMapWidth;
         var yTile = parseInt(tileIndex / this.fullMapWidth);
