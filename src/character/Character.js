@@ -9,7 +9,7 @@ var Character = cc.Class.extend({
     hitPoint: null,
     speed: null,
     inventory: null,
-    pineConeCount: null,
+    projectileCount: null,
     inventoryCapacity: null,
     collisionList: null,
     space: null,
@@ -30,7 +30,7 @@ var Character = cc.Class.extend({
         this.sprite = sprite;
         this.sprite.setScale(this.spriteScale);
         this.healthPoint = healthPoint;
-        this.pineConeCount = 0;
+        this.projectileCount = 0;
         this.health = health;
         this.hitPoint = hitPoint;
         this.speed = speed;
@@ -138,7 +138,7 @@ var Character = cc.Class.extend({
                     (cc.director.getWinSize().height * 10))) ;
             }
         } else if (item.itemType === ITEM_TYPE.pineCone){
-            this.pineConeCount+=10;
+            this.projectileCount+=10;
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10),
                 (cc.director.getWinSize().height * 10)));
         } else {

@@ -3,11 +3,13 @@ var BoundLayer = cc.Layer.extend({
     obstacleList: null,
     mapLayer: null,
     unusedCollisionArrayTiles: [],
+    tileSize: null,
 
     ctor: function (space, mapLayer) {
         this._super();
         this.space = space;
         this.obstacleList = [];
+        this.tileSize = 32;
         this.mapLayer = mapLayer;
         this.init();
     },
@@ -30,6 +32,7 @@ var BoundLayer = cc.Layer.extend({
         var shape2 = new cp.BoxShape(rightWall, 64, 32 * 65);
         shape2.setCollisionType(COLLISION_TYPE.wall);
         shape2.setSensor(false);
+        shape2.setElasticity(0);
         this.space.addBody(rightWall);
         this.space.addShape(shape2);
         rightWall.setPos(cc.p(65 * 32 + 32, 65 * 32 / 2));

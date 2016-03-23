@@ -50,13 +50,6 @@ var ItemLayer = cc.Layer.extend({
             this.itemList[i].itemID = i;
             this.addChild(this.itemList[i].sprite);
         }
-        for ( i = 30; i<40; i++) {
-            this.itemList[i] = new PineConeItem(this.space);
-            this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
-                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
-            this.itemList[i].itemID = i;
-            this.addChild(this.itemList[i].sprite);
-        }
     },
 
     getItemByShape: function(shape) {

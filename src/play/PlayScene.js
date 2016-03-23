@@ -44,8 +44,8 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerGoalBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
             this.collisionEnemyItemBegin.bind(this), null, null);
-        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
-            this.collisionPlayerWallBegin.bind(this), null, null);
+        //this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
+        //    this.collisionPlayerWallBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
             this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
     },

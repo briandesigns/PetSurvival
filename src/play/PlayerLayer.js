@@ -27,7 +27,8 @@ var PlayerLayer = cc.Layer.extend({
         this.playerList = [];
         this.projectileList = [];
         this.playerList.push(this.player);
-        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
+        this.player.character.body.setPos(
+            cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
 
         this.addChild(this.player.character.sprite);
 
@@ -48,29 +49,13 @@ var PlayerLayer = cc.Layer.extend({
                     //}.bind(this),
                     onKeyPressed: function (key, event) {
                         if (key.toString() === "37") { //left
-                            if (this.inMotion == false) {
-                                this.inMotion = true;
-                                this.moveLeft();
-                                this.inMotion = false;
-                            }
+                            this.moveLeft();
                         } else if (key.toString() === "38") { //up
-                            if (this.inMotion == false) {
-                                this.inMotion = true;
-                                this.moveUp();
-                                this.inMotion = false;
-                            }
+                            this.moveUp();
                         } else if (key.toString() === "40") { //down
-                            if (this.inMotion == false) {
-                                this.inMotion = true;
-                                this.moveDown();
-                                this.inMotion = false;
-                            }
+                            this.moveDown();
                         } else if (key.toString() === "39") { //right
-                            if (this.inMotion == false) {
-                                this.inMotion = true;
-                                this.moveRight();
-                                this.inMotion = false;
-                            }
+                            this.moveRight();
                         } else if (key.toString() === "32") { //space
                             this.player.character.attackEnemies();
                         } else if (key.toString() === "49") { //1
@@ -84,35 +69,9 @@ var PlayerLayer = cc.Layer.extend({
                         } else if (key.toString() === "53") { //5
                             this.removeItem(5);
                         } else if (key.toString() === "65") { //A
-                            var proj = new PineConeProjectile(this.space);
-                            this.projectileList.push(proj);
-                            this.addChild(proj.sprite);
-                            cc.log("rotation" +this.player.character.sprite.getRotation());
-                            if (Math.abs(this.player.character.sprite.getRotation() - (-90)) < 2) {
-                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX() + 15, this.player.character.sprite.getPositionY()));
-                                proj.moveRight();
-                            } else if (Math.abs(this.player.character.sprite.getRotation() - (90)) < 2) {
-                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX() - 15, this.player.character.sprite.getPositionY()));
-                                proj.moveLeft();
-                            } else if (Math.abs(this.player.character.sprite.getRotation() - (180)) < 2) {
-                                proj.body.setPos(cc.p(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY() + 15));
-                                proj.moveUp();
-                            } else if (Math.abs(this.player.character.sprite.getRotation() - (0)) < 2) {
-                                    proj.body.setPos(cc.p(this.player.character.sprite.getPositionX(),this.player.character.sprite.getPositionY()-15));
-                                    proj.moveDown();
-                            }
+                            this.throwProjectile();
                         } else if (key.toString() === "27") { //esc
-                            if (this.isPaused == false) {
-                                cc.director.pause();
-                                this.isPaused = true;
-                                this.pauseMenuLayer = new PauseMenuLayer();
-                                this.pauseMenuLayer.init();
-                                this.getParent().getParent().addChild(this.pauseMenuLayer);
-                            } else {
-                                cc.director.resume();
-                                this.isPaused = false;
-                                this.getParent().getParent().removeChild(this.pauseMenuLayer);
-                            }
+                            this.showPauseMenu();
                         }
                     }.bind(this)
                 },
@@ -131,19 +90,35 @@ var PlayerLayer = cc.Layer.extend({
     },
 
     moveRight: function () {
-
-        this.player.character.moveRight();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveRight();
+            this.inMotion = false;
+        }
     },
     moveLeft: function () {
-        this.player.character.moveLeft();
-
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveLeft();
+            this.inMotion = false;
+        }
     },
     moveUp: function () {
-        this.player.character.moveUp();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveUp();
+            this.inMotion = false;
+        }
+
 
     },
     moveDown: function () {
-        this.player.character.moveDown();
+        if (this.inMotion == false) {
+            this.inMotion = true;
+            this.player.character.moveDown();
+            this.inMotion = false;
+        }
+
 
     },
     getEyeX: function () {
@@ -171,6 +146,51 @@ var PlayerLayer = cc.Layer.extend({
             if (this.projectileList[i].shape == shape) {
                 return this.projectileList[i];
             }
+        }
+    },
+
+    throwProjectile: function () {
+        if (this.player.character.projectileCount > 0) {
+            var proj = new PineConeProjectile(this.space);
+            this.projectileList.push(proj);
+            this.addChild(proj.sprite);
+            cc.log("rotation" +this.player.character.sprite.getRotation());
+            if (Math.abs(this.player.character.sprite.getRotation() - (-90)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX() + 15,
+                    this.player.character.sprite.getPositionY()));
+                proj.moveRight();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (90)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX() - 15,
+                    this.player.character.sprite.getPositionY()));
+                proj.moveLeft();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (180)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX(),
+                    this.player.character.sprite.getPositionY() + 15));
+                proj.moveUp();
+            } else if (Math.abs(this.player.character.sprite.getRotation() - (0)) < 2) {
+                proj.body.setPos(cc.p(
+                    this.player.character.sprite.getPositionX(),
+                    this.player.character.sprite.getPositionY()-15));
+                proj.moveDown();
+            }
+            this.player.character.projectileCount-=1;
+        }
+    },
+
+    showPauseMenu: function () {
+        if (this.isPaused == false) {
+            cc.director.pause();
+            this.isPaused = true;
+            this.pauseMenuLayer = new PauseMenuLayer();
+            this.pauseMenuLayer.init();
+            this.getParent().getParent().addChild(this.pauseMenuLayer);
+        } else {
+            cc.director.resume();
+            this.isPaused = false;
+            this.getParent().getParent().removeChild(this.pauseMenuLayer);
         }
     }
 
