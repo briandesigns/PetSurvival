@@ -1,14 +1,16 @@
 var PauseMenuLayer = cc.Layer.extend({
+    winsize: null,
+    centerpos : null,
     ctor: function () {
         this._super();
     },
 
     init: function () {
         this._super();
-        var winsize = cc.director.getWinSize();
-        var centerpos = cc.p(winsize.width / 2, winsize.height / 2);
+        this.winsize = cc.director.getWinSize();
+        this.centerpos = cc.p(this.winsize.width / 2, this.winsize.height / 2);
         var spritebg = new cc.Sprite(res.pause_menu_background);
-        spritebg.setPosition(centerpos);
+        spritebg.setPosition(this.centerpos);
         this.addChild(spritebg);
         cc.MenuItemFont.setFontSize(60);
         var menuItemResume = new cc.MenuItemSprite(
@@ -31,7 +33,7 @@ var PauseMenuLayer = cc.Layer.extend({
         );
         var menu = new cc.Menu(menuItemResume, menuItemSave, menuItemMainMenu);  //7. create the
         // menu
-        menu.setPosition(centerpos);
+        menu.setPosition(this.centerpos);
         menu.alignItemsVerticallyWithPadding(12);
         this.addChild(menu);
     },
@@ -44,15 +46,25 @@ var PauseMenuLayer = cc.Layer.extend({
 
     onSave: function () {
         cc.log("==onSave clicked");
+        //var coverSprite = new cc.Sprite(res.pause_menu_background);
+        //coverSprite.setPosition(this.centerpos);
+        //this.addChild(coverSprite);
+        //var labelSave = new cc.LabelTTF("SAVING", "Helvetica", 60);
+        //labelSave.setColor(cc.color(255,255,255));//black color
+        //labelSave.setPosition(this.centerpos);
+        //this.addChild(labelSave);
         saveItems(this.getParent().itemLayer);
         savePlayerChar(this.getParent().playerLayer);
         saveEnemySpawns(this.getParent().enemyLayer);
         saveEnemies(this.getParent().enemyLayer);
         saveLocations(this.getParent().locationLayer);
+        //this.removeChild(labelSave);
+        //this.removeChild(coverSprite);
     },
 
     onMain: function () {
-
-        //cc.director.popScene(new MainMenuScene());
+        this.getParent().removeAllChildren(true);
+        cc.director.resume();
+        cc.director.runScene(new MainMenuScene());
     }
 });

@@ -51,8 +51,8 @@ var EnemySpawn = cc.Class.extend({
     die: function () {
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
             (cc.director.getWinSize().height * 10)));
+        this.health = NaN;
         this.sprite.removeFromParent();
-        this.sprite = null;
     },
 
     changeHealth: function (h) {

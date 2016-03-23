@@ -173,8 +173,7 @@ var PlayScene = cc.Scene.extend({
     },
 
     collisionPlayerGoalBegin: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-        cc.log("End of Game");
+        this.showGameOverMenu("WON");
         return true;
     },
 
@@ -209,6 +208,7 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
         this.hudLayer.updateInventory();
+        this.hudLayer.updateScore();
     },
 
     /**
@@ -279,16 +279,18 @@ var PlayScene = cc.Scene.extend({
             var spawn = this.enemyLayer.enemySpawnList[i];
             if (spawn.health <= 0) {
                 this.trash.push(spawn);
-                this.playerLayer.character.score += spawn.healthPoint;
+
             }
             for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.health <= 0) {
                     this.trash.push(enemy);
-                    this.playerLayer.character.score += spawn.healthPoint;
                     //spawn.enemyList.splice(j,1);
                 }
             }
+        }
+        if(this.playerLayer.player.character.health <= 0) {
+            this.showGameOverMenu("LOST");
         }
     },
 
@@ -297,11 +299,19 @@ var PlayScene = cc.Scene.extend({
      */
     emptyTrash: function () {
         for (var i = 0; i < this.trash.length; i++) {
+            cc.log("score added: " + this.trash[i].healthPoint);
+            this.playerLayer.player.character.score += this.trash[i].healthPoint;
+            this.hudLayer.updateScore();
             this.trash[i].die();
         }
         this.trash = [];
     },
 
+    showGameOverMenu: function (winLoss) {
+        var gameOverLayer = new OverMenuLayer(this.playerLayer.player.character.score, winLoss);
+        gameOverLayer.init();
+        this.addChild(gameOverLayer);
+    },
 
     /**
      * Scene Initialization
