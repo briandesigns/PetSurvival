@@ -1,8 +1,8 @@
 var MapLayer = cc.Layer.extend({
-    collisionArray: [], //tiles that the user can't walk over because of trees, etc.
-    terrainArray: [], //terrain texture at a tile
-    featuresArray: [], //features like rocks, trees, at a tile
-    mapAsTmxStrings: [],
+    collisionArray: null, //tiles that the user can't walk over because of trees, etc.
+    terrainArray: null, //terrain texture at a tile
+    featuresArray: null, //features like rocks, trees, at a tile
+    mapAsTmxStrings: null,
     tiledMapWidth: null,
     tiledMapHeight: null,
     fullMapWidth: null,
@@ -98,6 +98,7 @@ var MapLayer = cc.Layer.extend({
         var footer = "<\/data>\r\n <\/layer>\r\n<\/map>\r\n";
 
         //attach headers and footers to our arrays to form tmx strings
+        this.mapAsTmxStrings = [];
         for (var k = 0; k < totalTiledMaps; k++) {
             var mapArrayAsString = tiledMapData[k].toString();
             this.mapAsTmxStrings.push(header.concat(mapArrayAsString, divider, this.featuresArray.toString(), footer));
