@@ -1,4 +1,4 @@
-var Character = cc.Node.extend({
+var Character = cc.Class.extend({
 
     collisionType: null,
     body: null,
@@ -25,7 +25,6 @@ var Character = cc.Node.extend({
      */
     ctor: function (collisionType, sprite, healthPoint, health,
                     hitPoint, speed, speedDuration, inventoryCapacity, space) {
-        this._super();
         this.spriteScale = 0.03;
         this.collisionType = collisionType;
         this.sprite = sprite;
@@ -68,7 +67,6 @@ var Character = cc.Node.extend({
                 }
                 return true;
             } else {
-                cc.log("food rejected, don't need it");
                 return false;
             }
         } else {
@@ -108,27 +106,21 @@ var Character = cc.Node.extend({
     },
 
     die: function () {
-        //this.space.removeShape(this.shape);
-        //this.shape = null;
-        //this.sprite.removeFromParent();
-        //this.sprite = null;
         for(var i=0; i<this.inventory.length;i++) {
             this.removeItem(i+1);
         }
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
             (cc.director.getWinSize().height * 10))) ;
-        this.getParent().removeChild(this);
+        this.sprite.removeFromParent();
     },
 
+
     addItem: function(item) {
-        cc.log("inventoryCapacity is: " + this.inventoryCapacity + "inventory.Length is:" + this.inventory.length);
         if(this.inventoryCapacity > this.inventory.length &&
             (item.itemType !== ITEM_TYPE.healthBoost && item.itemType !== ITEM_TYPE.pineCone)) {
-            cc.log(item.itemType);
             this.inventory.push(item);
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
                 (cc.director.getWinSize().height * 10))) ;
-            cc.log("item taken");
             switch(item.itemType) {
                 case ITEM_TYPE.healthPoint:
                     this.healthPoint+= item.healthPointBenefit;
@@ -150,7 +142,6 @@ var Character = cc.Node.extend({
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10),
                 (cc.director.getWinSize().height * 10)));
         } else {
-            cc.log("item rejected");
         }
     },
 
@@ -185,7 +176,6 @@ var Character = cc.Node.extend({
         for (var i = 0; i < this.collisionList.length; i++) {
             if (this.collisionList[i] == char) {
                 this.collisionList.splice(i, 1);
-                cc.log("collision element removed");
             }
         }
     },

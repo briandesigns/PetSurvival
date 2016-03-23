@@ -168,9 +168,11 @@ var Character = cc.Node.extend({
         //this.shape = null;
         //this.sprite.removeFromParent();
         //this.sprite = null;
-        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+        this.getParent().removeChild(this);
+        //this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
     },
+
 
     removeCollisionByChar: function(char) {
         for (var i = 0; i < this.collisionList.length; i++) {

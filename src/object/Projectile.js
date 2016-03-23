@@ -1,4 +1,4 @@
-var Projectile = cc.Node.extend({
+var Projectile = cc.Class.extend({
 
     collisionType: null,
     body: null,
@@ -20,7 +20,6 @@ var Projectile = cc.Node.extend({
      */
     ctor: function (collisionType, sprite, health,
                     hitPoint, speed, speedDuration, space) {
-        this._super();
         this.spriteScale = 0.1;
         this.collisionType = collisionType;
         this.sprite = sprite;
@@ -48,15 +47,15 @@ var Projectile = cc.Node.extend({
         this.sprite.setRotation(0);
         this.sprite.setRotation(-90);
         var actionTo = new cc.MoveBy(this.speedDuration, cc.p(this.speed, 0));
-        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10)  ,
+        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10),
             (cc.director.getWinSize().height * 10)));
         this.sprite.runAction(new cc.Sequence(actionTo, actionDie));
     },
     moveLeft: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(90);
-        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(this.speed*-1, 0));
-        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10)  ,
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(this.speed * -1, 0));
+        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10),
             (cc.director.getWinSize().height * 10)));
         this.sprite.runAction(new cc.Sequence(actionTo, actionDie));
     },
@@ -64,31 +63,26 @@ var Projectile = cc.Node.extend({
         this.sprite.setRotation(0);
         this.sprite.setRotation(180);
         var actionTo = new cc.MoveBy(this.speedDuration, cc.p(0, this.speed));
-        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10)  ,
+        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10),
             (cc.director.getWinSize().height * 10)));
         this.sprite.runAction(new cc.Sequence(actionTo, actionDie));
     },
     moveDown: function () {
         this.sprite.setRotation(0);
         this.sprite.setRotation(0);
-        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(0, this.speed*-1));
-        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10)  ,
+        var actionTo = new cc.MoveBy(this.speedDuration, cc.p(0, this.speed * -1));
+        var actionDie = new cc.MoveTo(0, cc.p((cc.director.getWinSize().width * 10),
             (cc.director.getWinSize().height * 10)));
         this.sprite.runAction(new cc.Sequence(actionTo, actionDie));
     },
 
     die: function () {
-        //this.space.removeShape(this.shape);
-        //this.shape = null;
-        //this.sprite.removeFromParent();
-        //this.sprite = null;
-
-        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
-            (cc.director.getWinSize().height * 10))) ;
-        this.getParent().removeChild(this);
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10),
+            (cc.director.getWinSize().height * 10)));
+        this.sprite.removeFromParent();
     },
 
-    removeCollisionByChar: function(char) {
+    removeCollisionByChar: function (char) {
         for (var i = 0; i < this.collisionList.length; i++) {
             if (this.collisionList[i] == char) {
                 this.collisionList.splice(i, 1);
@@ -97,17 +91,17 @@ var Projectile = cc.Node.extend({
         }
     },
 
-    attackEnemies: function() {
-        for (var i =0; i < this.collisionList.length; i++) {
-            this.collisionList[i].changeHealth(-1*this.hitPoint);
+    attackEnemies: function () {
+        for (var i = 0; i < this.collisionList.length; i++) {
+            this.collisionList[i].changeHealth(-1 * this.hitPoint);
             cc.log("enemy health is now: " + this.collisionList[i].health);
         }
     },
 
-    distanceFromChar: function(char) {
+    distanceFromChar: function (char) {
         var charX = char.body.p.x;
         var charY = char.body.p.y;
-        return Math.sqrt(Math.pow(this.body.p.x-charX, 2) + Math.pow(this.body.p.y-charY,2));
+        return Math.sqrt(Math.pow(this.body.p.x - charX, 2) + Math.pow(this.body.p.y - charY, 2));
     }
 
 

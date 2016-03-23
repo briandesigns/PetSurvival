@@ -87,8 +87,6 @@ var PlayScene = cc.Scene.extend({
         }
         playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX() + deltaX, playerCharacter.sprite.getPositionY() + deltaY));
         playerCharacter.sprite.stopAllActions();
-
-        cc.log("just bumped u back a lil");
         return true;
     },
 
@@ -105,7 +103,6 @@ var PlayScene = cc.Scene.extend({
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.collisionList.push(playerCharacter);
         playerCharacter.collisionList.push(enemy);
-        cc.log("collision detected");
         return true;
     },
 
@@ -122,7 +119,6 @@ var PlayScene = cc.Scene.extend({
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.removeCollisionByChar(playerCharacter);
         playerCharacter.removeCollisionByChar(enemy);
-        cc.log("collision resolved");
         this.hudLayer.updateHealth();
         return true;
     },
@@ -138,7 +134,6 @@ var PlayScene = cc.Scene.extend({
         var shapes = arbiter.getShapes();
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
         this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
-        cc.log("collision detected");
         return true;
     },
 
@@ -154,7 +149,6 @@ var PlayScene = cc.Scene.extend({
         var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         playerCharacter.removeCollisionByChar(enemy);
-        cc.log("collision resolved");
         return true;
     },
 
@@ -169,14 +163,12 @@ var PlayScene = cc.Scene.extend({
         var shapes = arbiter.getShapes();
         var item = this.itemLayer.getItemByShape(shapes[1]);
         this.playerLayer.addItem(item);
-        cc.log("collision detected");
         return true;
     },
 
     collisionPlayerGoalBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         cc.log("End of Game");
-        cc.log("collision detected");
         return true;
     },
 
@@ -185,7 +177,6 @@ var PlayScene = cc.Scene.extend({
         var enemy = this.enemyLayer.getEnemyByShape(shapes[0]);
         var item = this.itemLayer.getItemByShape(shapes[1]);
         enemy.addItem(item);
-        cc.log("collision detected");
         return true;
     },
 
@@ -275,6 +266,7 @@ var PlayScene = cc.Scene.extend({
                 var enemy = spawn.enemyList[j];
                 if (enemy.health <= 0) {
                     this.trash.push(enemy);
+                    //spawn.enemyList.splice(j,1);
                 }
             }
         }
@@ -340,5 +332,6 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
         this.trashDeadThings();//put things that died in trash
         this.emptyTrash(); //remove dead things
+
     }
 });

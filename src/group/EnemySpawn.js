@@ -1,4 +1,4 @@
-var EnemySpawn = cc.Node.extend({
+var EnemySpawn = cc.Class.extend({
 
     collisionType: null,
     body: null,
@@ -19,7 +19,6 @@ var EnemySpawn = cc.Node.extend({
      * @param {cc.p}
      */
     ctor: function (sprite, health, capacity, spriteScale, spawnType, space) {
-        this._super();
         this.collisionType = COLLISION_TYPE.enemySpawn;
         this.health = health;
         this.healthPoint = SPAWN_STATS.baseHealthPoint;
@@ -50,16 +49,10 @@ var EnemySpawn = cc.Node.extend({
     },
 
     die: function () {
-        //this.space.removeShape(this.shape);
-        //this.shape = null;
-        //this.sprite.removeFromParent();
-        //this.sprite = null;
-        //this.space.removeBody(this.body);
-        //this.body = null;
         this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
-            (cc.director.getWinSize().height * 10))) ;
-        this.getParent().removeChild(this);
-
+            (cc.director.getWinSize().height * 10)));
+        this.sprite.removeFromParent();
+        this.sprite = null;
     },
 
     changeHealth: function (h) {

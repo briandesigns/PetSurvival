@@ -1,4 +1,4 @@
-var Item = cc.Node.extend({
+var Item = cc.Class.extend({
     itemID: null,
     collisionType: null,
     name: null,
@@ -13,7 +13,6 @@ var Item = cc.Node.extend({
      * @param {cc.p}
      */
     ctor: function (sprite, itemType, space) {
-        this._super();
         this.space = space;
         var spriteScale = 0.05;
         this.sprite = sprite;
