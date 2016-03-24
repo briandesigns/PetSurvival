@@ -113,7 +113,7 @@ var loadCollisionArray = function () {
     var dict = cc.sys.localStorage;
 
     var collisionArrayString = dict.getItem("collisionArray");
-    var collisionArray = collisionArrayString.split(",");
+    var collisionArray = collisionArrayString.split(";");
 
     return collisionArray;
 };
@@ -126,6 +126,16 @@ var loadTiledMapsWide = function () {
 var loadTiledMapsHigh = function () {
     var dict = cc.sys.localStorage;
     return dict.getItem("tiledMapsHigh");
+};
+
+var loadTiledMapWidth = function () {
+    var dict = cc.sys.localStorage;
+    return dict.getItem("tiledMapWidth");
+};
+
+var loadTiledMapHeight = function () {
+    var dict = cc.sys.localStorage;
+    return dict.getItem("tiledMapHeight");
 };
 
 var loadTotalTiledMaps = function () {

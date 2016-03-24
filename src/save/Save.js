@@ -128,19 +128,20 @@ var saveLocations = function (locationLayer) {
 var saveMap = function (mapLayer) {
     var dict = cc.sys.localStorage;
 
-    //var tiledMapWidth = mapLayer.tiledMapWidth;
-    //var tiledMapHeight = mapLayer.tiledMapHeight;
+    var tiledMapWidth = mapLayer.tiledMapWidth;
+    var tiledMapHeight = mapLayer.tiledMapHeight;
     var tiledMapsWide = mapLayer.tiledMapsWide;
     var tiledMapsHigh = mapLayer.tiledMapsHigh;
     var totalTiledMaps = mapLayer.totalTiledMaps;
     var collisionArray = mapLayer.collisionArray;
 
-    //dict.setItem("tiledMapWidth", tiledMapWidth);
-    //dict.setItem("tiledMapHeight", tiledMapHeight);
+    dict.setItem("tiledMapWidth", tiledMapWidth);
+    dict.setItem("tiledMapHeight", tiledMapHeight);
     dict.setItem("tiledMapsWide", tiledMapsWide);
     dict.setItem("tiledMapsHigh", tiledMapsHigh);
     dict.setItem("totalTiledMaps", totalTiledMaps);
     dict.setItem("collisionArray", buildMapArrayString(collisionArray));
+    cc.log("Saving collision array: " + collisionArray);
 
     var mapAsTmxStrings = mapLayer.mapAsTmxStrings;
     for (var i = 0; i < mapAsTmxStrings.length; i++) {

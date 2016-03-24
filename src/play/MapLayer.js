@@ -13,14 +13,23 @@ var MapLayer = cc.Layer.extend({
     fullMapTileCount: null,
     space: null,
 
-    ctor:function (space, mapAsTmxStrings, collisionArray, tiledMapsWide, tiledMapsHigh, totalTiledMaps) {
+    ctor:function (space, mapAsTmxStrings, collisionArray, tiledMapsWide, tiledMapsHigh, totalTiledMaps, tiledMapWidth, tiledMapHeight) {
         this._super();
         this.space = space;
-        this.mapAsTmxStrings = mapAsTmxStrings;
-        this.collisionArray = collisionArray;
+        //width == height otherwise the map will not load
         this.tiledMapsWide = tiledMapsWide;
         this.tiledMapsHigh = tiledMapsHigh;
-        this.totalTiledMaps = totalTiledMaps;
+        this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
+
+        //for our map to generate properly, these need to be (a power of 2) + 1
+        this.tiledMapWidth = tiledMapWidth;
+        this.tiledMapHeight = tiledMapHeight;
+        this.fullMapWidth = this.tiledMapWidth * this.tiledMapsWide;
+        this.fullMapHeight = this.tiledMapHeight * this.tiledMapsHigh;
+        this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
+
+        this.mapAsTmxStrings = mapAsTmxStrings;
+        this.collisionArray = collisionArray;
         this.init();
     },
 
@@ -52,12 +61,22 @@ var MapLayer = cc.Layer.extend({
 
         //this.map = new cc.TMXTiledMap(res.testmap_tmx);
         //this.addChild(this.map);
+/*
+        cc.log(this.collisionArray);
+        cc.log(this.mapAsTmxStrings);
+        cc.log(this.tiledMapsWide);
+        cc.log(this.tiledMapsHigh);
+        cc.log(this.totalTiledMaps);
+        cc.log(this.tiledMapWidth);
+        cc.log(this.tiledMapHeight);
+        cc.log(this.fullMapWidth);
+        cc.log(this.fullMapHeight);
+        cc.log(this.fullMapTileCount);*/
 
         this.scheduleUpdate();
     },
 
     createNewMap: function () {
-        //width == height otherwise the map will not load
         this.tiledMapsWide = 1;
         this.tiledMapsHigh = 1;
         this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
