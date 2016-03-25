@@ -14,6 +14,7 @@ var PlayScene = cc.Scene.extend({
     gameLayer: null, //the layer of PlayScene that contains all other layers
     playerLayer: null, //the layer of PlayScene that contains the playable character
     mapLayer: null, //the layer of PlayScene that holds the tiled map
+    caveMapLayer: null, //layer that holds the cave map
     enemyLayer: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
@@ -337,8 +338,10 @@ var PlayScene = cc.Scene.extend({
             this.enemyLayer = new EnemyLayer(this.space, null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
         }
+        this.caveMapLayer = new CaveMapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
+        this.gameLayer.addChild(this.caveMapLayer, 0, TagOfLayer.CaveMap);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);

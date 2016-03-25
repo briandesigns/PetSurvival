@@ -9,6 +9,7 @@ if (typeof TagOfLayer == "undefined") {
     TagOfLayer.Item = 5;
     TagOfLayer.Location = 6;
     TagOfLayer.Hud = 7;
+    TagOfLayer.CaveMap = 8;
 }
 
 //items types
