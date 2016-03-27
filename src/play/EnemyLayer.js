@@ -34,7 +34,11 @@ init: function () {
         this.enemySpawnList[1] = new DryerSpawn(this.space);
         this.enemySpawnList[2] = new CanSpawn(this.space);
         this.enemySpawnList[3] = new VacuumSpawn(this.space);
-        for (var i = 0; i < 4; i++) {
+        this.enemySpawnList[4] = new BossSpawn(this.space);
+        this.enemySpawnList[5] = new BossSpawn(this.space);
+        this.enemySpawnList[6] = new BossSpawn(this.space);
+
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
             this.enemySpawnList[i].body.setPos(cc.p(
                 1000 + (Math.random()*1000) - (Math.random()*1000),
                 1000+ (Math.random()*1000) - (Math.random()*1000))) ;

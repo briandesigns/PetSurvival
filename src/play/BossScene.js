@@ -5,7 +5,7 @@
  * this class contains the main method called update that controls the execution of our game
  * from frame to frame
  */
-var PlayScene = cc.Scene.extend({
+var BossScene = cc.Scene.extend({
 
     /**
      * instance fields

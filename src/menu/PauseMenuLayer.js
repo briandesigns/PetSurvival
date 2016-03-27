@@ -46,21 +46,21 @@ var PauseMenuLayer = cc.Layer.extend({
 
     onSave: function () {
         cc.log("==onSave clicked");
-        //var coverSprite = new cc.Sprite(res.pause_menu_background);
-        //coverSprite.setPosition(this.centerpos);
-        //this.addChild(coverSprite);
-        //var labelSave = new cc.LabelTTF("SAVING", "Helvetica", 60);
-        //labelSave.setColor(cc.color(255,255,255));//black color
-        //labelSave.setPosition(this.centerpos);
-        //this.addChild(labelSave);
+        var coverSprite = new cc.Sprite(res.pause_menu_background);
+        coverSprite.setPosition(this.centerpos);
+        this.addChild(coverSprite);
+        var labelSave = new cc.LabelTTF("SAVING", "Helvetica", 60);
+        labelSave.setColor(cc.color(255,255,255));//black color
+        labelSave.setPosition(this.centerpos);
+        this.addChild(labelSave);
         saveItems(this.getParent().itemLayer);
         savePlayerChar(this.getParent().playerLayer);
         saveEnemySpawns(this.getParent().enemyLayer);
         saveEnemies(this.getParent().enemyLayer);
         saveLocations(this.getParent().locationLayer);
-        //this.removeChild(labelSave);
-        //this.removeChild(coverSprite);
         saveMap(this.getParent().mapLayer);
+        this.removeChild(labelSave);
+        this.removeChild(coverSprite);
     },
 
     onMain: function () {
