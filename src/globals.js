@@ -1,3 +1,8 @@
+//map properties
+var collisionArray = []; //tiles that the user can't walk over because of trees, etc.
+var fullMapTileCount = null;
+var fullMapWidth = null;
+var fullMapHeight = null;
 //layers
 if (typeof TagOfLayer == "undefined") {
     var TagOfLayer = {};
