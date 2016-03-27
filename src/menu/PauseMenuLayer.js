@@ -53,12 +53,14 @@ var PauseMenuLayer = cc.Layer.extend({
         labelSave.setColor(cc.color(255,255,255));//black color
         labelSave.setPosition(this.centerpos);
         this.addChild(labelSave);
-        saveItems(this.getParent().itemLayer);
-        savePlayerChar(this.getParent().playerLayer);
-        saveEnemySpawns(this.getParent().enemyLayer);
-        saveEnemies(this.getParent().enemyLayer);
-        saveLocations(this.getParent().locationLayer);
-        saveMap(this.getParent().mapLayer);
+
+        saveItems(this.getParent().itemLayer,"");
+        savePlayerChar(this.getParent().playerLayer,"");
+        saveEnemySpawns(this.getParent().enemyLayer,"");
+        saveEnemies(this.getParent().enemyLayer,"");
+        saveLocations(this.getParent().locationLayer,"");
+        saveMap(this.getParent().mapLayer, "");
+
         this.removeChild(labelSave);
         this.removeChild(coverSprite);
     },

@@ -15,7 +15,7 @@ var BossScene = cc.Scene.extend({
     playerLayer: null, //the layer of PlayScene that contains the playable character
     mapLayer: null, //the layer of PlayScene that holds the tiled map
     caveMapLayer: null, //layer that holds the cave map
-    enemyLayer: null, //the layer of PlayScene that holds all enemy elements
+    boss: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
     locationLayer: null,
@@ -42,25 +42,21 @@ var BossScene = cc.Scene.extend({
      */
     initCollisions: function () {
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemy,
-            this.collisionPlayerEnemyBegin.bind(this), null, null, this.collisionPlayerEnemyEnd.bind(this));
-        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.enemySpawn,
-            this.collisionPlayerEnemySpawnBegin.bind(this), null, null, this.collisionPlayerEnemySpawnEnd.bind(this));
+            this.collisionPlayerEnemyBegin.bind(this), null, null,
+            this.collisionPlayerEnemyEnd.bind(this));
         this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.item,
             this.collisionPlayerItemBegin.bind(this), null, null);
-        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.end,
-            this.collisionPlayerGoalBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
             this.collisionEnemyItemBegin.bind(this), null, null);
-        //this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
-        //    this.collisionPlayerWallBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
-            this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
+            this.collisionProjectileEnemyBegin.bind(this), null,
+            this.collisionProjectileEnemyEnd.bind(this));
     },
 
     collisionProjectileEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var proj = this.playerLayer.getProjectileByShape(shapes[0]);
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var enemy = this.boss;
         proj.collisionList.push(enemy);
         proj.attackEnemies();
         proj.die();
@@ -69,31 +65,9 @@ var BossScene = cc.Scene.extend({
 
     collisionProjectileEnemyEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var enemy = this.boss;
         var proj = this.playerLayer.getProjectileByShape(shapes[0]);
         proj.removeCollisionByChar(enemy);
-        return true;
-    },
-
-    collisionPlayerWallBegin: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-        var shape = shapes[1];
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        var deltaX;
-        var deltaY;
-        if (shape.body.p.x > playerCharacter.sprite.getPositionX()) {
-            deltaX = -2;
-        } else {
-            deltaX = 2;
-        }
-        if (shape.body.p.y > playerCharacter.sprite.getPositionY()) {
-            deltaY = -2;
-
-        } else {
-            deltaY = 2;
-        }
-        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX() + deltaX, playerCharacter.sprite.getPositionY() + deltaY));
-        playerCharacter.sprite.stopAllActions();
         return true;
     },
 
@@ -106,7 +80,7 @@ var BossScene = cc.Scene.extend({
      */
     collisionPlayerEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var enemy = this.boss;
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.collisionList.push(playerCharacter);
         playerCharacter.collisionList.push(enemy);
@@ -122,7 +96,7 @@ var BossScene = cc.Scene.extend({
      */
     collisionPlayerEnemyEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var enemy = this.boss
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.removeCollisionByChar(playerCharacter);
         playerCharacter.removeCollisionByChar(enemy);
@@ -130,40 +104,6 @@ var BossScene = cc.Scene.extend({
         return true;
     },
 
-    /**
-     * Executed at the beginning of Player/EnemySpawn collision
-     * add spawn to players collisionList to facilitate attack and damage logic
-     * @param arbiter class that contains the 2 colliding elements
-     * @param space physical environment
-     * @returns {boolean} true if we want the collision to proceed normally, false otherwise
-     */
-    collisionPlayerEnemySpawnBegin: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-        var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
-        if (spawn.spawnType == SPAWN_TYPE.boss) {
-            this.removeAllChildren(true);
-            cc.director.resume();
-            cc.director.runScene(new BossScene());
-        } else {
-            this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
-        }
-        return true;
-    },
-
-    /**
-     * Executed at the end of Player/EnemySpawn collision, when they separate
-     * remove spawn from players collisionList to end  attack and damage logic
-     * @param arbiter class that contains the 2 colliding elements
-     * @param space physical environment
-     * @returns {boolean} true if we want the collision to proceed normally, false otherwise
-     */
-    collisionPlayerEnemySpawnEnd: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        playerCharacter.removeCollisionByChar(enemy);
-        return true;
-    },
 
     /**
      * Executed at the beginning of Player/Item collision
@@ -179,14 +119,10 @@ var BossScene = cc.Scene.extend({
         return true;
     },
 
-    collisionPlayerGoalBegin: function (arbiter, space) {
-        this.showGameOverMenu("WON");
-        return true;
-    },
 
     collisionEnemyItemBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[0]);
+        var enemy = this.boss;
         var item = this.itemLayer.getItemByShape(shapes[1]);
         enemy.addItem(item);
         return true;
@@ -198,19 +134,11 @@ var BossScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        if (this.isLoadGame) {
-            var dict = cc.sys.localStorage;
-            var string = dict.getItem("playerChar");
-            var tokens = string.split(",");
-            var posTokens = tokens[2].split(";");
-            this.playerLayer.player.character.sprite.setPosition(cc.p(
-                parseFloat(posTokens[0]),
-                parseFloat(posTokens[1])));
-        } else {
-            this.playerLayer.player.character.sprite.setPosition(cc.p(
-                this.locationLayer.start.body.p.x,
-                this.locationLayer.start.body.p.y));
-        }
+
+        this.playerLayer.player.character.sprite.setPosition(cc.p(
+            this.mapLayer.coordinateAtTileIndex(184).x,
+            this.mapLayer.coordinateAtTileIndex(184).y - 40));
+
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();
@@ -225,78 +153,57 @@ var BossScene = cc.Scene.extend({
      * @param dt time interval
      */
     enemyBehavior: function (dt) {
-        for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
-            var enemySpawn = this.enemyLayer.enemySpawnList[i];
-            for (var j = 0; j < enemySpawn.enemyList.length; j++) {
-                var enemy = enemySpawn.enemyList[j];
-                if (enemy.collisionList.length > 0) {
-                    enemy.attackEnemies();
-                    this.hudLayer.updateHealth();
-                } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 && enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
-                    if (this.hasMovedVertically == true) {
-                        if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
-                            enemy.moveLeft();
-                        } else {
-                            enemy.moveRight();
-                        }
-                        this.hasMovedVertically = false;
 
-                    } else {
-                        if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
-                            enemy.moveDown();
-                        } else {
-                            enemy.moveUp();
-                        }
-                        this.hasMovedVertically = true;
-                    }
-
+        var enemy = this.boss;
+        if (enemy.collisionList.length > 0) {
+            enemy.attackEnemies();
+            this.hudLayer.updateHealth();
+        } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 &&
+            enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
+            if (this.hasMovedVertically == true) {
+                if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {
+                    enemy.moveLeft();
                 } else {
-                    var probability = Math.random();
-                    if (probability < 0.5) {
-                        if (probability < 0.1) {
-                            enemy.moveUp();
-                        } else if (probability > 0.1 && probability <= 0.2) {
-                            enemy.moveDown();
-                        } else if (probability > 0.2 && probability <= 0.3) {
-                            enemy.moveLeft();
-                        } else if (probability > 0.3 && probability <= 0.4) {
-                            enemy.moveRight();
-                        }
-                    }
+                    enemy.moveRight();
+                }
+                this.hasMovedVertically = false;
+
+            } else {
+                if (enemy.body.p.y > this.playerLayer.player.character.body.p.y) {
+                    enemy.moveDown();
+                } else {
+                    enemy.moveUp();
+                }
+                this.hasMovedVertically = true;
+            }
+
+        } else {
+            var probability = Math.random();
+            if (probability < 0.5) {
+                if (probability < 0.1) {
+                    enemy.moveUp();
+                } else if (probability > 0.1 && probability <= 0.2) {
+                    enemy.moveDown();
+                } else if (probability > 0.2 && probability <= 0.3) {
+                    enemy.moveLeft();
+                } else if (probability > 0.3 && probability <= 0.4) {
+                    enemy.moveRight();
                 }
             }
         }
     },
 
-    /**
-     * Spawn new enemies
-     * This is called at a specifc time interval
-     * @param dt time interval
-     */
-    spawnEnemy: function (dt) {
-        this.enemyLayer.spawnEnemy();
-    },
 
     /**
      * Method that checks if an element has died on the map, then puts them into the trash to be
      * destroyed
      */
     trashDeadThings: function () {
-        for (var i = 0; i < this.enemyLayer.enemySpawnList.length; i++) {
-            var spawn = this.enemyLayer.enemySpawnList[i];
-            if (spawn.health <= 0) {
-                this.trash.push(spawn);
-
-            }
-            for (var j = 0; j < spawn.enemyList.length; j++) {
-                var enemy = spawn.enemyList[j];
-                if (enemy.health <= 0) {
-                    this.trash.push(enemy);
-                    //spawn.enemyList.splice(j,1);
-                }
-            }
+        var enemy = this.boss;
+        if (enemy.health <= 0) {
+            this.trash.push(enemy);
         }
-        if(this.playerLayer.player.character.health <= 0) {
+        if (this.playerLayer.player.character.health <= 0) {
             this.showGameOverMenu("LOST");
         }
     },
@@ -305,13 +212,15 @@ var BossScene = cc.Scene.extend({
      * Destroy dead elements
      */
     emptyTrash: function () {
-        for (var i = 0; i < this.trash.length; i++) {
+        for (var i = 0; i < this.trash.length; i ++) {
             cc.log("score added: " + this.trash[i].healthPoint);
             this.playerLayer.player.character.score += this.trash[i].healthPoint;
             this.hudLayer.updateScore();
             this.trash[i].die();
+            cc.director.pause();
+            cc.director.popScene();
+            this.trash = [];
         }
-        this.trash = [];
     },
 
     showGameOverMenu: function (winLoss) {
@@ -331,34 +240,23 @@ var BossScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-        if (this.isLoadGame) {
-            this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
-            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
-            this.mapLayer = new MapLayer(this.space, loadTmxMap(), loadCollisionArray(), loadTiledMapsWide(), loadTiledMapsHigh(), loadTotalTiledMaps(), loadTiledMapWidth(), loadTiledMapHeight());
-            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
-            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space));
-        } else {
-            this.itemLayer = new ItemLayer(this.space, null);
-            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
-            this.mapLayer = new MapLayer(this.space, null, null, null, null, null, null, null);
-            this.enemyLayer = new EnemyLayer(this.space, null);
-            this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
-        }
-        this.caveMapLayer = new CaveMapLayer(this.space);
+
+        this.mapLayer = new CaveMapLayer(this.space);
+        this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true);
+        this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+        this.boss = new Boss(this.space);
+        this.boss.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(73).x, this.mapLayer.coordinateAtTileIndex(73).y + 40));
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
-        //this.gameLayer.addChild(this.caveMapLayer, 0, TagOfLayer.CaveMap);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
-        this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
+        this.gameLayer.addChild(this.boss.sprite, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
-        this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
         this.initCollisions();
         this.addChild(this.gameLayer);
         this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
         this.scheduleUpdate();//execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
-        this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
     },
 
@@ -379,6 +277,5 @@ var BossScene = cc.Scene.extend({
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
         this.trashDeadThings();//put things that died in trash
         this.emptyTrash(); //remove dead things
-
     }
 });

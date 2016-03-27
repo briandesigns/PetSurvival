@@ -13,11 +13,14 @@ var Item = cc.Class.extend({
      * @param {cc.p}
      */
     ctor: function (sprite, itemType, space) {
+        this.itemType = itemType;
         this.space = space;
         var spriteScale = 0.05;
+        if (this.itemType == ITEM_TYPE.pineCone) {
+            spriteScale = 0.15;
+        }
         this.sprite = sprite;
         this.sprite.setScale(spriteScale);
-        this.itemType = itemType;
         this.collisionType = COLLISION_TYPE.item;
 
         var contentSize = this.sprite.getContentSize();

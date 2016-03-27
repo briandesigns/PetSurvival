@@ -102,7 +102,7 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.healthPointBenefit = 10;
     ITEM_STATS.hitPointBenefit = 5;
     ITEM_STATS.speedBoost = 0.2;
-    ITEM_STATS.pineConeDamage = 20;
+    ITEM_STATS.pineConeDamage = 50;
 }
 
 //map size

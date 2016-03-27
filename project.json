@@ -44,6 +44,7 @@
     "src/play/PlayerLayer.js",
     "src/play/PlayScene.js",
     "src/play/ItemLayer.js",
+    "src/play/BossScene.js",
     "src/play/LocationLayer.js",
     "src/play/HudLayer.js",
     "src/load/MapGenerator.js",
