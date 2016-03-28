@@ -12,71 +12,68 @@ var ChoiceMenuLayer = cc.Layer.extend({
         this.addChild(spritebg);
         cc.MenuItemFont.setFontSize(60);
 
-        var catSprite = new cc.Sprite(res.character_cat_png);
-        catSprite.setScale(0.2);
+
         var menuItemCat = new cc.MenuItemSprite(
-            catSprite, // normal state image
-            null,
+            new cc.Sprite(res.menu_button_normal_cat),
+            new cc.Sprite(res.menu_button_selected_cat),
             this.chooseCat,
             this
         );
 
-        var dogSprite = new cc.Sprite(res.character_dog_png);
-        dogSprite.setScale(0.2);
+
+
         var menuItemDog = new cc.MenuItemSprite(
-            dogSprite, // normal state image
-            null,
+            new cc.Sprite(res.menu_button_normal_dog),
+            new cc.Sprite(res.menu_button_selected_dog),
             this.chooseDog,
             this
         );
 
-        var rabbitSprite = new cc.Sprite(res.character_rabbit_png);
-        rabbitSprite.setScale(0.2);
+
         var menuItemRabbit = new cc.MenuItemSprite(
-            rabbitSprite, // normal state image
-            null,
+            new cc.Sprite(res.menu_button_normal_rabbit),
+            new cc.Sprite(res.menu_button_selected_rabbit),
             this.chooseRabbit,
             this
         );
 
-        var pigSprite = new cc.Sprite(res.character_pig_png);
-        pigSprite.setScale(0.2);
+
         var menuItemPig = new cc.MenuItemSprite(
-            pigSprite, // normal state image
-            null,
+            new cc.Sprite(res.menu_button_normal_pig),
+            new cc.Sprite(res.menu_button_selected_pig),
             this.choosePig,
             this
         );
 
         var charMenu = new cc.Menu(menuItemCat, menuItemDog, menuItemRabbit, menuItemPig);  //7. create the
-        charMenu.setPosition(cc.p(winsize.width/2 + 100, winsize.height));
+        charMenu.setPosition(cc.p(centerpos.x, centerpos.y+200));
         charMenu.alignItemsHorizontallyWithPadding(40);
         this.addChild(charMenu);
 
 
         var menuItemMapSmall = new cc.MenuItemSprite(
-            new cc.Sprite(res.hud_inventory_png),
-            null,
+            new cc.Sprite(res.menu_button_normal_smallmap),
+            new cc.Sprite(res.menu_button_selected_smallmap),
             this.chooseSmall,
             this
         );
 
         var menuItemMapMedium = new cc.MenuItemSprite(
-            new cc.Sprite(res.hud_inventory_png),
-            null,
+            new cc.Sprite(res.menu_button_normal_mediummap),
+            new cc.Sprite(res.menu_button_selected_mediummap),
             this.chooseMedium,
             this
         );
 
         var menuItemMapLarge = new cc.MenuItemSprite(
-            new cc.Sprite(res.hud_inventory_png),
-            null,
+            new cc.Sprite(res.menu_button_normal_largemap),
+            new cc.Sprite(res.menu_button_selected_largemap),
             this.chooseLarge,
             this
         );
         var mapMenu = new cc.Menu(menuItemMapSmall, menuItemMapMedium, menuItemMapLarge);
         mapMenu.setPosition(cc.p(centerpos.x, centerpos.y));
-        mapMenu.alignItemsHorizontallyWithPadding(2);
+        mapMenu.alignItemsHorizontallyWithPadding(40);
         this.addChild(mapMenu);
 
         var menuItemMain = new cc.MenuItemSprite(
@@ -93,8 +90,8 @@ var ChoiceMenuLayer = cc.Layer.extend({
             this
         );
         var navMenu = new cc. Menu(menuItemMain, menuItemPlay);
-        navMenu.setPosition(cc.p(centerpos.x, centerpos.y));
-        navMenu.alignItemsHorizontallyWithPadding(2);
+        navMenu.setPosition(cc.p(centerpos.x, centerpos.y-100));
+        navMenu.alignItemsHorizontallyWithPadding(20);
         this.addChild(navMenu);
     },
 
