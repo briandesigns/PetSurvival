@@ -350,7 +350,22 @@ var PlayScene = cc.Scene.extend({
         } else if (this.isLoadGame == false) {
             this.mapLayer = new MapLayer(this.space, null, null, null, null, null, null, null);
             this.itemLayer = new ItemLayer(this.space, this.mapLayer,null, false);
-            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+            var chosenChar ;
+            switch(playerType) {
+                case CHAR_TYPE.cat:
+                    chosenChar = new Cat(this.space);
+                    break;
+                case CHAR_TYPE.dog:
+                    chosenChar = new Dog(this.space);
+                    break;
+                case CHAR_TYPE.rabbit:
+                    chosenChar = new Rabbit(this.space);
+                    break;
+                case CHAR_TYPE.pig:
+                    chosenChar = new Pig(this.space);
+                    break;
+            }
+            this.playerLayer = new PlayerLayer(this.space, chosenChar);
             this.enemyLayer = new EnemyLayer(this.space, null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
         } else if (this.isLoadGame == "boss"){

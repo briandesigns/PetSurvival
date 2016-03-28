@@ -113,7 +113,8 @@ if (typeof MAP_SIZE == "undefined") {
     MAP_SIZE.big = 2;
 }
 
-var playerType;
+var playerType = CHAR_TYPE.dog;
+var chosenMapSize = MAP_SIZE.big;
 
 
 

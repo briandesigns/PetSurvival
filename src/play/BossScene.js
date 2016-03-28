@@ -243,7 +243,22 @@ var BossScene = cc.Scene.extend({
 
         this.mapLayer = new CaveMapLayer(this.space);
         this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true);
-        this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+        var chosenChar ;
+        switch(playerType) {
+            case CHAR_TYPE.cat:
+                chosenChar = new Cat(this.space);
+                break;
+            case CHAR_TYPE.dog:
+                chosenChar = new Dog(this.space);
+                break;
+            case CHAR_TYPE.rabbit:
+                chosenChar = new Rabbit(this.space);
+                break;
+            case CHAR_TYPE.pig:
+                chosenChar = new Pig(this.space);
+                break;
+        }
+        this.playerLayer = new PlayerLayer(this.space, chosenChar);
         this.boss = new Boss(this.space);
         this.boss.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(73).x, this.mapLayer.coordinateAtTileIndex(73).y + 40));
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
