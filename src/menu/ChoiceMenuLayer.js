@@ -46,7 +46,7 @@ var ChoiceMenuLayer = cc.Layer.extend({
         );
 
         var charMenu = new cc.Menu(menuItemCat, menuItemDog, menuItemRabbit, menuItemPig);  //7. create the
-        charMenu.setPosition(cc.p(centerpos.x, centerpos.y+200));
+        charMenu.setPosition(cc.p(centerpos.x, centerpos.y+180));
         charMenu.alignItemsHorizontallyWithPadding(40);
         this.addChild(charMenu);
 
@@ -90,8 +90,8 @@ var ChoiceMenuLayer = cc.Layer.extend({
             this
         );
         var navMenu = new cc. Menu(menuItemMain, menuItemPlay);
-        navMenu.setPosition(cc.p(centerpos.x, centerpos.y-100));
-        navMenu.alignItemsHorizontallyWithPadding(20);
+        navMenu.setPosition(cc.p(centerpos.x, centerpos.y-130));
+        navMenu.alignItemsHorizontallyWithPadding(2);
         this.addChild(navMenu);
     },
 
