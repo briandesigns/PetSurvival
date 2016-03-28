@@ -217,8 +217,8 @@ var BossScene = cc.Scene.extend({
             this.playerLayer.player.character.score += this.trash[i].healthPoint;
             this.hudLayer.updateScore();
             this.trash[i].die();
-            cc.director.pause();
-            cc.director.popScene();
+            this.removeAllChildren(true);
+            cc.director.runScene(new PlayScene("boss"));
             this.trash = [];
         }
     },

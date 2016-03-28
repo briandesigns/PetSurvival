@@ -117,16 +117,31 @@ var PlayScene = cc.Scene.extend({
         var shapes = arbiter.getShapes();
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
         if (spawn.spawnType == SPAWN_TYPE.boss) {
-            saveItems(this.getParent().itemLayer,"boss");
-            savePlayerChar(this.getParent().playerLayer,"boss");
-            saveEnemySpawns(this.getParent().enemyLayer,"boss");
-            saveEnemies(this.getParent().enemyLayer,"boss");
-            saveLocations(this.getParent().locationLayer,"boss");
-            saveMap(this.getParent().mapLayer, "boss");
-
+            var spawnPosition = {x:spawn.sprite.getPositionX(), y:spawn.sprite.getPositionY()};
+            spawn.health = 0;
+            spawn.die();
+            var item;
+            for(var i = -1; i > -4; i--) {
+                item = this.itemLayer.getItemByID(i);
+                if (item.isPlaced == "false") {
+                    break;
+                }
+            }
+            cc.log("item type is : " + item.itemType);
+            this.playerLayer.player.character.addItem(item);
+            //item.body.setPos(cc.p(spawnPosition.x, spawnPosition.y));
+            item.isPlaced = "true";
+            saveItems(this.itemLayer,"boss");
+            cc.log("player pos before save:" + this.playerLayer.player.character.sprite.getPositionX()+
+                " , " + this.playerLayer.player.character.sprite.getPositionY());
+            savePlayerChar(this.playerLayer,"boss");
+            saveEnemySpawns(this.enemyLayer,"boss");
+            saveEnemies(this.enemyLayer,"boss");
+            saveLocations(this.locationLayer,"boss");
+            saveMap(this.mapLayer, "boss");
             this.removeAllChildren(true);
             cc.director.resume();
-            cc.director.pushScene(new BossScene());
+            cc.director.pushScene(new PlayScene("boss"));
         } else {
             this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
         }
@@ -163,6 +178,7 @@ var PlayScene = cc.Scene.extend({
     },
 
     collisionPlayerGoalBegin: function (arbiter, space) {
+        cc.director.pause();
         this.showGameOverMenu("WON");
         return true;
     },
@@ -181,7 +197,7 @@ var PlayScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        if (this.isLoadGame) {
+        if (this.isLoadGame == true) {
             var dict = cc.sys.localStorage;
             var string = dict.getItem("playerChar");
             var tokens = string.split(",");
@@ -189,10 +205,18 @@ var PlayScene = cc.Scene.extend({
             this.playerLayer.player.character.sprite.setPosition(cc.p(
                 parseFloat(posTokens[0]),
                 parseFloat(posTokens[1])));
-        } else {
+        } else if (this.isLoadGame == false) {
             this.playerLayer.player.character.sprite.setPosition(cc.p(
                 this.locationLayer.start.body.p.x,
                 this.locationLayer.start.body.p.y));
+        } else if (this.isLoadGame == "boss") {
+            var dict = cc.sys.localStorage;
+            var string = dict.getItem("bossplayerChar");
+            var tokens = string.split(",");
+            var posTokens = tokens[2].split(";");
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                parseFloat(posTokens[0]),
+                parseFloat(posTokens[1])));
         }
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
@@ -328,7 +352,8 @@ var PlayScene = cc.Scene.extend({
             this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
             this.enemyLayer = new EnemyLayer(this.space, null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
-        } else {
+        } else if (this.isLoadGame == "boss"){
+            cc.log("Loading boss save");
             this.mapLayer = new MapLayer(this.space, loadTmxMap("boss"), loadCollisionArray("boss"),
                 loadTiledMapsWide("boss"), loadTiledMapsHigh("boss"), loadTotalTiledMaps("boss"),
                 loadTiledMapWidth("boss"), loadTiledMapHeight("boss"));

@@ -38,6 +38,9 @@ var res = {
     object_hit_point_png: "res/object/HitPoint.png",
     object_speed_point_png: "res/object/SpeedPoint.png",
     object_pine_cone_png: "res/object/PineCone.png",
+    object_super_speed_png: "res/object/SuperSpeedPoint.png",
+    object_super_health_png: "res/object/SuperHealthPoint.png",
+    object_super_hit_png: "res/object/SuperHitPoint.png",
     hud_inventory_png: "res/hud/inventory.png"
 
 };

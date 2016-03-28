@@ -21,7 +21,7 @@ var LocationLayer = cc.Layer.extend({
             this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(150).x, this.mapLayer.coordinateAtTileIndex(150).y));
             this.addChild(this.start.sprite);
             this.end = new EndPoint(this.space);
-            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(151).x , this.mapLayer.coordinateAtTileIndex(151).y));
+            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(155).x , this.mapLayer.coordinateAtTileIndex(155).y));
             this.addChild(this.end.sprite);
         }
     }

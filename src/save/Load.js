@@ -18,19 +18,38 @@ var loadItems = function (space, boss) {
         cc.log("loading: " + string);
         var tokens = string.split(",");
         var posTokens = tokens[3].split(";");
-        switch (parseInt(tokens[2])) {
-            case ITEM_TYPE.healthBoost:
-                item = new HealthBoostItem(space);
-                break;
-            case ITEM_TYPE.healthPoint:
-                item = new HealthPointItem(space);
-                break;
-            case ITEM_TYPE.speed:
-                item = new SpeedItem(space);
-                break;
-            case ITEM_TYPE.hitPoint:
-                item = new HitPointItem(space);
-                break;
+        var isSuper = tokens[4];
+        var isPlaced = tokens[5];
+        if (isSuper == "true") {
+            switch (parseInt(tokens[2])) {
+                case ITEM_TYPE.healthPoint:
+                    item = new SuperHealthPointItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+                case ITEM_TYPE.speed:
+                    item = new SuperSpeedItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    item = new SuperHitPointItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+            }
+        } else {
+            switch (parseInt(tokens[2])) {
+                case ITEM_TYPE.healthBoost:
+                    item = new HealthBoostItem(space);
+                    break;
+                case ITEM_TYPE.healthPoint:
+                    item = new HealthPointItem(space);
+                    break;
+                case ITEM_TYPE.speed:
+                    item = new SpeedItem(space);
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    item = new HitPointItem(space);
+                    break;
+            }
         }
         item.itemID = parseInt(tokens[1]);
         item.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
@@ -63,6 +82,9 @@ var loadEnemies = function (space, itemLayer, boss) {
             case SPAWN_TYPE.vacuum:
                 spawn = new VacuumSpawn(space);
                 break;
+            case SPAWN_TYPE.boss:
+                spawn = new BossSpawn(space);
+                break;
         }
         spawn.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
         spawn.health = parseInt(spawnTokens[3]);
@@ -91,6 +113,8 @@ var loadLocations = function (space, boss) {
     posTokens = endTokens[1].split(";");
     var end = new EndPoint(space);
     end.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+    cc.log("loading: " + startString);
+    cc.log("loading: " + endString);
     return {start: start, end: end};
 };
 
@@ -159,7 +183,7 @@ var buildInventory = function (invTokens, itemLayer) {
 var loadChar = function (space, itemLayer, dictName) {
     var dict = cc.sys.localStorage;
     var string = dict.getItem(dictName);
-    cc.log("loading : " + string);
+    cc.log("loading: " + string);
     var tokens = string.split(",");
     var posTokens = tokens[2].split(";");
     var invTokens = tokens[7].split(";");

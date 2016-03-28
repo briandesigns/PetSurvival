@@ -32,11 +32,6 @@ var ItemLayer = cc.Layer.extend({
             this.itemList[0].body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(184).x, this.mapLayer.coordinateAtTileIndex(184).y));
             this.itemList[0].itemID = 0;
             this.addChild((this.itemList[0].sprite));
-
-            this.itemList[1] = new HealthPointItem(this.space);
-            this.itemList[1].body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(73).x, this.mapLayer.coordinateAtTileIndex(73).y));
-            this.itemList[1].itemID = 1;
-            this.addChild((this.itemList[1].sprite));
         } else {
             for (var i = 0; i < 15; i++) {
                 this.itemList[i] = new HealthBoostItem(this.space);
@@ -66,6 +61,30 @@ var ItemLayer = cc.Layer.extend({
                 this.itemList[i].itemID = i;
                 this.addChild(this.itemList[i].sprite);
             }
+
+            this.itemList[i] = new SuperSpeedItem(this.space);
+            this.itemList[i].body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+                (cc.director.getWinSize().height * 10)));
+            this.itemList[i].itemID = -1;
+            this.itemList[i].isPlaced = "false";
+            this.addChild(this.itemList[i].sprite);
+
+
+            i = i + 1;
+            this.itemList[i] = new SuperHealthPointItem(this.space);
+            this.itemList[i].body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+                (cc.director.getWinSize().height * 10)));
+            this.itemList[i].itemID = -2;
+            this.itemList[i].isPlaced = "false";
+            this.addChild(this.itemList[i].sprite);
+
+            i = i + 1;
+            this.itemList[i] = new SuperHitPointItem(this.space);
+            this.itemList[i].body.setPos(cc.p((cc.director.getWinSize().width * 10)  ,
+                (cc.director.getWinSize().height * 10)));
+            this.itemList[i].itemID = -3;
+            this.itemList[i].isPlaced = "false";
+            this.addChild(this.itemList[i].sprite);
         }
     },
 

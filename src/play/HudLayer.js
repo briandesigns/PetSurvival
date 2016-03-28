@@ -103,20 +103,38 @@ var HudLayer = cc.Layer.extend({
             } else {
                 var itemType = playerLayer.player.character.inventory[i].itemType;
                 this.removeChild(this.itemContentList[i]);
-                switch(itemType) {
-                    case ITEM_TYPE.healthPoint:
-                        this.itemContentList[i] = new cc.Sprite(res.object_health_point_png);
-                        cc.log("just added health point item to invbox");
-                        break;
-                    case ITEM_TYPE.hitPoint:
-                        this.itemContentList[i] = new cc.Sprite(res.object_hit_point_png);
-                        cc.log("just added hit point item to invbox");
-                        break;
-                    case ITEM_TYPE.speed:
-                        this.itemContentList[i] = new cc.Sprite(res.object_speed_point_png);
-                        cc.log("just added speed point item to invbox");
-                        break;
+                if (playerLayer.player.character.inventory[i].isSuper) {
+                    switch(itemType) {
+                        case ITEM_TYPE.healthPoint:
+                            this.itemContentList[i] = new cc.Sprite(res.object_super_health_png);
+                            cc.log("just added health point item to invbox");
+                            break;
+                        case ITEM_TYPE.hitPoint:
+                            this.itemContentList[i] = new cc.Sprite(res.object_super_hit_png);
+                            cc.log("just added hit point item to invbox");
+                            break;
+                        case ITEM_TYPE.speed:
+                            this.itemContentList[i] = new cc.Sprite(res.object_super_speed_png);
+                            cc.log("just added speed point item to invbox");
+                            break;
+                    }
+                } else {
+                    switch(itemType) {
+                        case ITEM_TYPE.healthPoint:
+                            this.itemContentList[i] = new cc.Sprite(res.object_health_point_png);
+                            cc.log("just added health point item to invbox");
+                            break;
+                        case ITEM_TYPE.hitPoint:
+                            this.itemContentList[i] = new cc.Sprite(res.object_hit_point_png);
+                            cc.log("just added hit point item to invbox");
+                            break;
+                        case ITEM_TYPE.speed:
+                            this.itemContentList[i] = new cc.Sprite(res.object_speed_point_png);
+                            cc.log("just added speed point item to invbox");
+                            break;
+                    }
                 }
+
                 this.itemContentList[i].setScale(0.1);
                 this.itemContentList[i].attr({x:this.itemBoxList[i].getPositionX(), y:this.itemBoxList[i].getPositionY()});
                 this.addChild(this.itemContentList[i]);

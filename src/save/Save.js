@@ -87,7 +87,9 @@ var saveItems = function (itemLayer, boss) {
             "item"+i,
             itemList[i].itemID,
             itemList[i].itemType,
-            itemList[i].sprite.getPositionX() + ";"  + itemList[i].sprite.getPositionY()
+            itemList[i].sprite.getPositionX() + ";"  + itemList[i].sprite.getPositionY(),
+            itemList[i].isSuper,
+            itemList[i].isPlaced
         );
         dict.setItem(boss + "item"+i, string);
         cc.log(dict.getItem(boss + "item"+i));
@@ -163,7 +165,6 @@ var buildCSV = function () {
 };
 
 var buildInvString = function (inventory) {
-    cc.log("inventory length" + inventory.length);
     var string="";
     for (var i = 0; i < inventory.length; i++) {
         string += inventory[i].itemID;
