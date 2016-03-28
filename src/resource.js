@@ -39,6 +39,7 @@ var res = {
     object_speed_point_png: "res/object/SpeedPoint.png",
     object_pine_cone_png: "res/object/PineCone.png",
     hud_inventory_png: "res/hud/inventory.png",
+
     rabbit_png  : "res/character/spriteSheet/rabbit.png",
     rabbit_plist : "res/character/spriteSheet/rabbit.plist",
 
@@ -62,6 +63,9 @@ var res = {
 
     dryer_png  : "res/character/spriteSheet/dryer.png",
     dryer_plist : "res/character/spriteSheet/dryer.plist",
+
+    boss_png  : "res/character/spriteSheet/boss.png",
+    boss_plist : "res/character/spriteSheet/boss.plist",
 
     object_super_speed_png: "res/object/SuperSpeedPoint.png",
     object_super_health_png: "res/object/SuperHealthPoint.png",

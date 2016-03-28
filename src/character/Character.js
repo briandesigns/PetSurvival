@@ -41,7 +41,7 @@ var Character = cc.Class.extend({
                     hitPoint, speed, speedDuration, inventoryCapacity, space, plist, png, name) {
         this.spriteScale = 0.03;
         if (this.characterType == CHAR_TYPE.boss) {
-            this.spriteScale = 0.01;
+            this.spriteScale = 0.02;
         }
         this.collisionType = collisionType;
         this.plist = plist;
