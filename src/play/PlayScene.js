@@ -115,9 +115,9 @@ var PlayScene = cc.Scene.extend({
      */
     collisionPlayerEnemySpawnBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
+        var playerChar = this.playerLayer.player.character;
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
         if (spawn.spawnType == SPAWN_TYPE.boss) {
-            var spawnPosition = {x:spawn.sprite.getPositionX(), y:spawn.sprite.getPositionY()};
             spawn.health = 0;
             spawn.die();
             var item;
@@ -128,9 +128,10 @@ var PlayScene = cc.Scene.extend({
                 }
             }
             cc.log("item type is : " + item.itemType);
-            this.playerLayer.player.character.addItem(item);
-            //item.body.setPos(cc.p(spawnPosition.x, spawnPosition.y));
+            item.body.setPos(cc.p(playerChar.sprite.getPositionX() + 32, playerChar.sprite.getPositionY()));
             item.isPlaced = "true";
+            this.playerLayer.player.character.score += spawn.healthPoint;
+            this.hudLayer.updateScore();
             saveItems(this.itemLayer,"boss");
             cc.log("player pos before save:" + this.playerLayer.player.character.sprite.getPositionX()+
                 " , " + this.playerLayer.player.character.sprite.getPositionY());
@@ -141,7 +142,7 @@ var PlayScene = cc.Scene.extend({
             saveMap(this.mapLayer, "boss");
             this.removeAllChildren(true);
             cc.director.resume();
-            cc.director.pushScene(new PlayScene("boss"));
+            cc.director.pushScene(new BossScene());
         } else {
             this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
         }
@@ -369,11 +370,12 @@ var PlayScene = cc.Scene.extend({
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
         this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
-        this.initCollisions();
         this.addChild(this.gameLayer);
         this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
+        this.positionPlayer();
+        this.initCollisions();
         this.scheduleUpdate();//execute main method every frame
-        this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
+        //this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
     },
