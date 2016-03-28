@@ -36,7 +36,30 @@ var res = {
     object_hit_point_png: "res/object/HitPoint.png",
     object_speed_point_png: "res/object/SpeedPoint.png",
     object_pine_cone_png: "res/object/PineCone.png",
-    hud_inventory_png: "res/hud/inventory.png"
+    hud_inventory_png: "res/hud/inventory.png",
+    rabbit_png  : "res/character/spriteSheet/rabbit.png",
+    rabbit_plist : "res/character/spriteSheet/rabbit.plist",
+
+    dog_png  : "res/character/spriteSheet/dog.png",
+    dog_plist : "res/character/spriteSheet/dog.plist",
+
+    cat_png  : "res/character/spriteSheet/cat.png",
+    cat_plist : "res/character/spriteSheet/cat.plist",
+
+    pig_png  : "res/character/spriteSheet/pig.png",
+    pig_plist : "res/character/spriteSheet/pig.plist",
+
+    vacuum_png  : "res/character/spriteSheet/vacuum.png",
+    vacuum_plist : "res/character/spriteSheet/vacuum.plist",
+
+    can_png  : "res/character/spriteSheet/can.png",
+    can_plist : "res/character/spriteSheet/can.plist",
+
+    hydrant_png  : "res/character/spriteSheet/hydrant.png",
+    hydrant_plist : "res/character/spriteSheet/hydrant.plist",
+
+    dryer_png  : "res/character/spriteSheet/dryer.png",
+    dryer_plist : "res/character/spriteSheet/dryer.plist"
 
 };
 
