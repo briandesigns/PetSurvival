@@ -40,6 +40,9 @@ var Character = cc.Class.extend({
     ctor: function (collisionType, sprite, healthPoint, health,
                     hitPoint, speed, speedDuration, inventoryCapacity, space, plist, png, name) {
         this.spriteScale = 0.03;
+        if (this.characterType == CHAR_TYPE.boss) {
+            this.spriteScale = 0.01;
+        }
         this.collisionType = collisionType;
         this.plist = plist;
         this.png = png;
@@ -259,7 +262,7 @@ var Character = cc.Class.extend({
                     (cc.director.getWinSize().height * 10))) ;
             }
         } else if (item.itemType === ITEM_TYPE.pineCone){
-            this.projectileCount+=10;
+            this.projectileCount+=20;
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10),
                 (cc.director.getWinSize().height * 10)));
         } else {

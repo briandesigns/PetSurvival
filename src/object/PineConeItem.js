@@ -7,6 +7,5 @@ var PineConeItem = Item.extend({
      */
     ctor: function (space) {
         this._super(new cc.PhysicsSprite(res.object_pine_cone_png), ITEM_TYPE.pineCone, space);
-        this.sprite.setScale(0.15);
     }
 });

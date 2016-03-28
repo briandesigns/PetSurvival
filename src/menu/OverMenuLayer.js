@@ -40,7 +40,7 @@ var OverMenuLayer = cc.Layer.extend({
     },
 
     onMain: function () {
-        this.getParent().removeAllChildrenWithCleanup(true);
+        this.getParent().removeAllChildren(true);
         cc.director.resume();
         cc.director.runScene(new MainMenuScene());
     }

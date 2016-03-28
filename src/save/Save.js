@@ -2,7 +2,7 @@
  * player, characterType, (x;y), healthPoint, health, hitPoint, speed, (invID;invID), invCapacity
  * @param playerLayer
  */
-var savePlayerChar = function (playerLayer) {
+var savePlayerChar = function (playerLayer, boss) {
     var char = playerLayer.player.character;
     var string = buildCSV(
         "player",
@@ -17,15 +17,15 @@ var savePlayerChar = function (playerLayer) {
         char.score
     );
     var dict = cc.sys.localStorage;
-    dict.setItem("playerChar", string);
-    cc.log(dict.getItem("playerChar"));
+    dict.setItem(boss + "playerChar", string);
+    cc.log(dict.getItem(boss + "playerChar"));
 };
 
 /**
  * spawn0, spawnType, (x;y), health
  * @param enemyLayer
  */
-var saveEnemySpawns = function (enemyLayer) {
+var saveEnemySpawns = function (enemyLayer, boss) {
     var dict = cc.sys.localStorage;
     var spawnList = enemyLayer.enemySpawnList;
     var i;
@@ -36,18 +36,18 @@ var saveEnemySpawns = function (enemyLayer) {
             spawnList[i].sprite.getPositionX() + ";" + spawnList[i].sprite.getPositionY(),
             spawnList[i].health
         );
-        dict.setItem("spawn"+i, string);
-        cc.log(dict.getItem("spawn" +i));
+        dict.setItem(boss + "spawn"+i, string);
+        cc.log(dict.getItem(boss + "spawn" +i));
     }
-    dict.setItem("spawnCount", i);
-    cc.log("SpawnCount: " + dict.getItem("spawnCount"));
+    dict.setItem(boss + "spawnCount", i);
+    cc.log(boss + "SpawnCount: " + dict.getItem(boss + "spawnCount"));
 };
 
 /**
  * enemy0-1,characterType,(x;y), healthPoint, health, hitPoint, speed, (invID;invID), invCap
  * @param enemyLayer
  */
-var saveEnemies = function (enemyLayer) {
+var saveEnemies = function (enemyLayer, boss) {
     var dict = cc.sys.localStorage;
     var spawnList = enemyLayer.enemySpawnList;
     for (var i = 0; i < spawnList.length; i++) {
@@ -66,11 +66,11 @@ var saveEnemies = function (enemyLayer) {
                 buildInvString(char.inventory),
                 char.inventoryCapacity
             );
-            dict.setItem("enemy"+i+"-"+j, string);
-            cc.log(dict.getItem("enemy"+i+"-"+j));
+            dict.setItem(boss + "enemy"+i+"-"+j, string);
+            cc.log(dict.getItem(boss + "enemy"+i+"-"+j));
         }
-        dict.setItem("enemy"+i+"Count", j);
-        cc.log("enemy"+i+"Count: " + dict.getItem("enemy"+i+"Count"));
+        dict.setItem(boss + "enemy"+i+"Count", j);
+        cc.log(boss + "enemy"+i+"Count: " + dict.getItem(boss + "enemy"+i+"Count"));
     }
 };
 
@@ -78,7 +78,7 @@ var saveEnemies = function (enemyLayer) {
  * item0,itemID, itemType, (x;y)
  * @param itemLayer
  */
-var saveItems = function (itemLayer) {
+var saveItems = function (itemLayer, boss) {
     var dict = cc.sys.localStorage;
     var itemList = itemLayer.itemList;
     var i;
@@ -87,13 +87,15 @@ var saveItems = function (itemLayer) {
             "item"+i,
             itemList[i].itemID,
             itemList[i].itemType,
-            itemList[i].sprite.getPositionX() + ";"  + itemList[i].sprite.getPositionY()
+            itemList[i].sprite.getPositionX() + ";"  + itemList[i].sprite.getPositionY(),
+            itemList[i].isSuper,
+            itemList[i].isPlaced
         );
-        dict.setItem("item"+i, string);
-        cc.log(dict.getItem("item"+i));
+        dict.setItem(boss + "item"+i, string);
+        cc.log(dict.getItem(boss + "item"+i));
     }
-    dict.setItem("itemCount", i);
-    cc.log("itemCount: " + dict.getItem("itemCount"));
+    dict.setItem(boss + "itemCount", i);
+    cc.log("itemCount: " + dict.getItem(boss + "itemCount"));
 
 };
 
@@ -102,7 +104,7 @@ var saveItems = function (itemLayer) {
  * end, (x;y)
  * @param locationLayer
  */
-var saveLocations = function (locationLayer) {
+var saveLocations = function (locationLayer, boss) {
     var start = locationLayer.start;
     var end = locationLayer.end;
     var stringStart = buildCSV(
@@ -114,10 +116,10 @@ var saveLocations = function (locationLayer) {
         end.sprite.getPositionX()+";"+ end.sprite.getPositionY()
     );
     var dict = cc.sys.localStorage;
-    dict.setItem("start", stringStart);
-    cc.log(dict.getItem("start"));
-    dict.setItem("end", stringEnd);
-    cc.log(dict.getItem("end"));
+    dict.setItem(boss + "start", stringStart);
+    cc.log(dict.getItem(boss + "start"));
+    dict.setItem(boss + "end", stringEnd);
+    cc.log(dict.getItem(boss + "end"));
 
 };
 
@@ -125,7 +127,7 @@ var saveLocations = function (locationLayer) {
  * @param mapLayer
  */
 
-var saveMap = function (mapLayer) {
+var saveMap = function (mapLayer, boss) {
     var dict = cc.sys.localStorage;
 
     var tiledMapWidth = mapLayer.tiledMapWidth;
@@ -135,20 +137,20 @@ var saveMap = function (mapLayer) {
     var totalTiledMaps = mapLayer.totalTiledMaps;
     var collisionArray = mapLayer.collisionArray;
 
-    dict.setItem("tiledMapWidth", tiledMapWidth);
-    dict.setItem("tiledMapHeight", tiledMapHeight);
-    dict.setItem("tiledMapsWide", tiledMapsWide);
-    dict.setItem("tiledMapsHigh", tiledMapsHigh);
-    dict.setItem("totalTiledMaps", totalTiledMaps);
-    dict.setItem("collisionArray", buildMapArrayString(collisionArray));
+    dict.setItem(boss + "tiledMapWidth", tiledMapWidth);
+    dict.setItem(boss + "tiledMapHeight", tiledMapHeight);
+    dict.setItem(boss + "tiledMapsWide", tiledMapsWide);
+    dict.setItem(boss + "tiledMapsHigh", tiledMapsHigh);
+    dict.setItem(boss + "totalTiledMaps", totalTiledMaps);
+    dict.setItem(boss + "collisionArray", buildMapArrayString(collisionArray));
     cc.log("Saving collision array: " + collisionArray);
 
     var mapAsTmxStrings = mapLayer.mapAsTmxStrings;
     for (var i = 0; i < mapAsTmxStrings.length; i++) {
-        dict.setItem("tmxMap"+i, mapAsTmxStrings[i]);
-        cc.log(dict.getItem("tmxMap"+i));
+        dict.setItem(boss + "tmxMap"+i, mapAsTmxStrings[i]);
+        cc.log(dict.getItem(boss + "tmxMap"+i));
     }
-    dict.setItem("tmxMapCount", mapAsTmxStrings.length);
+    dict.setItem(boss + "tmxMapCount", mapAsTmxStrings.length);
 };
 
 var buildCSV = function () {
@@ -163,7 +165,6 @@ var buildCSV = function () {
 };
 
 var buildInvString = function (inventory) {
-    cc.log("inventory length" + inventory.length);
     var string="";
     for (var i = 0; i < inventory.length; i++) {
         string += inventory[i].itemID;

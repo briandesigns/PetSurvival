@@ -14,7 +14,6 @@ var PlayScene = cc.Scene.extend({
     gameLayer: null, //the layer of PlayScene that contains all other layers
     playerLayer: null, //the layer of PlayScene that contains the playable character
     mapLayer: null, //the layer of PlayScene that holds the tiled map
-    caveMapLayer: null, //layer that holds the cave map
     enemyLayer: null, //the layer of PlayScene that holds all enemy elements
     boundLayer: null,// the layer of PlayScene where we put all the map boundaries
     itemLayer: null, //the layer of PlayScene where we put all items that could be picked up
@@ -51,8 +50,6 @@ var PlayScene = cc.Scene.extend({
             this.collisionPlayerGoalBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.enemy, COLLISION_TYPE.item,
             this.collisionEnemyItemBegin.bind(this), null, null);
-        //this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.wall,
-        //    this.collisionPlayerWallBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
             this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
     },
@@ -75,27 +72,6 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
-    collisionPlayerWallBegin: function (arbiter, space) {
-        var shapes = arbiter.getShapes();
-        var shape = shapes[1];
-        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        var deltaX;
-        var deltaY;
-        if (shape.body.p.x > playerCharacter.sprite.getPositionX()) {
-            deltaX = -2;
-        } else {
-            deltaX = 2;
-        }
-        if (shape.body.p.y > playerCharacter.sprite.getPositionY()) {
-            deltaY = -2;
-
-        } else {
-            deltaY = 2;
-        }
-        playerCharacter.sprite.setPosition(cc.p(playerCharacter.sprite.getPositionX() + deltaX, playerCharacter.sprite.getPositionY() + deltaY));
-        playerCharacter.sprite.stopAllActions();
-        return true;
-    },
 
     /**
      * Executed at the beginning of Player/Enemy collision
@@ -139,8 +115,37 @@ var PlayScene = cc.Scene.extend({
      */
     collisionPlayerEnemySpawnBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
+        var playerChar = this.playerLayer.player.character;
         var spawn = this.enemyLayer.getSpawnByShape(shapes[1]);
-        this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
+        if (spawn.spawnType == SPAWN_TYPE.boss) {
+            spawn.health = 0;
+            spawn.die();
+            var item;
+            for(var i = -1; i > -4; i--) {
+                item = this.itemLayer.getItemByID(i);
+                if (item.isPlaced == "false") {
+                    break;
+                }
+            }
+            cc.log("item type is : " + item.itemType);
+            item.body.setPos(cc.p(playerChar.sprite.getPositionX() + 32, playerChar.sprite.getPositionY()));
+            item.isPlaced = "true";
+            this.playerLayer.player.character.score += spawn.healthPoint;
+            this.hudLayer.updateScore();
+            saveItems(this.itemLayer,"boss");
+            cc.log("player pos before save:" + this.playerLayer.player.character.sprite.getPositionX()+
+                " , " + this.playerLayer.player.character.sprite.getPositionY());
+            savePlayerChar(this.playerLayer,"boss");
+            saveEnemySpawns(this.enemyLayer,"boss");
+            saveEnemies(this.enemyLayer,"boss");
+            saveLocations(this.locationLayer,"boss");
+            saveMap(this.mapLayer, "boss");
+            this.removeAllChildren(true);
+            cc.director.resume();
+            cc.director.pushScene(new BossScene());
+        } else {
+            this.playerLayer.getPlayerByShape(shapes[0]).character.collisionList.push(spawn);
+        }
         return true;
     },
 
@@ -174,6 +179,7 @@ var PlayScene = cc.Scene.extend({
     },
 
     collisionPlayerGoalBegin: function (arbiter, space) {
+        cc.director.pause();
         this.showGameOverMenu("WON");
         return true;
     },
@@ -192,7 +198,7 @@ var PlayScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        if (this.isLoadGame) {
+        if (this.isLoadGame == true) {
             var dict = cc.sys.localStorage;
             var string = dict.getItem("playerChar");
             var tokens = string.split(",");
@@ -200,10 +206,18 @@ var PlayScene = cc.Scene.extend({
             this.playerLayer.player.character.sprite.setPosition(cc.p(
                 parseFloat(posTokens[0]),
                 parseFloat(posTokens[1])));
-        } else {
+        } else if (this.isLoadGame == false) {
             this.playerLayer.player.character.sprite.setPosition(cc.p(
                 this.locationLayer.start.body.p.x,
                 this.locationLayer.start.body.p.y));
+        } else if (this.isLoadGame == "boss") {
+            var dict = cc.sys.localStorage;
+            var string = dict.getItem("bossplayerChar");
+            var tokens = string.split(",");
+            var posTokens = tokens[2].split(";");
+            this.playerLayer.player.character.sprite.setPosition(cc.p(
+                parseFloat(posTokens[0]),
+                parseFloat(posTokens[1])));
         }
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
@@ -325,33 +339,43 @@ var PlayScene = cc.Scene.extend({
         this.hasMovedVertically = false;
         this.gameLayer = new cc.Layer();
         this.hudLayer = new HudLayer();
-        if (this.isLoadGame) {
-            this.itemLayer = new ItemLayer(this.space, loadItems(this.space));
-            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer));
-            this.mapLayer = new MapLayer(this.space, loadTmxMap(), loadCollisionArray(), loadTiledMapsWide(), loadTiledMapsHigh(), loadTotalTiledMaps(), loadTiledMapWidth(), loadTiledMapHeight());
-            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer));
-            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space));
-        } else {
-            this.itemLayer = new ItemLayer(this.space, null);
-            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
+        if (this.isLoadGame == true) {
+            this.mapLayer = new MapLayer(this.space, loadTmxMap(""), loadCollisionArray(""),
+                loadTiledMapsWide(""), loadTiledMapsHigh(""), loadTotalTiledMaps(""),
+                loadTiledMapWidth(""), loadTiledMapHeight(""));
+            this.itemLayer = new ItemLayer(this.space, this.mapLayer, loadItems(this.space, ""), false);
+            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer, ""));
+            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer, ""));
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space, ""));
+        } else if (this.isLoadGame == false) {
             this.mapLayer = new MapLayer(this.space, null, null, null, null, null, null, null);
+            this.itemLayer = new ItemLayer(this.space, this.mapLayer,null, false);
+            this.playerLayer = new PlayerLayer(this.space, new Dog(this.space));
             this.enemyLayer = new EnemyLayer(this.space, null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
+        } else if (this.isLoadGame == "boss"){
+            cc.log("Loading boss save");
+            this.mapLayer = new MapLayer(this.space, loadTmxMap("boss"), loadCollisionArray("boss"),
+                loadTiledMapsWide("boss"), loadTiledMapsHigh("boss"), loadTotalTiledMaps("boss"),
+                loadTiledMapWidth("boss"), loadTiledMapHeight("boss"));
+            this.itemLayer = new ItemLayer(this.space, this.mapLayer, loadItems(this.space, "boss"), false);
+            this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer, "boss"));
+            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer, "boss"));
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space, "boss"));
         }
-        this.caveMapLayer = new CaveMapLayer(this.space);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
-        this.gameLayer.addChild(this.caveMapLayer, 0, TagOfLayer.CaveMap);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
         this.gameLayer.addChild(this.enemyLayer, 0, TagOfLayer.Enemy);
         this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
         this.gameLayer.addChild(this.locationLayer, 0, TagOfLayer.Location);
-        this.initCollisions();
         this.addChild(this.gameLayer);
         this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
+        this.positionPlayer();
+        this.initCollisions();
         this.scheduleUpdate();//execute main method every frame
-        this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
+        //this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
     },
