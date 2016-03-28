@@ -41,7 +41,7 @@ var Character = cc.Class.extend({
                     hitPoint, speed, speedDuration, inventoryCapacity, space, plist, png, name) {
         this.spriteScale = 0.03;
         if (this.characterType == CHAR_TYPE.boss) {
-            this.spriteScale = 0.02;
+            this.spriteScale = 0.01;
         }
         this.collisionType = collisionType;
         this.plist = plist;
@@ -83,7 +83,7 @@ var Character = cc.Class.extend({
         str= name + "-up-move.png"
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        var animationMoveUp = new cc.Animation(animframes, 0.2);
+        var animationMoveUp = new cc.Animation(animframes, this.speedDuration);
         this.upAction = new cc.Sequence(new cc.Animate(animationMoveUp));
 
 
@@ -95,7 +95,7 @@ var Character = cc.Class.extend({
         str = name + "-down-move.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        var animationMoveDown = new cc.Animation(animframes, 0.2);
+        var animationMoveDown = new cc.Animation(animframes, this.speedDuration);
         this.downAction = new cc.Sequence(new cc.Animate(animationMoveDown));
 
 
@@ -107,7 +107,7 @@ var Character = cc.Class.extend({
         str = name + "-left-move.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        var animationMoveLeft = new cc.Animation(animframes, 0.2);
+        var animationMoveLeft = new cc.Animation(animframes, this.speedDuration);
         this.leftAction = new cc.Sequence(new cc.Animate(animationMoveLeft));
 
 
@@ -119,7 +119,7 @@ var Character = cc.Class.extend({
         str = name + "-right-move.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        var animationMoveRight = new cc.Animation(animframes, 0.2);
+        var animationMoveRight = new cc.Animation(animframes, this.speedDuration);
         this.rightAction = new cc.Sequence(new cc.Animate(animationMoveRight));
 
         //to do: attacking animation
@@ -132,7 +132,7 @@ var Character = cc.Class.extend({
         str = name + "-up-attack.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        var attack = new cc.Animation(animframes, 0.2);
+        var attack = new cc.Animation(animframes, this.speedDuration);
         this.upAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
@@ -142,7 +142,7 @@ var Character = cc.Class.extend({
         str = name + "-down-attack.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        attack = new cc.Animation(animframes, 0.2);
+        attack = new cc.Animation(animframes, this.speedDuration);
         this.downAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
@@ -152,7 +152,7 @@ var Character = cc.Class.extend({
         str = name + "-left-attack.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        attack = new cc.Animation(animframes, 0.2);
+        attack = new cc.Animation(animframes, this.speedDuration);
         this.leftAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
@@ -162,7 +162,7 @@ var Character = cc.Class.extend({
         str = name + "-right-attack.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        attack = new cc.Animation(animframes, 0.2);
+        attack = new cc.Animation(animframes, this.speedDuration);
         this.rightAttack = new cc.Sequence(new cc.Animate(attack));
 
     },

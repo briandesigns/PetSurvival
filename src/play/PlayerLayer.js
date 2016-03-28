@@ -15,10 +15,10 @@ var PlayerLayer = cc.Layer.extend({
         this.isPaused = false;
         this.player = new Player(character);
         this.init();
-
-        this._debugNode = new cc.PhysicsDebugNode(this.space);
-        this._debugNode.setVisible(true);
-        this.addChild(this._debugNode, 10);
+        //
+        //this._debugNode = new cc.PhysicsDebugNode(this.space);
+        //this._debugNode.setVisible(true);
+        //this.addChild(this._debugNode, 10);
 
     },
     init: function () {
@@ -156,22 +156,22 @@ var PlayerLayer = cc.Layer.extend({
             this.projectileList.push(proj);
             this.addChild(proj.sprite);
             cc.log("rotation" +this.player.character.sprite.getRotation());
-            if (Math.abs(this.player.character.sprite.getRotation() - (-90)) < 2) {
+            if (this.player.character.direction == "right") {
                 proj.body.setPos(cc.p(
                     this.player.character.sprite.getPositionX() + 15,
                     this.player.character.sprite.getPositionY()));
                 proj.moveRight();
-            } else if (Math.abs(this.player.character.sprite.getRotation() - (90)) < 2) {
+            } else if (this.player.character.direction == "left") {
                 proj.body.setPos(cc.p(
                     this.player.character.sprite.getPositionX() - 15,
                     this.player.character.sprite.getPositionY()));
                 proj.moveLeft();
-            } else if (Math.abs(this.player.character.sprite.getRotation() - (180)) < 2) {
+            } else if (this.player.character.direction == "up") {
                 proj.body.setPos(cc.p(
                     this.player.character.sprite.getPositionX(),
                     this.player.character.sprite.getPositionY() + 15));
                 proj.moveUp();
-            } else if (Math.abs(this.player.character.sprite.getRotation() - (0)) < 2) {
+            } else if (this.player.character.direction == "down") {
                 proj.body.setPos(cc.p(
                     this.player.character.sprite.getPositionX(),
                     this.player.character.sprite.getPositionY()-15));
