@@ -167,10 +167,6 @@ var Character = cc.Class.extend({
 
     },
 
-    maximizeHealth: function () {
-
-    },
-
     changeHealth: function (h) {
         if (h>0) {
             if (this.health < this.healthPoint) {
@@ -203,6 +199,7 @@ var Character = cc.Class.extend({
         this.sprite.runAction(this.rightAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
+
     moveLeft: function () {
         this.direction = "left";
         this.sprite.setRotation(0);
@@ -211,6 +208,7 @@ var Character = cc.Class.extend({
         this.sprite.runAction(this.leftAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
+
     moveUp: function () {
         this.direction = "up";
         this.sprite.setRotation(0);
@@ -219,6 +217,7 @@ var Character = cc.Class.extend({
         this.sprite.runAction(this.upAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
+
     moveDown: function () {
         this.direction = "down";
         this.sprite.setRotation(0);
@@ -288,7 +287,7 @@ var Character = cc.Class.extend({
             }
             this.inventory.splice(itemNumber-1,1);
             item.body.setPos(cc.p(this.body.p.x ,
-                this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.2));
+                this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.3));
             return true;
         }
         else {

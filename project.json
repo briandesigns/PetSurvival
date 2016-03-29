@@ -18,6 +18,8 @@
     "src/menu/MainMenuScene.js",
     "src/menu/PauseMenuLayer.js",
     "src/menu/OverMenuLayer.js",
+    "src/menu/ChoiceMenuLayer.js",
+    "src/menu/ChoiceMenuScene.js",
     "src/character/Character.js",
     "src/character/Dog.js",
     "src/character/Pig.js",

@@ -118,7 +118,9 @@ if (typeof MAP_SIZE == "undefined") {
     MAP_SIZE.big = 2;
 }
 
-var playerType;
+//player options, with default values assigned
+var playerType = CHAR_TYPE.dog;
+var chosenMapSize = MAP_SIZE.big;
 
 
 

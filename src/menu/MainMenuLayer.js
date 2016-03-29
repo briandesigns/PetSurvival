@@ -31,7 +31,8 @@ var MainMenuLayer = cc.Layer.extend({
 
     onPlay: function () {
         cc.log("==Creating New Game");
-        cc.director.pushScene(new PlayScene(false));
+        //cc.director.pushScene(new PlayScene(false));
+        cc.director.runScene(new ChoiceMenuScene());
     },
 
     onLoad: function () {
