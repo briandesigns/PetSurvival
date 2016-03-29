@@ -4,10 +4,15 @@
 var EnemyLayer = cc.Layer.extend({
     space: null,
     enemySpawnList: null,
-    ctor: function (space, enemySpawnList) {
+    funChecker: null,
+    mapLayer: null,
+
+    ctor: function (space, mapLayer, enemySpawnList, funChecker) {
         this._super();
         this.space = space;
+        this.mapLayer = mapLayer;
         this.enemySpawnList = enemySpawnList;
+        this.funChecker = funChecker;
         this.init();
 
     },
@@ -21,7 +26,7 @@ init: function () {
             var spawn = this.enemySpawnList[i];
             this.addChild(spawn.sprite);
             for (var j = 0; j < spawn.enemyList.length; j++) {
-                var enemy = spawn.enemyList[j];
+                var enemy = spawn.enemyList[j];x
                 this.addChild(enemy.sprite);
             }
         }
@@ -34,14 +39,17 @@ init: function () {
         this.enemySpawnList[1] = new DryerSpawn(this.space);
         this.enemySpawnList[2] = new CanSpawn(this.space);
         this.enemySpawnList[3] = new VacuumSpawn(this.space);
-        this.enemySpawnList[4] = new BossSpawn(this.space);
-        this.enemySpawnList[5] = new BossSpawn(this.space);
-        this.enemySpawnList[6] = new BossSpawn(this.space);
+        //this.enemySpawnList[4] = new BossSpawn(this.space);
+        //this.enemySpawnList[5] = new BossSpawn(this.space);
+        //this.enemySpawnList[6] = new BossSpawn(this.space);
+
+        var spawnLocations = this.funChecker.objectLocations;
 
         for (var i = 0; i < this.enemySpawnList.length; i++) {
-            this.enemySpawnList[i].body.setPos(cc.p(
-                1000 + (Math.random()*1000) - (Math.random()*1000),
-                1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+            var xCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).x+16;
+            var yCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).y+16;
+
+            this.enemySpawnList[i].body.setPos(cc.p(xCoord, yCoord)) ;
             this.addChild(this.enemySpawnList[i].sprite);
         }
     },

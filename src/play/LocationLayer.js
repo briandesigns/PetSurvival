@@ -3,8 +3,9 @@ var LocationLayer = cc.Layer.extend({
     mapLayer: null,
     start: null,
     end: null,
+    funChecker: null,
 
-    ctor: function (space, mapLayer,locations) {
+    ctor: function (space, mapLayer, locations, funChecker) {
         this._super();
         this.space = space;
         this.mapLayer = mapLayer;
@@ -14,13 +15,14 @@ var LocationLayer = cc.Layer.extend({
             this.end = locations.end;
             cc.log("End position:" + this.end);
         }
+        this.funChecker = funChecker;
         this.init();
     },
 
     init: function () {
         if (this.start == null && this.end == null) {
-            var startAndEnd = FunChecker(this.mapLayer.fullMapTileCount, this.mapLayer.fullMapWidth, this.mapLayer.collisionArray);
-
+            var startAndEnd = this.funChecker;
+            
             this.start = new StartPoint(this.space);
             this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.start).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.start).y+16));
             this.end = new EndPoint(this.space);

@@ -345,7 +345,7 @@ var PlayScene = cc.Scene.extend({
                 loadTiledMapWidth(""), loadTiledMapHeight(""));
             this.itemLayer = new ItemLayer(this.space, this.mapLayer, loadItems(this.space, ""), false);
             this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer, ""));
-            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer, ""));
+            this.enemyLayer = new EnemyLayer(this.space, this.mapLayer, loadEnemies(this.space, this.itemLayer, ""), null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space, ""));
         } else if (this.isLoadGame == false) {
             this.mapLayer = new MapLayer(this.space, null, null, null, null, null, null, null);
@@ -366,8 +366,9 @@ var PlayScene = cc.Scene.extend({
                     break;
             }
             this.playerLayer = new PlayerLayer(this.space, chosenChar);
-            this.enemyLayer = new EnemyLayer(this.space, null);
-            this.locationLayer = new LocationLayer(this.space, this.mapLayer, null);
+            var funChecker = FunChecker(this.mapLayer.fullMapTileCount, this.mapLayer.fullMapWidth, this.mapLayer.collisionArray, 7);
+            this.enemyLayer = new EnemyLayer(this.space, this.mapLayer, null, funChecker);
+            this.locationLayer = new LocationLayer(this.space, this.mapLayer, null, funChecker);
         } else if (this.isLoadGame == "boss"){
             cc.log("Loading boss save");
             this.mapLayer = new MapLayer(this.space, loadTmxMap("boss"), loadCollisionArray("boss"),
@@ -375,7 +376,7 @@ var PlayScene = cc.Scene.extend({
                 loadTiledMapWidth("boss"), loadTiledMapHeight("boss"));
             this.itemLayer = new ItemLayer(this.space, this.mapLayer, loadItems(this.space, "boss"), false);
             this.playerLayer = new PlayerLayer(this.space, loadPlayerChar(this.space, this.itemLayer, "boss"));
-            this.enemyLayer = new EnemyLayer(this.space,loadEnemies(this.space, this.itemLayer, "boss"));
+            this.enemyLayer = new EnemyLayer(this.space, this.mapLayer, loadEnemies(this.space, this.itemLayer, "boss"), null);
             this.locationLayer = new LocationLayer(this.space, this.mapLayer, loadLocations(this.space, "boss"));
         }
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);

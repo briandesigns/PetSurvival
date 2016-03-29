@@ -5,9 +5,9 @@
  */
 
 //traverse the map horizontally and vertically to find 2 tiles in a row to create an edge between
-function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
+function FunChecker(fullMapTileCount, fullMapWidth, collisionArray, objectsToPosition) {
 
-    //Build an array that keeps track of accessible tiles from the tile at the array's index
+    //Build an array that keeps track of adjacent tiles from the tile at the array's index
     var edgesFrom = new Array(fullMapTileCount);
 
     for (var i=0; i<edgesFrom.count; i++) {
@@ -76,6 +76,8 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
     }
     cc.log("Random tiles chosen: " + chosenRandomTiles);
 
+    var accessibleTiles = [];
+
     //Run BFS on each of the randomly chosen tiles
     for (i=0; i<numberOfRandomTiles; i++) {
         //console.log("##################Checking new random tile " + i + ": " + chosenRandomTiles[i]);
@@ -97,6 +99,7 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
         var queue = [];
         distance[root] = 0;
         queue.push(root);
+        accessibleTiles.push(root);
         //console.log("Enqueued " + root);
         //console.log("[" + queue + "]");
 
@@ -121,6 +124,7 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
                     edgesFromCopy[current].splice(edgesFromCopy[current].indexOf(next), 1);
                     j--;
                     queue.push(next);
+                    accessibleTiles.push(next);
                     //console.log("Enqueued " + next);
                     //console.log("[" + queue + "]");
                 }
@@ -145,111 +149,31 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
 
     console.log("Start tile should be " + coordinateAtTileIndex(startTile, fullMapWidth) + " and end tile " + coordinateAtTileIndex(endTile, fullMapWidth) + " with distance " + maximumDistance);
 
-    return {start: startTile, end: endTile};
-/*
-    var minimumDistance = new Array(graph.nodes.length);
+    accessibleTiles.splice(accessibleTiles.indexOf(startTile), 1);
+    accessibleTiles.splice(accessibleTiles.indexOf(endTile), 1);
 
-    for (var startNode in graph.nodes) {
-        minimumDistance[startNode.id] = new Array(graph.nodes.length);
+    var objectRandomTiles = [];
 
-        for (var endNode in graph.nodes) {
-            minimumDistance[startNode.id][endNode.id] = Infinity;
-        }
+    //mark tiles as valid places to put enemy spawns & caves
+    for (i=0; i<objectsToPosition; i++) {
+        var randomNumber = parseInt(Math.random()*accessibleTiles.length);
+        var randomTile = accessibleTiles[randomNumber];
 
-        for (var endNode in graph.nodes) {
-            var queue = [];
-            minimumDistance[startNode.id][endNode.id] = 0;
-            queue.push(graph.nodes[endNode]);
-            while (queue.length > 0) {
-                var current = queue.shift();
-                //console.log("Dequeued node " + current.id + " from queue which now has length " + queue.length);
-                current.edges.forEach(function (edge) {
-                    var nextNode = (current === edge.target) ? edge.source : edge.target;
-                    //console.log("Found next node " + nextNode.id);
-                    if (minimumDistance[startNode.id][nextNode.id] == Infinity) {
-                        minimumDistance[startNode.id][nextNode.id] = minimumDistance[startNode][current.id] + 1;
-                        //console.log("Distance: " + (minimumDistance[startNode][current.id] + 1));
-                        queue.push(nextNode);
-                        //console.log("Added node " + nextNode.id + " to queue which now has length " + queue.length);
-                    }
-                });
-            }
+        if (collisionArray[randomTile-1-fullMapWidth] == 0 && collisionArray[randomTile-fullMapWidth] == 0 && collisionArray[randomTile+1-fullMapWidth] == 0 && collisionArray[randomTile-1] == 0 && collisionArray[randomTile+fullMapWidth] == 0 && collisionArray[randomTile-1+fullMapWidth] == 0 && collisionArray[randomTile+fullMapWidth] == 0 && collisionArray[randomTile+1+fullMapWidth] == 0) {
+            objectRandomTiles.push(randomTile);
+            //remove used tiles so we don't put spawns on top of each other
+            accessibleTiles.splice(accessibleTiles.indexOf(randomTile-1-fullMapWidth), 3);
+            accessibleTiles.splice(accessibleTiles.indexOf(randomTile-1), 3);
+            accessibleTiles.splice(accessibleTiles.indexOf(randomTile-1+fullMapWidth), 3);
+
+            cc.log(coordinateAtTileIndex(randomTile, fullMapWidth));
+        } else {
+            i--;
         }
     }
 
-    console.log(minimumDistance[0][0]);
+    return {start: startTile, end: endTile, objectLocations: objectRandomTiles};
 
-    var max = 0;
-    for (i=0; i<; i++) {
-        for (j=0; j<minimumDistance.length; j++) {
-            if (minimumDistance[i][j] > max) {
-                max = minimumDistance[i][j];
-                console.log(maxDistance);
-            }
-        }
-    }*/
-/*
-    for (i=0; i<distance.length; i++) {
-        console.log(distance[i]);
-    }*/
-
-    //we want to run BFS from every vertex in the graph, and keep track of the longest distance
-/*
-    for (startNode in graph.nodes) {
-        minimumDistance[startNode] = new Array(graph.nodes.length);
-
-        for (endNode in graph.nodes) {
-            minimumDistance[startNode][endNode] = Infinity;
-        }
-
-        var queue = [];
-        minimumDistance[startNode][startNode] = 0;
-        queue.push(startNode);
-
-        while (queue.length != 0){
-            var current = queue.shift();
-
-            startNode.edges.forEach(function(edge) {
-                var endNode = (startNode === target) ? edge.source : edge.target; //get source or target depending on what startNode is
-                if (minimumDistance[startNode][endNode] != Infinity) {
-                    minimumDistance[startNode][endNode] = minimumDistance[startNode][current] + 1;
-                    queue.push(endNode);
-                }
-            })
-        }
-    }
-
-    var maxDistance = 0;
-
-    for (distanceFromStart in minimumDistance) {
-        for (distance in distanceFromStart) {
-            if (distance > maxDistance) {
-                maxDistance = distance;
-            }
-            //console.log(maxDistance);
-        }
-    }
-    //console.log(minimumDistance[0]);
-*/
-/*
-    //Floyd-Warshall algorithm
-    for (node in graph.nodes) {
-        minimumDistance[node][node] = 0;
-    }
-    for (edge in graph.edges) {
-        minimumDistance[graph.edges[edge].source.id][graph.edges[edge].target.id] = 1;
-    }
-    for (var k=0; k<fullMapTileCount; k++) {
-        for (i=0; i<fullMapTileCount; i++) {
-            for (j=0; j<fullMapTileCount; j++) {
-                if (minimumDistance[i][j] > (minimumDistance[i][k] + minimumDistance[k][j])) {
-                    minimumDistance[i][j] = (minimumDistance[i][k] + minimumDistance[k][j]);
-                }
-            }
-        }
-        console.log(k);
-    }
-    console.log("done");*/
 }
 
 function coordinateAtTileIndex(tileIndex, fullMapWidth) {
