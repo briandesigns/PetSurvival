@@ -5,7 +5,7 @@
  */
 
 //traverse the map horizontally and vertically to find 2 tiles in a row to create an edge between
-function CreateGraph(fullMapTileCount, fullMapWidth, collisionArray) {
+function FunChecker(fullMapTileCount, fullMapWidth, collisionArray) {
 
     //Build an array that keeps track of accessible tiles from the tile at the array's index
     var edgesFrom = new Array(fullMapTileCount);
@@ -145,6 +145,7 @@ function CreateGraph(fullMapTileCount, fullMapWidth, collisionArray) {
 
     console.log("Start tile should be " + coordinateAtTileIndex(startTile, fullMapWidth) + " and end tile " + coordinateAtTileIndex(endTile, fullMapWidth) + " with distance " + maximumDistance);
 
+    return {start: startTile, end: endTile};
 /*
     var minimumDistance = new Array(graph.nodes.length);
 

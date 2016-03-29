@@ -19,10 +19,12 @@ var LocationLayer = cc.Layer.extend({
 
     init: function () {
         if (this.start == null && this.end == null) {
+            var startAndEnd = FunChecker(this.mapLayer.fullMapTileCount, this.mapLayer.fullMapWidth, this.mapLayer.collisionArray);
+
             this.start = new StartPoint(this.space);
-            this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(150).x, this.mapLayer.coordinateAtTileIndex(150).y));
+            this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.start).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.start).y+16));
             this.end = new EndPoint(this.space);
-            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(155).x , this.mapLayer.coordinateAtTileIndex(155).y));
+            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.end).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.end).y+16));
         }
         this.addChild(this.end.sprite);
         this.addChild(this.start.sprite);
