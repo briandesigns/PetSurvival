@@ -82,8 +82,8 @@ var MapLayer = cc.Layer.extend({
         this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
 
         //for our map to generate properly, these need to be (a power of 2) + 1
-        this.tiledMapWidth = 65;
-        this.tiledMapHeight = 65;
+        this.tiledMapWidth = 9;
+        this.tiledMapHeight = 9;
         this.fullMapWidth = this.tiledMapWidth * this.tiledMapsWide;
         this.fullMapHeight = this.tiledMapHeight * this.tiledMapsHigh;
         this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
@@ -103,20 +103,24 @@ var MapLayer = cc.Layer.extend({
 
             switch (true) {
                 case (terrainAsInt < 0):
-                    this.terrainArray[i] = 320; //sand
+                    //this.terrainArray[i] = 320; //sand
+                    this.terrainArray[i] = 191; //grass
                     break;
                 case (terrainAsInt == 0):
-                    this.terrainArray[i] = 323; //water
-                    this.collisionArray[i] = 1;
+                    //this.terrainArray[i] = 323; //water
+                    //this.collisionArray[i] = 1;
+                    this.terrainArray[i] = 191; //grass
                     break;
                 case (terrainAsInt == 1):
-                    this.terrainArray[i] = 320; //sand
+                    //this.terrainArray[i] = 320; //sand
+                    this.terrainArray[i] = 191; //grass
                     break;
                 case (terrainAsInt == 2):
                     this.terrainArray[i] = 191; //grass
                     break;
                 case (terrainAsInt == 3):
-                    this.terrainArray[i] = 326; //earth
+                    //this.terrainArray[i] = 326; //earth
+                    this.terrainArray[i] = 191; //grass
                     break;
                 case (terrainAsInt > 3):
                     this.terrainArray[i] = 191; //grass again
@@ -394,7 +398,6 @@ var MapLayer = cc.Layer.extend({
                             this.terrainArray[i] = qlpr;
                             corrections++;
                             if (q == 323) {
-                                console.log("water left, sand right. adding to collision Array");
                                 this.collisionArray[i] = 1;
                             }
                         }

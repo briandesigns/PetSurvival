@@ -65,48 +65,85 @@ function CreateGraph(fullMapTileCount, fullMapWidth, collisionArray) {
     }
     //cc.log("There are " + validStartTiles.length + " valid start tiles");
 
-    //Pick some at random
+    //Pick some at random and set up a 2d array that tracks the distance between each of them
     var chosenRandomTiles = [];
     var numberOfRandomTiles = 10;
+    var distanceBetweenRandomTiles = new Array(numberOfRandomTiles);
+
     for (i=0; i<numberOfRandomTiles; i++) {
         chosenRandomTiles.push(validStartTiles[parseInt(Math.random()*validStartTiles.length)]);
+        distanceBetweenRandomTiles[i] = new Array(numberOfRandomTiles);
     }
-    //cc.log("Random tiles chosen: " + chosenRandomTiles);
+    cc.log("Random tiles chosen: " + chosenRandomTiles);
 
-    var testTile = 0;
-    var distance = new Array(fullMapTileCount);
+    //Run BFS on each of the randomly chosen tiles
+    for (i=0; i<numberOfRandomTiles; i++) {
+        //console.log("##################Checking new random tile " + i + ": " + chosenRandomTiles[i]);
+        //Copy our edgesFromArray so that we can mutate it
+        var edgesFromCopy = new Array(fullMapTileCount);
+        for (j=0; j<edgesFromCopy.length; j++) {
+            if (edgesFrom[j]) {
+                edgesFromCopy[j] = edgesFrom[j].slice();
+            }
+        }
 
-    for (i=0; i<distance.length; i++) {
-        distance[i] = Infinity;
-    }
+        var root = chosenRandomTiles[i];
+        var distance = new Array(fullMapTileCount);
 
-    var queue = [];
-    distance[testTile] = 0;
-    queue.push(testTile);
+        for (j=0; j<distance.length; j++) {
+            distance[j] = Infinity;
+        }
 
-    while (queue.length > 0) {
-        var current = queue.shift();
-        console.log("Dequeued " + current + " with edges " + edgesFrom[current]);
-        console.log("[" + queue + "]");
+        var queue = [];
+        distance[root] = 0;
+        queue.push(root);
+        //console.log("Enqueued " + root);
+        //console.log("[" + queue + "]");
 
-        for (i=0; i<edgesFrom[current].length; i++) {
-            //console.log("i is " + i);
-            var next = edgesFrom[current][i];
-            //console.log("Picked " + next + " with edges " + edgesFrom[next]);
+        while (queue.length > 0) {
+            var current = queue.shift();
+            //console.log("Dequeued " + current + " with edges " + edgesFromCopy[current]);
+            //console.log("[" + queue + "]");
 
-            if (distance[next] == Infinity) {
-                distance[next] = distance[current] + 1;
-                console.log(next + " has distance: " + distance[next]);
-                //remove edge from each edge array
-                edgesFrom[current].splice(edgesFrom[current].indexOf(next), 1);
-                edgesFrom[next].splice(edgesFrom[next].indexOf(current), 1);
-                i--;
-                queue.push(next);
-                console.log("Enqueued " + next);
-                console.log("[" + queue + "]");
+            for (j=0; j<edgesFromCopy[current].length; j++) {
+                var next = edgesFromCopy[current][j];
+                //console.log("Picked " + next + " with edges " + edgesFromCopy[next]);
+
+                if (distance[next] == Infinity) {
+                    distance[next] = distance[current] + 1;
+                    if (chosenRandomTiles.indexOf(next) > -1) {
+                        distanceBetweenRandomTiles[chosenRandomTiles.indexOf(root)][chosenRandomTiles.indexOf(next)] = distance[next];
+                        distanceBetweenRandomTiles[chosenRandomTiles.indexOf(next)][chosenRandomTiles.indexOf(root)] = distance[next];
+                        //cc.log("Distance from " + coordinateAtTileIndex(root, fullMapWidth) + " to " + coordinateAtTileIndex(next, fullMapWidth) + " is " + distance[next]);
+                    }
+                    //console.log(next + " has distance: " + distance[next]);
+                    //remove edge from each edge array
+                    edgesFromCopy[current].splice(edgesFromCopy[current].indexOf(next), 1);
+                    j--;
+                    queue.push(next);
+                    //console.log("Enqueued " + next);
+                    //console.log("[" + queue + "]");
+                }
             }
         }
     }
+
+    var maximumDistance = 0;
+    var startTile = null;
+    var endTile = null;
+
+    for (i=0; i<distanceBetweenRandomTiles.length; i++) {
+        for (j=0; j<distanceBetweenRandomTiles.length; j++) {
+            if (distanceBetweenRandomTiles[i][j] > maximumDistance) {
+                maximumDistance = distanceBetweenRandomTiles[i][j];
+                startTile = chosenRandomTiles[i];
+                endTile = chosenRandomTiles[j];
+            }
+        }
+        console.log(coordinateAtTileIndex(chosenRandomTiles[i], fullMapWidth));
+    }
+
+    console.log("Start tile should be " + coordinateAtTileIndex(startTile, fullMapWidth) + " and end tile " + coordinateAtTileIndex(endTile, fullMapWidth) + " with distance " + maximumDistance);
 
 /*
     var minimumDistance = new Array(graph.nodes.length);
@@ -212,4 +249,10 @@ function CreateGraph(fullMapTileCount, fullMapWidth, collisionArray) {
         console.log(k);
     }
     console.log("done");*/
+}
+
+function coordinateAtTileIndex(tileIndex, fullMapWidth) {
+    var xTile = tileIndex % fullMapWidth;
+    var yTile = parseInt(tileIndex / fullMapWidth);
+    return "(" + xTile + "," + yTile + ")";
 }
