@@ -16,46 +16,46 @@ var BoundLayer = cc.Layer.extend({
     init: function () {
         this._super();
 
-        var leftWall = new cp.Body(MAX_INT, cp.momentForBox(1, 64, 32 * 65));
+        var leftWall = new cp.Body(MAX_INT, cp.momentForBox(1, 64, 32 * this.mapLayer.fullMapHeight));
         leftWall.setAngVel(0);
         leftWall.setMoment(MAX_INT);
-        var shape = new cp.BoxShape(leftWall, 64, 32 * 65);
+        var shape = new cp.BoxShape(leftWall, 64, 32 * this.mapLayer.fullMapHeight);
         shape.setCollisionType(COLLISION_TYPE.wall);
         shape.setSensor(false);
         this.space.addBody(leftWall);
         this.space.addShape(shape);
-        leftWall.setPos(cc.p(-32, 65 * 32 / 2));
+        leftWall.setPos(cc.p(-32, this.mapLayer.fullMapHeight * 32 / 2));
 
-        var rightWall = new cp.Body(MAX_INT, cp.momentForBox(1, 64, 32 * 65));
+        var rightWall = new cp.Body(MAX_INT, cp.momentForBox(1, 64, 32 * this.mapLayer.fullMapHeight));
         rightWall.setAngVel(0);
         rightWall.setMoment(MAX_INT);
-        var shape2 = new cp.BoxShape(rightWall, 64, 32 * 65);
+        var shape2 = new cp.BoxShape(rightWall, 64, 32 * this.mapLayer.fullMapHeight);
         shape2.setCollisionType(COLLISION_TYPE.wall);
         shape2.setSensor(false);
         shape2.setElasticity(0);
         this.space.addBody(rightWall);
         this.space.addShape(shape2);
-        rightWall.setPos(cc.p(65 * 32 + 32, 65 * 32 / 2));
+        rightWall.setPos(cc.p(this.mapLayer.fullMapWidth * 32 + 32, this.mapLayer.fullMapHeight * 32 / 2));
 
-        var topWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32 * 65 + 128, 64));
+        var topWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32 * this.mapLayer.fullMapWidth + 128, 64));
         topWall.setAngVel(0);
         topWall.setMoment(MAX_INT);
-        var shape3 = new cp.BoxShape(topWall, 32 * 65 + 128, 64);
+        var shape3 = new cp.BoxShape(topWall, 32 * this.mapLayer.fullMapWidth + 128, 64);
         shape3.setCollisionType(COLLISION_TYPE.wall);
         shape3.setSensor(false);
         this.space.addBody(topWall);
         this.space.addShape(shape3);
-        topWall.setPos(cc.p(65 * 32 / 2, 65 * 32 + 32));
+        topWall.setPos(cc.p(this.mapLayer.fullMapWidth * 32 / 2, this.mapLayer.fullMapHeight * 32 + 32));
 
-        var bottomWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32 * 65 + 128, 64));
+        var bottomWall = new cp.Body(MAX_INT, cp.momentForBox(1, 32 * this.mapLayer.fullMapWidth + 128, 64));
         bottomWall.setAngVel(0);
         bottomWall.setMoment(MAX_INT);
-        var shape4 = new cp.BoxShape(bottomWall, 32 * 65 + 128, 64);
+        var shape4 = new cp.BoxShape(bottomWall, 32 * this.mapLayer.fullMapWidth + 128, 64);
         shape4.setCollisionType(COLLISION_TYPE.wall);
         shape4.setSensor(false);
         this.space.addBody(bottomWall);
         this.space.addShape(shape4);
-        bottomWall.setPos(cc.p(65 * 32 / 2, -32));
+        bottomWall.setPos(cc.p(this.mapLayer.fullMapWidth * 32 / 2, -32));
 
         this.unusedCollisionArrayTiles = this.mapLayer.collisionArray.slice();
 

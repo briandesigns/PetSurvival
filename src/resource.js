@@ -24,11 +24,13 @@ var res = {
     character_dryer_png : "res/character/dryer.png",
     character_can_png : "res/character/can.png",
     character_vacuum_png : "res/character/vacuum.png",
+    character_boss_png : "res/character/boss.png",
     spawn_cave_png: "res/spawn/cave.png",
     spawn_can_png: "res/spawn/CanSpawn.png",
     spawn_dryer_png: "res/spawn/DryerSpawn.png",
     spawn_hydrant_png: "res/spawn/HydrantSpawn.png",
     spawn_vacuum_png: "res/spawn/VacuumSpawn.png",
+    spawn_boss_png: "res/spawn/BossSpawn.png",
     spawn_red_flag_png: "res/spawn/redFlag.png",
     spawn_blue_flag_png: "res/spawn/blueFlag.png",
     object_food_png: "res/object/Food.png",
@@ -36,8 +38,38 @@ var res = {
     object_hit_point_png: "res/object/HitPoint.png",
     object_speed_point_png: "res/object/SpeedPoint.png",
     object_pine_cone_png: "res/object/PineCone.png",
-    hud_inventory_png: "res/hud/inventory.png"
+    hud_inventory_png: "res/hud/inventory.png",
 
+    rabbit_png  : "res/character/spriteSheet/rabbit.png",
+    rabbit_plist : "res/character/spriteSheet/rabbit.plist",
+
+    dog_png  : "res/character/spriteSheet/dog.png",
+    dog_plist : "res/character/spriteSheet/dog.plist",
+
+    cat_png  : "res/character/spriteSheet/cat.png",
+    cat_plist : "res/character/spriteSheet/cat.plist",
+
+    pig_png  : "res/character/spriteSheet/pig.png",
+    pig_plist : "res/character/spriteSheet/pig.plist",
+
+    vacuum_png  : "res/character/spriteSheet/vacuum.png",
+    vacuum_plist : "res/character/spriteSheet/vacuum.plist",
+
+    can_png  : "res/character/spriteSheet/can.png",
+    can_plist : "res/character/spriteSheet/can.plist",
+
+    hydrant_png  : "res/character/spriteSheet/hydrant.png",
+    hydrant_plist : "res/character/spriteSheet/hydrant.plist",
+
+    dryer_png  : "res/character/spriteSheet/dryer.png",
+    dryer_plist : "res/character/spriteSheet/dryer.plist",
+
+    boss_png  : "res/character/spriteSheet/boss.png",
+    boss_plist : "res/character/spriteSheet/boss.plist",
+
+    object_super_speed_png: "res/object/SuperSpeedPoint.png",
+    object_super_health_png: "res/object/SuperHealthPoint.png",
+    object_super_hit_png: "res/object/SuperHitPoint.png"
 };
 
 var g_resources = [

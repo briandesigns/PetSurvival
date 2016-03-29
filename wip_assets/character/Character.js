@@ -20,6 +20,10 @@ var Character = cc.Node.extend({
     downAction:null,
     leftAction:null,
     rightAction:null,
+    upAttack: null,
+    downAttack: null,
+    leftAttack: null,
+    rightAttack: null,
     direction: null,
     /***/
 
@@ -114,6 +118,46 @@ var Character = cc.Node.extend({
         //to do: attacking animation
         //attacking animation
 
+        animframes = [];
+        str = name + "-up-move.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        str = name + "-up-attack.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        var attack = new cc.Animation(animframes, 0.2);
+        this.upAttack = new cc.Sequence(new cc.Animate(attack));
+
+        animframes = [];
+        str = name + "-down-move.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        str = name + "-down-attack.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        attack = new cc.Animation(animframes, 0.2);
+        this.downAttack = new cc.Sequence(new cc.Animate(attack));
+
+        animframes = [];
+        str = name + "-left-move.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        str = name + "-left-attack.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        attack = new cc.Animation(animframes, 0.2);
+        this.leftAttack = new cc.Sequence(new cc.Animate(attack));
+
+        animframes = [];
+        str = name + "-right-move.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        str = name + "-right-attack.png" ;
+        frame = cc.spriteFrameCache.getSpriteFrame(str);
+        animframes.push(frame);
+        attack = new cc.Animation(animframes, 0.2);
+        this.rightAttack = new cc.Sequence(new cc.Animate(attack));
+
     },
 
     maximizeHealth: function () {
@@ -168,11 +212,9 @@ var Character = cc.Node.extend({
         //this.shape = null;
         //this.sprite.removeFromParent();
         //this.sprite = null;
-        this.getParent().removeChild(this);
-        //this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
 
     },
-
 
     removeCollisionByChar: function(char) {
         for (var i = 0; i < this.collisionList.length; i++) {
@@ -184,7 +226,18 @@ var Character = cc.Node.extend({
     },
 
     attackEnemies: function() {
-
+        if(this.direction == "up") {
+            this.sprite.runAction(this.upAttack);
+        }
+        else if(this.direction == "left") {
+            this.sprite.runAction(this.leftAttack);
+        }
+        else if(this.direction == "right") {
+            this.sprite.runAction(this.rightAttack);
+        }
+        else {
+            this.sprite.runAction(this.downAttack);
+        }
         for (var i =0; i < this.collisionList.length; i++) {
             this.collisionList[i].health-=this.hitPoint;
         }

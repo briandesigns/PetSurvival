@@ -1,36 +1,55 @@
-var loadPlayerChar = function (space, itemLayer) {
-    var char = loadChar(space, itemLayer, "playerChar");
-    cc.log("inventory lenght is:" + char.inventory.length);
+var loadPlayerChar = function (space, itemLayer, boss) {
+    var char = loadChar(space, itemLayer, boss + "playerChar");
+    cc.log("inventory length is:" + char.inventory.length);
     for (var i = 0; i < char.inventory.length; i++) {
         cc.log("player has inventory type:" + char.inventory[i].itemType);
     }
     return char;
 };
 
-var loadItems = function (space) {
+var loadItems = function (space, boss) {
     var dict = cc.sys.localStorage;
     var itemList = [];
-    var itemCount = dict.getItem("itemCount");
+    var itemCount = dict.getItem(boss + "itemCount");
 
     for (var i = 0; i < itemCount; i++) {
         var item;
-        var string = dict.getItem("item" + i);
+        var string = dict.getItem(boss + "item" + i);
         cc.log("loading: " + string);
         var tokens = string.split(",");
         var posTokens = tokens[3].split(";");
-        switch (parseInt(tokens[2])) {
-            case ITEM_TYPE.healthBoost:
-                item = new HealthBoostItem(space);
-                break;
-            case ITEM_TYPE.healthPoint:
-                item = new HealthPointItem(space);
-                break;
-            case ITEM_TYPE.speed:
-                item = new SpeedItem(space);
-                break;
-            case ITEM_TYPE.hitPoint:
-                item = new HitPointItem(space);
-                break;
+        var isSuper = tokens[4];
+        var isPlaced = tokens[5];
+        if (isSuper == "true") {
+            switch (parseInt(tokens[2])) {
+                case ITEM_TYPE.healthPoint:
+                    item = new SuperHealthPointItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+                case ITEM_TYPE.speed:
+                    item = new SuperSpeedItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    item = new SuperHitPointItem(space);
+                    item.isPlaced = isPlaced;
+                    break;
+            }
+        } else {
+            switch (parseInt(tokens[2])) {
+                case ITEM_TYPE.healthBoost:
+                    item = new HealthBoostItem(space);
+                    break;
+                case ITEM_TYPE.healthPoint:
+                    item = new HealthPointItem(space);
+                    break;
+                case ITEM_TYPE.speed:
+                    item = new SpeedItem(space);
+                    break;
+                case ITEM_TYPE.hitPoint:
+                    item = new HitPointItem(space);
+                    break;
+            }
         }
         item.itemID = parseInt(tokens[1]);
         item.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
@@ -39,12 +58,12 @@ var loadItems = function (space) {
     return itemList;
 };
 
-var loadEnemies = function (space, itemLayer) {
+var loadEnemies = function (space, itemLayer, boss) {
     var dict = cc.sys.localStorage;
     var spawnList = [];
-    var spawnCount = parseInt(dict.getItem("spawnCount"));
+    var spawnCount = parseInt(dict.getItem(boss + "spawnCount"));
     for (var i = 0; i < spawnCount; i++) {
-        var spawnString = dict.getItem("spawn" + i);
+        var spawnString = dict.getItem(boss + "spawn" + i);
         cc.log("loading: " + spawnString);
         var spawnTokens = spawnString.split(",");
         var posTokens = spawnTokens[2].split(";");
@@ -63,45 +82,50 @@ var loadEnemies = function (space, itemLayer) {
             case SPAWN_TYPE.vacuum:
                 spawn = new VacuumSpawn(space);
                 break;
+            case SPAWN_TYPE.boss:
+                spawn = new BossSpawn(space);
+                break;
         }
         spawn.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
         spawn.health = parseInt(spawnTokens[3]);
         spawnList.push(spawn);
     }
     for (var j = 0; j < spawnList.length; j++) {
-        var enemyCount = parseInt(dict.getItem("enemy" + j + "Count"));
+        var enemyCount = parseInt(dict.getItem(boss + "enemy" + j + "Count"));
         spawnList[j].enemyList = [];
         for (var k = 0; k < enemyCount; k++) {
-            var enemy = loadChar(space, itemLayer, "enemy"+j+"-"+k);
+            var enemy = loadChar(space, itemLayer, boss + "enemy"+j+"-"+k);
             spawnList[j].enemyList.push(enemy);
         }
     }
     return spawnList;
 };
 
-var loadLocations = function (space) {
+var loadLocations = function (space, boss) {
     var dict = cc.sys.localStorage;
-    var startString = dict.getItem("start");
+    var startString = dict.getItem(boss + "start");
     var startTokens = startString.split(",");
     var posTokens = startTokens[1].split(";");
     var start = new StartPoint(space);
     start.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
-    var endString = dict.getItem("end");
+    var endString = dict.getItem(boss + "end");
     var endTokens = endString.split(",");
     posTokens = endTokens[1].split(";");
     var end = new EndPoint(space);
     end.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+    cc.log("loading: " + startString);
+    cc.log("loading: " + endString);
     return {start: start, end: end};
 };
 
-var loadTmxMap = function () {
+var loadTmxMap = function (boss) {
     var dict = cc.sys.localStorage;
 
     var mapAsTmxStrings = [];
-    var tmxMapCount = dict.getItem("tmxMapCount");
+    var tmxMapCount = dict.getItem(boss + "tmxMapCount");
 
     for (var i = 0; i < tmxMapCount; i++) {
-        var tmxMap = dict.getItem("tmxMap" + i);
+        var tmxMap = dict.getItem(boss + "tmxMap" + i);
         cc.log("loading: tmxMap " + i);
         mapAsTmxStrings.push(tmxMap);
     }
@@ -109,38 +133,38 @@ var loadTmxMap = function () {
     return mapAsTmxStrings;
 };
 
-var loadCollisionArray = function () {
+var loadCollisionArray = function (boss) {
     var dict = cc.sys.localStorage;
 
-    var collisionArrayString = dict.getItem("collisionArray");
+    var collisionArrayString = dict.getItem(boss + "collisionArray");
     var collisionArray = collisionArrayString.split(";");
 
     return collisionArray;
 };
 
-var loadTiledMapsWide = function () {
+var loadTiledMapsWide = function (boss) {
     var dict = cc.sys.localStorage;
-    return dict.getItem("tiledMapsWide");
+    return dict.getItem(boss + "tiledMapsWide");
 };
 
-var loadTiledMapsHigh = function () {
+var loadTiledMapsHigh = function (boss) {
     var dict = cc.sys.localStorage;
-    return dict.getItem("tiledMapsHigh");
+    return dict.getItem(boss + "tiledMapsHigh");
 };
 
-var loadTiledMapWidth = function () {
+var loadTiledMapWidth = function (boss) {
     var dict = cc.sys.localStorage;
-    return dict.getItem("tiledMapWidth");
+    return dict.getItem(boss + "tiledMapWidth");
 };
 
-var loadTiledMapHeight = function () {
+var loadTiledMapHeight = function (boss) {
     var dict = cc.sys.localStorage;
-    return dict.getItem("tiledMapHeight");
+    return dict.getItem(boss + "tiledMapHeight");
 };
 
-var loadTotalTiledMaps = function () {
+var loadTotalTiledMaps = function (boss) {
     var dict = cc.sys.localStorage;
-    return dict.getItem("totalTiledMaps");
+    return dict.getItem(boss + "totalTiledMaps");
 
 };
 
@@ -159,7 +183,7 @@ var buildInventory = function (invTokens, itemLayer) {
 var loadChar = function (space, itemLayer, dictName) {
     var dict = cc.sys.localStorage;
     var string = dict.getItem(dictName);
-    cc.log("loading : " + string);
+    cc.log("loading: " + string);
     var tokens = string.split(",");
     var posTokens = tokens[2].split(";");
     var invTokens = tokens[7].split(";");

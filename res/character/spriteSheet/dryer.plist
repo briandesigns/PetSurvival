@@ -33,15 +33,15 @@
             <key>dryer-down-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1975,1},{833,962}}</string>
+                <string>{{2939,1},{833,862}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{833,962}}</string>
+                <string>{{0,0},{833,862}}</string>
                 <key>sourceSize</key>
-                <string>{833,962}</string>
+                <string>{833,862}</string>
             </dict>
             <key>dryer-left-attack.png</key>
             <dict>
@@ -72,15 +72,15 @@
             <key>dryer-left-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1,1},{985,880}}</string>
+                <string>{{2020,836},{653,881}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{166,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{985,880}}</string>
+                <string>{{332,0},{653,881}}</string>
                 <key>sourceSize</key>
-                <string>{985,880}</string>
+                <string>{985,881}</string>
             </dict>
             <key>dryer-right-attack.png</key>
             <dict>
@@ -111,20 +111,20 @@
             <key>dryer-right-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{988,1},{985,880}}</string>
+                <string>{{2903,836},{653,881}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{-166,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{985,880}}</string>
+                <string>{{0,0},{653,881}}</string>
                 <key>sourceSize</key>
-                <string>{985,880}</string>
+                <string>{985,881}</string>
             </dict>
             <key>dryer-up-attack.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2939,1},{581,1133}}</string>
+                <string>{{1,883},{581,1133}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>dryer-up-move.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2939,1},{581,1133}}</string>
+                <string>{{1,883},{581,1133}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -150,15 +150,15 @@
             <key>dryer-up-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2939,1},{581,1133}}</string>
+                <string>{{1136,883},{455,882}}</string>
                 <key>offset</key>
-                <string>{0,0}</string>
+                <string>{0,51}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{581,1133}}</string>
+                <string>{{0,1},{455,882}}</string>
                 <key>sourceSize</key>
-                <string>{581,1133}</string>
+                <string>{455,986}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -172,9 +172,9 @@
             <key>realTextureFileName</key>
             <string>dryer.png</string>
             <key>size</key>
-            <string>{4073,882}</string>
+            <string>{3802,1491}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:75aa4c5f9d4633b41f796e09f78f1b18:49f9568046ad263de675d8e141c40b29:916532c2b47a93c1a53cf4c0ecacdd7d$</string>
+            <string>$TexturePacker:SmartUpdate:efc9744ea6323abf553b9210d1ef0702:b5b11d11e0fc8210f56c3cbc18d1ad8e:916532c2b47a93c1a53cf4c0ecacdd7d$</string>
             <key>textureFileName</key>
             <string>dryer.png</string>
         </dict>

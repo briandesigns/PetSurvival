@@ -39,6 +39,7 @@ if (typeof COLLISION_TYPE == "undefined") {
     COLLISION_TYPE.start = 6;
     COLLISION_TYPE.wall = 7;
     COLLISION_TYPE.projectile = 8;
+    COLLISION_TYPE.bossSpawn = 9;
 
 }
 
@@ -51,7 +52,7 @@ if (typeof SPAWN_TYPE == "undefined") {
     SPAWN_TYPE.dryer = 1;
     SPAWN_TYPE.hydrant = 2;
     SPAWN_TYPE.vacuum = 3;
-    SPAWN_TYPE.cave = 4;
+    SPAWN_TYPE.boss = 4;
 }
 
 //character Types
@@ -65,6 +66,7 @@ if (typeof CHAR_TYPE == "undefined") {
     CHAR_TYPE.dryer = 5;
     CHAR_TYPE.hydrant = 6;
     CHAR_TYPE.vacuum = 7;
+    CHAR_TYPE.boss = 8;
 }
 
 //player character stats
@@ -105,7 +107,7 @@ if (typeof ITEM_STATS == "undefined") {
     ITEM_STATS.healthPointBenefit = 10;
     ITEM_STATS.hitPointBenefit = 5;
     ITEM_STATS.speedBoost = 0.2;
-    ITEM_STATS.pineConeDamage = 20;
+    ITEM_STATS.pineConeDamage = 50;
 }
 
 //map size

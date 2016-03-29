@@ -10,7 +10,9 @@ var LocationLayer = cc.Layer.extend({
         this.mapLayer = mapLayer;
         if (locations != null) {
             this.start = locations.start;
+            cc.log("Start position:" +this.start);
             this.end = locations.end;
+            cc.log("End position:" + this.end);
         }
         this.init();
     },
@@ -18,12 +20,12 @@ var LocationLayer = cc.Layer.extend({
     init: function () {
         if (this.start == null && this.end == null) {
             this.start = new StartPoint(this.space);
-            this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(135).x, this.mapLayer.coordinateAtTileIndex(135).y));
-            this.addChild(this.start.sprite);
+            this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(150).x, this.mapLayer.coordinateAtTileIndex(150).y));
             this.end = new EndPoint(this.space);
-            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(4150).x , this.mapLayer.coordinateAtTileIndex(4150).y));
-            this.addChild(this.end.sprite);
+            this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(155).x , this.mapLayer.coordinateAtTileIndex(155).y));
         }
+        this.addChild(this.end.sprite);
+        this.addChild(this.start.sprite);
     }
 });
 
