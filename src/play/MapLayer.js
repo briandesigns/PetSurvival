@@ -128,7 +128,7 @@ var MapLayer = cc.Layer.extend({
             }
         }
 
-        console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
+        //console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
 
         this.smoothTiles(320,323,256,277,279,278,258,257,342,340,300,298,299,341,319,321); //water/sand smoothing
         this.smoothTiles(320,191,253,274,276,275,255,254,339,337,297,295,296,338,316,318); //sand/grass smoothing
@@ -136,6 +136,8 @@ var MapLayer = cc.Layer.extend({
 
         this.varyAndAddFeatures();
 
+        CreateGraph(this.fullMapTileCount, this.fullMapWidth, this.collisionArray);
+        
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(this.totalTiledMaps);
         for (var i = 0; i < this.totalTiledMaps; i++) {
