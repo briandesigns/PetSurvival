@@ -136,8 +136,6 @@ var MapLayer = cc.Layer.extend({
 
         this.varyAndAddFeatures();
 
-        CreateGraph(this.fullMapTileCount, this.fullMapWidth, this.collisionArray);
-        
         //an array of empty tiled map data arrays
         var tiledMapData = new Array(this.totalTiledMaps);
         for (var i = 0; i < this.totalTiledMaps; i++) {
@@ -394,7 +392,6 @@ var MapLayer = cc.Layer.extend({
                             this.terrainArray[i] = qlpr;
                             corrections++;
                             if (q == 323) {
-                                console.log("water left, sand right. adding to collision Array");
                                 this.collisionArray[i] = 1;
                             }
                         }
