@@ -26,7 +26,7 @@ init: function () {
             var spawn = this.enemySpawnList[i];
             this.addChild(spawn.sprite);
             for (var j = 0; j < spawn.enemyList.length; j++) {
-                var enemy = spawn.enemyList[j];x
+                var enemy = spawn.enemyList[j];
                 this.addChild(enemy.sprite);
             }
         }
@@ -39,9 +39,9 @@ init: function () {
         this.enemySpawnList[1] = new DryerSpawn(this.space);
         this.enemySpawnList[2] = new CanSpawn(this.space);
         this.enemySpawnList[3] = new VacuumSpawn(this.space);
-        //this.enemySpawnList[4] = new BossSpawn(this.space);
-        //this.enemySpawnList[5] = new BossSpawn(this.space);
-        //this.enemySpawnList[6] = new BossSpawn(this.space);
+        this.enemySpawnList[4] = new BossSpawn(this.space);
+        this.enemySpawnList[5] = new BossSpawn(this.space);
+        this.enemySpawnList[6] = new BossSpawn(this.space);
 
         var spawnLocations = this.funChecker.objectLocations;
 
