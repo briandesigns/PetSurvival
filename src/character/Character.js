@@ -261,7 +261,7 @@ var Character = cc.Class.extend({
                     (cc.director.getWinSize().height * 10))) ;
             }
         } else if (item.itemType === ITEM_TYPE.pineCone){
-            this.projectileCount+=20;
+            this.projectileCount+=15;
             item.body.setPos(cc.p((cc.director.getWinSize().width * 10),
                 (cc.director.getWinSize().height * 10)));
         } else {
