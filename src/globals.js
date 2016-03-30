@@ -97,7 +97,7 @@ if (typeof SPAWN_STATS == "undefined") {
     SPAWN_STATS.baseHealth = 500;
     SPAWN_STATS.baseHealthPoint = 500;
     SPAWN_STATS.baseCapacity = 5;
-    SPAWN_STATS.baseSpriteScale = 0.07;
+    SPAWN_STATS.baseSpriteScale = 0.06;
 }
 
 //item stats
