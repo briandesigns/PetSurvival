@@ -52,6 +52,30 @@ var PlayScene = cc.Scene.extend({
             this.collisionEnemyItemBegin.bind(this), null, null);
         this.space.addCollisionHandler(COLLISION_TYPE.projectile, COLLISION_TYPE.enemy,
             this.collisionProjectileEnemyBegin.bind(this), null, this.collisionProjectileEnemyEnd.bind(this));
+        this.space.addCollisionHandler(COLLISION_TYPE.player, COLLISION_TYPE.bounds,
+            this.collisionPlayerBoundsBegin.bind(this), null, null);
+    },
+
+    collisionPlayerBoundsBegin: function (arbiter, space) {
+        var shapes = arbiter.getShapes();
+        var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
+        cc.log("player bounds collision");
+        playerCharacter.sprite.stopAllActions();
+        switch (playerCharacter.direction) {
+            case "up":
+                playerCharacter.body.setPos(cc.p(playerCharacter.sprite.getPositionX(), playerCharacter.sprite.getPositionY()-4));
+                break;
+            case "down":
+                playerCharacter.body.setPos(cc.p(playerCharacter.sprite.getPositionX(), playerCharacter.sprite.getPositionY()+4));
+                break;
+            case "left":
+                playerCharacter.body.setPos(cc.p(playerCharacter.sprite.getPositionX()+4, playerCharacter.sprite.getPositionY()));
+                break;
+            case "right":
+                playerCharacter.body.setPos(cc.p(playerCharacter.sprite.getPositionX()-4, playerCharacter.sprite.getPositionY()));
+                break;
+        }
+        return true;
     },
 
     collisionProjectileEnemyBegin: function (arbiter, space) {
