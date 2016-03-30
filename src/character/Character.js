@@ -291,7 +291,7 @@ var Character = cc.Class.extend({
             }
             this.inventory.splice(itemNumber-1,1);
             item.body.setPos(cc.p(this.body.p.x ,
-                this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.5));
+                this.body.p.y+this.sprite.getContentSize().height*this.spriteScale*1.3+7));
             return true;
         }
         else {
