@@ -3,13 +3,16 @@ var ItemLayer = cc.Layer.extend({
     itemList: null,
     isCave: null,
     mapLayer: null,
+    funChecker: null,
 
-    ctor: function (space, mapLayer, itemList, isCave) {
+
+    ctor: function (space, mapLayer, itemList, isCave, funChecker) {
         this._super();
         this.space = space;
         this.mapLayer = mapLayer;
         this.itemList = itemList;
         this.isCave = isCave;
+        this.funChecker = funChecker;
         this.init();
     },
     init: function () {
@@ -35,29 +38,29 @@ var ItemLayer = cc.Layer.extend({
         } else {
             for (var i = 0; i < 15; i++) {
                 this.itemList[i] = new HealthBoostItem(this.space);
-                this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
-                    1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+                var coords = this.getRandomFreeTileLocation();
+                this.itemList[i].body.setPos(cc.p(coords.x,coords.y)) ;
                 this.itemList[i].itemID = i;
                 this.addChild(this.itemList[i].sprite);
             }
             for (i = 15; i<20; i++) {
                 this.itemList[i] = new HealthPointItem(this.space);
-                this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
-                    1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+                coords = this.getRandomFreeTileLocation();
+                this.itemList[i].body.setPos(cc.p(coords.x,coords.y)) ;
                 this.itemList[i].itemID = i;
                 this.addChild(this.itemList[i].sprite);
             }
             for (i = 20; i<25; i++) {
                 this.itemList[i] = new HitPointItem(this.space);
-                this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
-                    1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+                coords = this.getRandomFreeTileLocation();
+                this.itemList[i].body.setPos(cc.p(coords.x,coords.y)) ;
                 this.itemList[i].itemID = i;
                 this.addChild(this.itemList[i].sprite);
             }
             for ( i = 25; i<30; i++) {
                 this.itemList[i] = new SpeedItem(this.space);
-                this.itemList[i].body.setPos(cc.p(1000 + (Math.random()*1000) - (Math.random()*1000),
-                    1000+ (Math.random()*1000) - (Math.random()*1000))) ;
+                coords = this.getRandomFreeTileLocation();
+                this.itemList[i].body.setPos(cc.p(coords.x,coords.y)) ;
                 this.itemList[i].itemID = i;
                 this.addChild(this.itemList[i].sprite);
             }
@@ -105,7 +108,11 @@ var ItemLayer = cc.Layer.extend({
                 return item;
             }
         }
-    }
+    },
 
+    getRandomFreeTileLocation: function () {
+        var tile = this.funChecker.freeTiles[Math.floor(Math.random() * this.funChecker.freeTiles.length) - 1];
+        return this.mapLayer.coordinateAtTileIndex(tile);
+    }
 });
 

@@ -217,9 +217,9 @@ var BossScene = cc.Scene.extend({
             this.playerLayer.player.character.score += this.trash[i].healthPoint;
             this.hudLayer.updateScore();
             this.trash[i].die();
+            this.trash = [];
             this.removeAllChildren(true);
             cc.director.runScene(new PlayScene("boss"));
-            this.trash = [];
         }
     },
 
@@ -242,7 +242,7 @@ var BossScene = cc.Scene.extend({
         this.hudLayer = new HudLayer();
 
         this.mapLayer = new CaveMapLayer(this.space);
-        this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true);
+        this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true, null);
         var chosenChar ;
         switch(playerType) {
             case CHAR_TYPE.cat:

@@ -172,7 +172,7 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray, objectsToPos
         }
     }
 
-    return {start: startTile, end: endTile, objectLocations: objectRandomTiles};
+    return {start: startTile, end: endTile, objectLocations: objectRandomTiles, freeTiles: accessibleTiles};
 
 }
 
