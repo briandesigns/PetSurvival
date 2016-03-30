@@ -158,7 +158,7 @@ var BossScene = cc.Scene.extend({
         if (enemy.collisionList.length > 0) {
             enemy.attackEnemies();
             this.hudLayer.updateHealth();
-        } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 100 &&
+        } else if (enemy.distanceFromChar(this.playerLayer.player.character) < 200 &&
             enemy.distanceFromChar(this.playerLayer.player.character) > 10) {
             if (this.hasMovedVertically == true) {
                 if (enemy.body.p.x > this.playerLayer.player.character.body.p.x) {

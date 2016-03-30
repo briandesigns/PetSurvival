@@ -158,9 +158,9 @@ var PlayScene = cc.Scene.extend({
      */
     collisionPlayerEnemySpawnEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
+        var enemySpawn = this.enemyLayer.getSpawnByShape(shapes[1]);
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
-        playerCharacter.removeCollisionByChar(enemy);
+        playerCharacter.removeCollisionByChar(enemySpawn);
         return true;
     },
 

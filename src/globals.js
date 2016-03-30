@@ -76,7 +76,7 @@ if (typeof PLAYER_STATS == "undefined") {
     PLAYER_STATS.baseHealthPoint = 100;
     PLAYER_STATS.inventoryCapacity = 5;
     PLAYER_STATS.baseHitPoint = 15;
-    PLAYER_STATS.baseSpeed = 3.0;
+    PLAYER_STATS.baseSpeed = 2.0;
     PLAYER_STATS.baseSpeedDuration = 0.03;
 }
 
