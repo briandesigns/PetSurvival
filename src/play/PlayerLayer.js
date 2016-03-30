@@ -16,9 +16,9 @@ var PlayerLayer = cc.Layer.extend({
         this.player = new Player(character);
         this.init();
 
-        this._debugNode = new cc.PhysicsDebugNode(this.space);
-        this._debugNode.setVisible(true);
-        this.addChild(this._debugNode, 10);
+        //this._debugNode = new cc.PhysicsDebugNode(this.space);
+        //this._debugNode.setVisible(true);
+        //this.addChild(this._debugNode, 10);
 
     },
     init: function () {
