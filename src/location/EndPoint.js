@@ -1,7 +1,23 @@
 var EndPoint = Location.extend({
-
+   animation : null,
+   
     ctor: function (space) {
-        this._super(COLLISION_TYPE.end, new cc.PhysicsSprite(res.spawn_red_flag_png), 0.1, space);
+        this._super(COLLISION_TYPE.end, new cc.PhysicsSprite(res.EndPoint), 0.2, space);
+        
+        cc.spriteFrameCache.addSpriteFrames(res.human_plist);
+        this.spriteSheet = new cc.SpriteBatchNode(res.human_png);
+
+        var animframes = [];  // (1,2,4,5)
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint1.png"));
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint4.png"));
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint5.png"));
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint2.png"));
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint5.png"));
+        animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint4.png"));
+
+        var anim = new cc.Animation(animframes, 0.5);
+        this.animation = new cc.RepeatForever(new cc.Animate(anim));
+        this.sprite.runAction(this.animation);
     }
 
 });
