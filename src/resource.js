@@ -93,7 +93,11 @@ var res = {
     sound_spawn_destruction : "res/sound/spawn_destruction.mp3",
     sound_item_add : "res/sound/item_add.mp3",
     sound_item_remove : "res/sound/item_remove.mp3",
-    sound_projectile : "res/sound/projectile.wav"
+    sound_projectile : "res/sound/projectile.wav",
+    
+    EndPoint : "res/spawn/EndPoint.png",
+    human_plist : "res/spawn/human.plist",
+    human_png : "res/spawn/human.png"
 };
 
 var g_resources = [
