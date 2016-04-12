@@ -9,7 +9,8 @@
   "engineDir": "frameworks/cocos2d-html5",
   "modules": [
     "cocos2d",
-    "chipmunk"
+    "chipmunk",
+    "extensions"
   ],
   "jsList": [
     "src/resource.js",

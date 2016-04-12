@@ -122,5 +122,22 @@ if (typeof MAP_SIZE == "undefined") {
 var playerType = CHAR_TYPE.dog;
 var chosenMapSize = MAP_SIZE.big;
 
+//websocket properties
+var WebSocket = WebSocket || window.WebSocket || window.MozWebSocket;
+var ws = null;
 
+Events  = {
+    HANDSHAKE_COMPLETE_SUCCESS:1, //When Websocket protocol is confirmed.
+    LOGIN:2, //Login request form the client .
+    LOGIN_DONE:3, //Login is handled , response to client that login is done.
+    NEW_USER_LOGIN_DONE:4, //New User is joined the room.
+    PLAY:5, //Player is done its turn and played.
+    PLAY_DONE:6 //Response to all other player and the current player that the turn is done
+};
 
+var Encode = function(obj) {
+    return JSON.stringify(obj);
+};
+var Decode = function(obj) {
+    return JSON.parse(obj);
+};

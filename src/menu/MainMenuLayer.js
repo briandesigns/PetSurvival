@@ -33,9 +33,45 @@ var MainMenuLayer = cc.Layer.extend({
     },
 
     onPlay: function () {
-        cc.log("==Creating New Game");
-        //cc.director.pushScene(new PlayScene(false));
-        cc.director.runScene(new ChoiceMenuScene());
+        //create a message to send to the server
+        var config = {
+            event:Events.LOGIN,
+            username:"Test"
+        };
+        var message = Encode(config);
+
+        //open WebSocket connection with the server and wait for handshake confirmation
+        try {
+            ws = new WebSocket("ws://localhost:8888/ws");
+
+            // callback when connection is opened (?)
+            ws.onopen = function () {
+                ws.send(message)
+            };
+
+            // Callback when there is a message from the server
+            ws.onmessage = function(e) {
+                console.log("message from server: " + e.data);
+                if (e.data!==null || e.data!== 'undefined') {
+                    var jsonFromClient = Decode(e.data);
+
+                    // Login is successful, start a new game
+                    if(jsonFromClient.event === Events.LOGIN_DONE) {
+                        cc.log("==Creating New Game");
+                        //cc.director.pushScene(new PlayScene(false));
+                        cc.director.runScene(new ChoiceMenuScene());
+                    }
+                }
+            };
+
+            // Callback when connection is closed (?)
+            ws.onclose = function(e) { };
+
+            // Callback when connection encounters an error (?)
+            ws.onerror = function(e) { };
+        } catch (e) {
+            console.error('Sorry, the web socket at "%s" is unavailable', url);
+        }
     },
 
     onLoad: function () {

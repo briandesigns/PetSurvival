@@ -9,7 +9,15 @@ var PlayerLayer = cc.Layer.extend({
     isPaused: null,
     pauseMenuLayer: null,
     inMotion: null,
-    ctor: function (space, character) {
+    jsonData: null,
+    ctor: function (space, character, _jsondata) {
+        this.jsonData = _jsondata;
+        //after successful login we want to take control of the messages coming from the server
+        //so we attach this new callback function to the websocket onmessage
+        ws.onmessage = this.ongamestatus.bind(this);
+        ws.onclose = this.onclose.bind(this);
+        ws.onerror = this.onerror.bind(this);
+
         this._super();
         this.space = space;
         this.isPaused = false;
@@ -23,6 +31,12 @@ var PlayerLayer = cc.Layer.extend({
     },
     init: function () {
         this._super();
+
+        //multiplayer stuff
+        var userName = this.jsonData.username;
+        console.log("Welcome user: " + userName);
+        this.eventHandler(this.jsonData.event);
+
         //create the hero sprite
         this.inMotion = false;
         this.playerList = [];
@@ -197,8 +211,54 @@ var PlayerLayer = cc.Layer.extend({
             this.isPaused = false;
             this.getParent().getParent().removeChild(this.pauseMenuLayer);
         }
-    }
+    },
+    
+    // Multiplayer functions
+    eventHandler:function(event)
+    {
+        switch (event) {
+            case Events.LOGIN_DONE:
+            {
+                console.log("Events: LOGIN_DONE");
+                //this.setupCurrentPlayer();
+                break;
+            }
+            case Events.NEW_USER_LOGIN_DONE:
+            {
+                console.log("Events: NEW_USER_LOGIN_DONE");
+                //this.setupOtherPlayerS();
+                break;
 
+            }
+            case Events.PLAY_DONE:
+            {
+                console.log("EVENTS: PLAY_DONE");
+                //this.setPlayState();
+                break;
+
+            }
+        }
+        console.log("Set turn message.");
+        //this.setTurnMassage();
+    },
+    
+    // Websocket functions
+    ongamestatus:function(e) {
+        console.log("Message from server (now in PlayerLayer: "+e.data);
+        if(e.data!==null || e.data !== 'undefined')
+        {
+            this.jsonData = Decode(e.data);
+            this.eventHandler(this.jsonData.event);
+        }
+    }
+    ,
+
+    onclose:function (e) {
+
+    },
+    onerror:function (e) {
+
+    }
 
 });
 
