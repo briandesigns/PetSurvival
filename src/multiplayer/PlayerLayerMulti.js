@@ -19,7 +19,9 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         this._super();
         this.space = space;
-        this.player = new Player(character);
+        //var id = jsonData.playerID;
+        var id = 1;
+        this.player = new PlayerMulti(id, character);
         //var position = this.jsonData.position
         this.init();
     },
@@ -35,7 +37,6 @@ var PlayerLayerMulti = cc.Layer.extend({
         this.inMotion = false;
         this.playerList = [];
         this.playerList.push(this.player);
-        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
         this.addChild(this.player.character.sprite);
 
         // Setup event listeners for keyboard events
@@ -50,16 +51,16 @@ var PlayerLayerMulti = cc.Layer.extend({
                         console.log(xTile + ", " + yTile);
 
                         if (key.toString() === "37") { //left
-                            this.moveLeft();
+                            this.requestMove("left");
                         } else if (key.toString() === "38") { //up
-                            this.moveUp();
+                            this.requestMove("up");
                         } else if (key.toString() === "40") { //down
-                            this.moveDown();
+                            this.requestMove("down");
                         } else if (key.toString() === "39") { //right
-                            this.moveRight();
+                            this.requestMove("right");
                         } else if (key.toString() === "32") { //space
-                            this.player.character.attackEnemies();
-                        } else if (key.toString() === "49") { //1
+                            this.requestMove("attack");
+                        } /*else if (key.toString() === "49") { //1
                             this.removeItem(1);
                         } else if (key.toString() === "50") { //2
                             this.removeItem(2);
@@ -71,12 +72,22 @@ var PlayerLayerMulti = cc.Layer.extend({
                             this.removeItem(5);
                         } else if (key.toString() === "27") { //esc
                             this.showPauseMenu();
-                        }
+                        }*/
                     }.bind(this)
                 },
                 this
             );
         }
+    },
+
+    requestMove: function (move) {
+        var config = {
+            event: Events.PLAY,
+            player: this.player.playerId,
+            move: move
+        };
+        var message = Encode(config);
+        ws.send(message);
     },
 
     getPlayerByShape: function (shape) {
@@ -88,7 +99,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         return null;
     },
 
-    moveRight: function () {
+    moveRight: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
             this.player.character.moveRight();
@@ -96,7 +107,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
     
-    moveLeft: function () {
+    moveLeft: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
             this.player.character.moveLeft();
@@ -104,7 +115,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
-    moveUp: function () {
+    moveUp: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
             this.player.character.moveUp();
@@ -112,7 +123,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
-    moveDown: function () {
+    moveDown: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
             this.player.character.moveDown();
@@ -161,16 +172,16 @@ var PlayerLayerMulti = cc.Layer.extend({
 
                 switch (jsonData.move) {
                     case "up":
-                        this.moveUp();
+                        this.moveUp(jsonData.playerID);
                         break;
                     case "right":
-                        this.moveRight();
+                        this.moveRight(jsonData.playerID);
                         break;
                     case "down":
-                        this.moveDown();
+                        this.moveDown(jsonData.playerID);
                         break;
                     case "left":
-                        this.moveLeft();
+                        this.moveLeft(jsonData.playerID);
                         break;
                     case "attack":
                         console.log("Attack");

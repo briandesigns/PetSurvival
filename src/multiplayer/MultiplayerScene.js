@@ -64,8 +64,8 @@ var MultiplayerScene = cc.Scene.extend({
     positionPlayer: function (dt) {
         this.playerLayer.player.character.sprite.setPosition(
             cc.p(
-                CoordinatesAtTile(15,15).xCoordinate,
-                CoordinatesAtTile(15,15).yCoordinate
+                CoordinatesAtTile(8,13).xCoordinate,
+                CoordinatesAtTile(8,13).yCoordinate
             ));
 
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
