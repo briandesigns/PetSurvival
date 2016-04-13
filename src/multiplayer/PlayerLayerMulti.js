@@ -123,5 +123,5 @@ var PlayerLayerMulti = cc.Layer.Extend({
             var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
             hudLayer.updateInventory();
         }
-    }
+    },
 });

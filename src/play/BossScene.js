@@ -96,7 +96,7 @@ var BossScene = cc.Scene.extend({
      */
     collisionPlayerEnemyEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
-        var enemy = this.boss
+        var enemy = this.boss;
         var playerCharacter = this.playerLayer.getPlayerByShape(shapes[0]).character;
         enemy.removeCollisionByChar(playerCharacter);
         playerCharacter.removeCollisionByChar(enemy);
