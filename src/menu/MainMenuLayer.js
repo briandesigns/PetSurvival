@@ -53,7 +53,7 @@ var MainMenuLayer = cc.Layer.extend({
     
     onMultiplayer: function () {
         cc.log("Multiplayer Game Selected");
-        cc.director.runScene(new BossScene());
+        cc.director.runScene(new MultiplayerScene());
 
         //create a message to send to the server
         var config = {

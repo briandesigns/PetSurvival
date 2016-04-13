@@ -14,6 +14,8 @@ var MultiplayerScene = cc.Scene.extend({
 
     ctor: function() {
         this._super();
+        this.space = new cp.Space();
+        this.trash = [];
     },
 
     onEnter: function() {
@@ -54,6 +56,22 @@ var MultiplayerScene = cc.Scene.extend({
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
 
         cc.audioEngine.playMusic(res.music_boss, true);
+    },
+
+    /**
+     * Move player to Spawn point and zoom into the player and init hud
+     * @param dt time frame(unused)
+     */
+    positionPlayer: function (dt) {
+        this.playerLayer.player.character.sprite.setPosition(cc.p(
+            this.mapLayer.coordinateAtTileIndex(184).x,
+            this.mapLayer.coordinateAtTileIndex(184).y - 40));
+
+        var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
+        this.gameLayer.runAction(new cc.Sequence(zoomAction));
+        this.hudLayer.updateHealth();
+        this.hudLayer.updateInventory();
+        this.hudLayer.updateScore();
     },
 
     /**

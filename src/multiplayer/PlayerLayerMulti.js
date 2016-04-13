@@ -2,7 +2,7 @@
  * Created by Joe on 2016-04-13.
  */
 
-var PlayerLayerMulti = cc.Layer.Extend({
+var PlayerLayerMulti = cc.Layer.extend({
     space: null,
     player: null,
     playerList: null,
@@ -19,7 +19,7 @@ var PlayerLayerMulti = cc.Layer.Extend({
         this.inMotion = false;
         this.playerList = [];
         this.playerList.push(this.player);
-        this.player.character.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
+        this.player.character.body.setPos(cc.p(cc.director.getWinSize().width / 2, cc.director.getWinSize().height / 2));
         this.addChild(this.player.character.sprite);
 
         // Setup event listeners for keyboard events

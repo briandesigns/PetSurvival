@@ -34,5 +34,4 @@ var Item = cc.Class.extend({
         this.space.addBody(this.body);
         this.space.addShape(this.shape);
     }
-
 });

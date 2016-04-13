@@ -26,7 +26,6 @@ var ItemLayer = cc.Layer.extend({
                 this.addChild(this.itemList[i].sprite);
             }
         }
-
     },
 
     createItems: function() {
