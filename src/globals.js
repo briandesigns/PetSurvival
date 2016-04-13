@@ -122,5 +122,21 @@ if (typeof MAP_SIZE == "undefined") {
 var playerType = CHAR_TYPE.dog;
 var chosenMapSize = MAP_SIZE.big;
 
+// Websocket properties
+var Websocket = Websocket || window.Websocket || window.MozWebSocket;
+var ws = null;
 
+Events = {
+    HANDSHAKE_COMPLETE_SUCCESS:1,
+    LOGIN:2,
+    LOGIN_DONE:3,
+    NEW_USER_LOGIN_DONE:4
+};
+
+var Encode = function(obj) {
+    return JSON.stringify(obj);
+};
+var Decode = function(obj) {
+    return JSON.parse(obj);
+};
 
