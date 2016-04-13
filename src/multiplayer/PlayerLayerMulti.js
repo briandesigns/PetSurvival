@@ -8,6 +8,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     playerList: null,
     inMotion: null,
     jsonData: null,
+
     ctor: function(space, character, _jsonData) {
         this.jsonData = _jsonData;
         //after successful login we want to take control of the messages coming from the server
@@ -19,6 +20,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         this._super();
         this.space = space;
         this.player = new Player(character);
+        //var position = this.jsonData.position
         this.init();
     },
     init: function() {
@@ -41,6 +43,12 @@ var PlayerLayerMulti = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyPressed: function (key, event) {
+                        //console.log(this.player.character.sprite.getPositionX() + "," + this.player.character.sprite.getPositionY());
+                        var tiles = TileAtCoordinates(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
+                        var xTile = tiles.xTile;
+                        var yTile = tiles.yTile;
+                        console.log(xTile + ", " + yTile);
+
                         if (key.toString() === "37") { //left
                             this.moveLeft();
                         } else if (key.toString() === "38") { //up
@@ -185,10 +193,10 @@ var PlayerLayerMulti = cc.Layer.extend({
     },
 
     onclose:function (e) {
-
+        cc.director.runScene(new MainMenuScene());
     },
 
     onerror:function (e) {
-
+        cc.director.runScene(new MainMenuScene());
     }
 });

@@ -67,6 +67,7 @@
     "src/save/Save.js",
     "src/save/Load.js",
     "src/multiplayer/MultiplayerScene.js",
-    "src/multiplayer/PlayerLayerMulti.js"
+    "src/multiplayer/PlayerLayerMulti.js",
+    "src/multiplayer/Coordinates.js"
   ]
 }

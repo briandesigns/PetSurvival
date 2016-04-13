@@ -7,7 +7,6 @@ var MultiplayerScene = cc.Scene.extend({
     gameLayer: null, // need multiplayer version of this?
     playerLayer: null,
     mapLayer: null,
-    boundLayer: null,
     itemLayer: null,
     hudLayer: null,
     trash: null,
@@ -45,11 +44,9 @@ var MultiplayerScene = cc.Scene.extend({
         }
 
         this.playerLayer = new PlayerLayerMulti(this.space, chosenChar, this.jsonData);
-        this.boundLayer = new BoundLayer(this.space, this.mapLayer);
 
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
-        this.gameLayer.addChild(this.boundLayer, 0, TagOfLayer.Bound);
         this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
 
         this.addChild(this.gameLayer);
@@ -65,9 +62,11 @@ var MultiplayerScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        this.playerLayer.player.character.sprite.setPosition(cc.p(
-            this.mapLayer.coordinateAtTileIndex(184).x,
-            this.mapLayer.coordinateAtTileIndex(184).y - 40));
+        this.playerLayer.player.character.sprite.setPosition(
+            cc.p(
+                CoordinatesAtTile(15,15).xCoordinate,
+                CoordinatesAtTile(15,15).yCoordinate
+            ));
 
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
