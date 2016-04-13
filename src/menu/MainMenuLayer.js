@@ -53,12 +53,11 @@ var MainMenuLayer = cc.Layer.extend({
     
     onMultiplayer: function () {
         cc.log("Multiplayer Game Selected");
-        cc.director.runScene(new MultiplayerScene());
 
         //create a message to send to the server
         var config = {
             event:Events.LOGIN,
-            username:"Test"
+            username:"Joe"
         };
         var message = Encode(config);
 
@@ -80,8 +79,7 @@ var MainMenuLayer = cc.Layer.extend({
                     // Login is successful, start a new game
                     if(jsonFromClient.event === Events.LOGIN_DONE) {
                         cc.log("==Creating New Game");
-                        //cc.director.pushScene(new PlayScene(false));
-                        cc.director.runScene(new ChoiceMenuScene());
+                        cc.director.runScene(new MultiplayerScene(jsonFromClient));
                     }
                 }
             };

@@ -76,8 +76,8 @@ if (typeof PLAYER_STATS == "undefined") {
     PLAYER_STATS.baseHealthPoint = 100;
     PLAYER_STATS.inventoryCapacity = 5;
     PLAYER_STATS.baseHitPoint = 15;
-    PLAYER_STATS.baseSpeed = 2.0;
-    PLAYER_STATS.baseSpeedDuration = 0.03;
+    PLAYER_STATS.baseSpeed = 16.0;
+    PLAYER_STATS.baseSpeedDuration = 0.2;
 }
 
 //enemy character stats
@@ -130,7 +130,10 @@ Events = {
     HANDSHAKE_COMPLETE_SUCCESS:1,
     LOGIN:2,
     LOGIN_DONE:3,
-    NEW_USER_LOGIN_DONE:4
+    NEW_USER_LOGIN_DONE:4,
+    PLAY:5,
+    PLAY_DONE:6,
+    UPDATE_HEALTH:7
 };
 
 var Encode = function(obj) {

@@ -7,7 +7,15 @@ var PlayerLayerMulti = cc.Layer.extend({
     player: null,
     playerList: null,
     inMotion: null,
-    ctor: function(space, character) {
+    jsonData: null,
+    ctor: function(space, character, _jsonData) {
+        this.jsonData = _jsonData;
+        //after successful login we want to take control of the messages coming from the server
+        //so we attach this new callback function to the websocket onmessage
+        ws.onmessage = this.ongamestatus.bind(this);
+        ws.onclose = this.onclose.bind(this);
+        ws.onerror = this.onerror.bind(this);
+
         this._super();
         this.space = space;
         this.player = new Player(character);
@@ -15,6 +23,12 @@ var PlayerLayerMulti = cc.Layer.extend({
     },
     init: function() {
         this._super();
+
+        //multiplayer stuff
+        var userName = this.jsonData.username;
+        console.log("Welcome user: " + userName);
+        this.eventHandler(this.jsonData.event);
+
         // Create the hero sprite and position it in the center of the screen
         this.inMotion = false;
         this.playerList = [];
@@ -88,8 +102,6 @@ var PlayerLayerMulti = cc.Layer.extend({
             this.player.character.moveUp();
             this.inMotion = false;
         }
-
-
     },
 
     moveDown: function () {
@@ -124,4 +136,59 @@ var PlayerLayerMulti = cc.Layer.extend({
             hudLayer.updateInventory();
         }
     },
+
+    // Multiplayer functions
+    eventHandler:function(jsonData) {
+        switch (jsonData.event) {
+            case Events.LOGIN_DONE:
+                console.log("Events: LOGIN_DONE");
+                //this.setupCurrentPlayer();
+                break;
+            case Events.NEW_USER_LOGIN_DONE:
+                console.log("Events: NEW_USER_LOGIN_DONE");
+                //this.setupOtherPlayerS();
+                break;
+            case Events.PLAY_DONE:
+                console.log("EVENTS: PLAY_DONE");
+
+                switch (jsonData.move) {
+                    case "up":
+                        this.moveUp();
+                        break;
+                    case "right":
+                        this.moveRight();
+                        break;
+                    case "down":
+                        this.moveDown();
+                        break;
+                    case "left":
+                        this.moveLeft();
+                        break;
+                    case "attack":
+                        console.log("Attack");
+                        break;
+                }
+
+                break;
+        }
+        console.log("Set turn message.");
+        //this.setTurnMassage();
+    },
+
+    // Websocket functions
+    ongamestatus:function(e) {
+        console.log("Message from server (in player layer): "+e.data);
+        if(e.data!==null || e.data !== 'undefined') {
+            this.jsonData = Decode(e.data);
+            this.eventHandler(this.jsonData);
+        }
+    },
+
+    onclose:function (e) {
+
+    },
+
+    onerror:function (e) {
+
+    }
 });

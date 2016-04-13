@@ -11,8 +11,10 @@ var MultiplayerScene = cc.Scene.extend({
     itemLayer: null,
     hudLayer: null,
     trash: null,
+    jsonData: null,
 
-    ctor: function() {
+    ctor: function(_jsonData) {
+        this.jsonData = _jsonData;
         this._super();
         this.space = new cp.Space();
         this.trash = [];
@@ -42,7 +44,7 @@ var MultiplayerScene = cc.Scene.extend({
                 break;
         }
 
-        this.playerLayer = new PlayerLayerMulti(this.space, chosenChar);
+        this.playerLayer = new PlayerLayerMulti(this.space, chosenChar, this.jsonData);
         this.boundLayer = new BoundLayer(this.space, this.mapLayer);
 
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
