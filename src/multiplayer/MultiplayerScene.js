@@ -30,16 +30,16 @@ var MultiplayerScene = cc.Scene.extend({
         var chosenChar;
         switch (playerType) {
             case CHAR_TYPE.cat:
-                chosenChar = new Cat(this.space);
+                chosenChar = new CatMulti(this.space);
                 break;
             case CHAR_TYPE.dog:
-                chosenChar = new Dog(this.space);
+                chosenChar = new DogMulti(this.space);
                 break;
             case CHAR_TYPE.rabbit:
-                chosenChar = new Rabbit(this.space);
+                chosenChar = new RabbitMulti(this.space);
                 break;
             case CHAR_TYPE.pig:
-                chosenChar = new Pig(this.space);
+                chosenChar = new PigMulti(this.space);
                 break;
         }
 

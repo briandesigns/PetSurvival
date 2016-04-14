@@ -76,8 +76,18 @@ if (typeof PLAYER_STATS == "undefined") {
     PLAYER_STATS.baseHealthPoint = 100;
     PLAYER_STATS.inventoryCapacity = 5;
     PLAYER_STATS.baseHitPoint = 15;
-    PLAYER_STATS.baseSpeed = 16.0;
-    PLAYER_STATS.baseSpeedDuration = 0.2;
+    PLAYER_STATS.baseSpeed = 2.0;
+    PLAYER_STATS.baseSpeedDuration = 0.03;
+}
+
+//multiplayer player character stats
+if (typeof PLAYER_MULTI_STATS == "undefined") {
+    var PLAYER_MULTI_STATS = {};
+    PLAYER_MULTI_STATS.baseHealth = 100;
+    PLAYER_MULTI_STATS.baseHealthPoint = 100;
+    PLAYER_MULTI_STATS.inventoryCapacity = 5;
+    PLAYER_MULTI_STATS.baseSpeed = 16.0;
+    PLAYER_MULTI_STATS.baseSpeedDuration = 0.15;
 }
 
 //enemy character stats

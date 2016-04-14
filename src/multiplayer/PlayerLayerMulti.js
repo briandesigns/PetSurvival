@@ -164,7 +164,7 @@ var PlayerLayerMulti = cc.Layer.extend({
                 break;
             case Events.NEW_USER_LOGIN_DONE:
                 console.log("Events: NEW_USER_LOGIN_DONE");
-                this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new Pig(this.space)); // Fix this to actually get character type
+                this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new PigMulti(this.space)); // Fix this to actually get character type
                 var spawnPoint = SpawnPointCoordinates(jsonData.playerID);
                 this.playerList[jsonData.playerID].character.sprite.setPosition(
                     cc.p(spawnPoint.xCoordinate, spawnPoint.yCoordinate));

@@ -71,6 +71,10 @@
     "src/multiplayer/Coordinates.js",
     "src/multiplayer/PlayerMulti.js",
     "src/multiplayer/HudLayerMulti.js",
-    "src/multiplayer/SpawnPoints.js"
+    "src/multiplayer/SpawnPoints.js",
+    "src/multiplayer/characterMulti/CatMulti.js",
+    "src/multiplayer/characterMulti/DogMulti.js",
+    "src/multiplayer/characterMulti/PigMulti.js",
+    "src/multiplayer/characterMulti/RabbitMulti.js"
   ]
 }
