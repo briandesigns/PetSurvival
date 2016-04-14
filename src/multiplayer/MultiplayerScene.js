@@ -28,18 +28,18 @@ var MultiplayerScene = cc.Scene.extend({
         this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true, null);
 
         var chosenChar;
-        switch (playerType) {
+        switch (this.jsonData.playerID%4) {
             case CHAR_TYPE.cat:
-                chosenChar = new CatMulti(this.space);
+                chosenChar = new CatMulti(null);
                 break;
             case CHAR_TYPE.dog:
-                chosenChar = new DogMulti(this.space);
+                chosenChar = new DogMulti(null);
                 break;
             case CHAR_TYPE.rabbit:
-                chosenChar = new RabbitMulti(this.space);
+                chosenChar = new RabbitMulti(null);
                 break;
             case CHAR_TYPE.pig:
-                chosenChar = new PigMulti(this.space);
+                chosenChar = new PigMulti(null);
                 break;
         }
 

@@ -70,8 +70,11 @@ var Character = cc.Class.extend({
         this.sprite.setBody(this.body);
         this.shape.setCollisionType(this.collisionType);
         this.shape.setSensor(false);
-        this.space.addBody(this.body);
-        this.space.addShape(this.shape);
+        
+        if (this.space != null) {
+            this.space.addBody(this.body);
+            this.space.addShape(this.shape);
+        }
 
         this.direction = "down";    // as reference for attack direction
 

@@ -144,7 +144,9 @@ Events = {
     PLAY:5,
     PLAY_DONE:6,
     UPDATE_HEALTH:7,
-    SET_POSITION:8
+    SET_POSITION:8,
+    DEATH:9,
+    LOADING_DONE:10
 };
 
 var Encode = function(obj) {

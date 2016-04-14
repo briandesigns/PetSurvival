@@ -30,12 +30,10 @@ var PlayerLayerMulti = cc.Layer.extend({
     init: function() {
         this._super();
 
-        //multiplayer stuff
-        var userName = this.jsonData.username;
-        console.log("Welcome user: " + userName);
+        //multiplayer stuff;
         this.eventHandler(this.jsonData.event);
 
-        // Create the hero sprite and position it in the center of the screen
+        // Create the current player's sprite and position it in the center of the screen
         this.inMotion = false;
         console.log("Setting current player position to " + this.jsonData.x + ", " + this.jsonData.y);
         var newPlayerCoordinates = CoordinatesAtTile(this.jsonData.x, this.jsonData.y);
@@ -81,6 +79,14 @@ var PlayerLayerMulti = cc.Layer.extend({
                 this
             );
         }
+
+        var config = {
+            event: Events.LOADING_DONE,
+            playerID: this.currentPlayerID
+        };
+        var message = Encode(config);
+        console.log("Sending message to server: " + message);
+        ws.send(message);
     },
 
     requestMove: function (move) {
@@ -174,12 +180,29 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
+    characterModelFromID: function(id) {
+        switch (id%4) {
+            case 0:
+                return new PigMulti(null);
+                break;
+            case 1:
+                return new DogMulti(null);
+                break;
+            case 2:
+                return new CatMulti(null);
+                break;
+            case 3:
+                return new RabbitMulti(null);
+                break;
+        }
+    },
+
     // Multiplayer functions
     eventHandler:function(jsonData) {
         switch (jsonData.event) {
             case Events.SET_POSITION:
                 console.log("Events: SET_POSITION");
-                this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new PigMulti(this.space)); // Fix this to actually get character type
+                this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, this.characterModelFromID(jsonData.playerID));
                 var newPlayerCoordinates = CoordinatesAtTile(jsonData.x, jsonData.y);
                 var newPlayerPoint = cc.p(newPlayerCoordinates.xCoordinate, newPlayerCoordinates.yCoordinate);
                 console.log("Setting new player position to " + jsonData.x + ", " + jsonData.y);
@@ -205,6 +228,9 @@ var PlayerLayerMulti = cc.Layer.extend({
                         console.log("Attack");
                         break;
                 }
+                break;
+            case Events.DEATH:
+                console.log("EVENTS: DEATH");
                 break;
         }
         console.log("Set turn message.");
