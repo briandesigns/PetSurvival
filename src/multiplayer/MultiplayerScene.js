@@ -29,21 +29,21 @@ var MultiplayerScene = cc.Scene.extend({
 
         var chosenChar;
         switch (this.jsonData.playerID%4) {
-            case CHAR_TYPE.cat:
-                chosenChar = new CatMulti(null);
+            case 0:
+                chosenChar = new PigMulti(null);
                 break;
-            case CHAR_TYPE.dog:
+            case 1:
                 chosenChar = new DogMulti(null);
                 break;
-            case CHAR_TYPE.rabbit:
-                chosenChar = new RabbitMulti(null);
+            case 2:
+                chosenChar = new CatMulti(null);
                 break;
-            case CHAR_TYPE.pig:
-                chosenChar = new PigMulti(null);
+            case 3:
+                chosenChar = new RabbitMulti(null);
                 break;
         }
 
-        this.playerLayer = new PlayerLayerMulti(this.space, chosenChar, this.jsonData);
+        this.playerLayer = new PlayerLayerMulti(this.space, chosenChar, this.jsonData, this.hudLayer);
 
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
@@ -70,28 +70,12 @@ var MultiplayerScene = cc.Scene.extend({
     },
 
     /**
-     * Method that checks if an element has died on the map, then puts them into the trash to be
-     * destroyed
+     * Game over screen
      */
-    trashDeadThings: function () {
-        if (this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.health <= 0) {
-            this.showGameOverMenu("LOST");
-        }
-    },
-
-    /**
-     * Destroy dead elements
-     */
-    emptyTrash: function () {
-        for (var i = 0; i < this.trash.length; i ++) {
-            cc.log("score added: " + this.trash[i].healthPoint);
-            this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.score += this.trash[i].healthPoint;
-            this.hudLayer.updateScore();
-            this.trash[i].die();
-            this.trash = [];
-            this.removeAllChildren(true);
-            cc.director.runScene(new MainMenuScene());
-        }
+    showGameOverMenu: function (winLoss) {
+        var gameOverLayer = new OverMenuLayer(0, winLoss);
+        gameOverLayer.init();
+        this.addChild(gameOverLayer);
     },
 
     onExit: function () {
@@ -109,7 +93,5 @@ var MultiplayerScene = cc.Scene.extend({
         var eyeX = playerLayer.getEyeX() * 2.25;
         var eyeY = playerLayer.getEyeY() * 2.25;
         this.gameLayer.setPosition(cc.p(-eyeX, -eyeY));
-        this.trashDeadThings();//put things that died in trash
-        this.emptyTrash(); //remove dead things
     }
 });

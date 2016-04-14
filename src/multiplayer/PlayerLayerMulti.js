@@ -9,8 +9,9 @@ var PlayerLayerMulti = cc.Layer.extend({
     isPaused: null,
     inMotion: null,
     jsonData: null,
+    hudLayer: null,
 
-    ctor: function(space, character, _jsonData) {
+    ctor: function(space, character, _jsonData, hudLayer) {
         this.jsonData = _jsonData;
         //after successful login we want to take control of the messages coming from the server
         //so we attach this new callback function to the websocket onmessage
@@ -20,6 +21,7 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         this._super();
         this.space = space;
+        this.hudLayer = hudLayer;
         this.isPaused = false;
         this.currentPlayerID = _jsonData.playerID;
         this.playerList = [];
@@ -141,6 +143,18 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
+    attackAction: function (id) {
+        if (this.inMotion == false) {
+            this.playerList[id].character.attackEnemies();
+        }
+    },
+
+    changeHealth: function (id, newHealth) {
+        console.log("Changing health of player " + id + " to " + newHealth);
+        this.playerList[id].character.health = newHealth;
+        this.hudLayer.updateHealth();
+    },
+
     getEyeX: function () {
         return this.playerList[this.currentPlayerID].character.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
     },
@@ -181,6 +195,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     },
 
     characterModelFromID: function(id) {
+        console.log("Given id " + id + " returning model " + id%4);
         switch (id%4) {
             case 0:
                 return new PigMulti(null);
@@ -225,13 +240,14 @@ var PlayerLayerMulti = cc.Layer.extend({
                         this.moveLeft(jsonData.playerID);
                         break;
                     case "attack":
-                        console.log("Attack");
+                        this.attackAction(jsonData.playerID);
+                        break;
+                    case "health":
+                        this.changeHealth(jsonData.playerID, jsonData.health);
                         break;
                 }
                 break;
-            case Events.DEATH:
-                console.log("EVENTS: DEATH");
-                break;
+
         }
         console.log("Set turn message.");
         //this.setTurnMassage();
