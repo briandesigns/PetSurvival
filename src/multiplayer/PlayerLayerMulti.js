@@ -48,11 +48,6 @@ var PlayerLayerMulti = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyPressed: function (key, event) {
-                        /*var tiles = TileAtCoordinates(this.playerList[this.currentPlayerID].character.sprite.getPositionX(), this.playerList[this.currentPlayerID].character.sprite.getPositionY());
-                        var xTile = tiles.xTile;
-                        var yTile = tiles.yTile;
-                        console.log(xTile + ", " + yTile);*/
-
                         if (key.toString() === "37") { //left
                             this.requestMove("left");
                         } else if (key.toString() === "38") { //up
@@ -63,17 +58,7 @@ var PlayerLayerMulti = cc.Layer.extend({
                             this.requestMove("right");
                         } else if (key.toString() === "32") { //space
                             this.requestMove("attack");
-                        } /*else if (key.toString() === "49") { //1
-                            this.removeItem(1);
-                        } else if (key.toString() === "50") { //2
-                            this.removeItem(2);
-                        } else if (key.toString() === "51") { //3
-                            this.removeItem(3);
-                        } else if (key.toString() === "52") { //4
-                            this.removeItem(4);
-                        } else if (key.toString() === "53") { //5
-                            this.removeItem(5);
-                        }*/ else if (key.toString() === "27") { //esc
+                        } else if (key.toString() === "27") { //esc
                             this.showPauseMenu();
                         }
                     }.bind(this)
@@ -180,6 +165,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
+    // Show the pause menu
     showPauseMenu: function () {
         if (this.isPaused == false) {
             cc.director.pause();
@@ -194,6 +180,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         }
     },
 
+    // Select the proper character model based on their player ID
     characterModelFromID: function(id) {
         console.log("Given id " + id + " returning model " + id%4);
         switch (id%4) {
@@ -210,6 +197,23 @@ var PlayerLayerMulti = cc.Layer.extend({
                 return new RabbitMulti(null);
                 break;
         }
+    },
+
+    // Called to kill a specific player
+    killPlayerWithID: function(id) {
+        this.removeChild(this.playerList[id].character.sprite);
+        if (id == this.currentPlayerID) {
+            this.showGameOverMenu("LOST");
+        }
+    },
+
+    /**
+     * Game over screen
+     */
+    showGameOverMenu: function (winLoss) {
+        var gameOverLayer = new OverMenuLayer(0, winLoss);
+        gameOverLayer.init();
+        this.getParent().getParent().addChild(gameOverLayer);
     },
 
     // Multiplayer functions
@@ -247,7 +251,9 @@ var PlayerLayerMulti = cc.Layer.extend({
                         break;
                 }
                 break;
-
+            case Events.DEATH:
+                this.killPlayerWithID(jsonData.playerID);
+                break;
         }
         console.log("Set turn message.");
         //this.setTurnMassage();

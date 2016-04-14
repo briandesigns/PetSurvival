@@ -69,15 +69,6 @@ var MultiplayerScene = cc.Scene.extend({
         this.hudLayer.updateScore();
     },
 
-    /**
-     * Game over screen
-     */
-    showGameOverMenu: function (winLoss) {
-        var gameOverLayer = new OverMenuLayer(0, winLoss);
-        gameOverLayer.init();
-        this.addChild(gameOverLayer);
-    },
-
     onExit: function () {
         this._super();
     },
