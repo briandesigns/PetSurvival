@@ -182,7 +182,7 @@ var PlayerLayerMulti = cc.Layer.extend({
                 this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new PigMulti(this.space)); // Fix this to actually get character type
                 var newPlayerCoordinates = CoordinatesAtTile(jsonData.x, jsonData.y);
                 var newPlayerPoint = cc.p(newPlayerCoordinates.xCoordinate, newPlayerCoordinates.yCoordinate);
-                console.log("Setting new player position to " + this.jsonData.x + ", " + this.jsonData.y);
+                console.log("Setting new player position to " + jsonData.x + ", " + jsonData.y);
                 this.playerList[jsonData.playerID].character.sprite.setPosition(newPlayerPoint);
                 this.addChild(this.playerList[jsonData.playerID].character.sprite);
                 break;

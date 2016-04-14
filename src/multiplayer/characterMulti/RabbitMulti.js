@@ -10,7 +10,7 @@ var RabbitMulti = Character.extend({
      * @param {cc.p}
      */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_rabbit_png), PLAYER_MULTI_STATS.baseHealth-20, PLAYER_MULTI_STATS.baseHealthPoint-20, PLAYER_MULTI_STATS.baseHitPoint-5, PLAYER_MULTI_STATS.baseSpeed+0.4, PLAYER_MULTI_STATS.baseSpeedDuration, PLAYER_MULTI_STATS.inventoryCapacity, space, res.rabbit_plist, res.rabbit_png, "rabbit");
+        this._super(COLLISION_TYPE.player, new cc.PhysicsSprite(res.character_rabbit_png), PLAYER_MULTI_STATS.baseHealth, PLAYER_MULTI_STATS.baseHealthPoint, PLAYER_MULTI_STATS.baseHitPoint, PLAYER_MULTI_STATS.baseSpeed, PLAYER_MULTI_STATS.baseSpeedDuration, PLAYER_MULTI_STATS.inventoryCapacity, space, res.rabbit_plist, res.rabbit_png, "rabbit");
         this.characterType = CHAR_TYPE.rabbit;
 
     }
