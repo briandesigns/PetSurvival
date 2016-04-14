@@ -214,7 +214,7 @@ var PlayerLayerMulti = cc.Layer.extend({
 
     // Websocket functions
     ongamestatus:function(e) {
-        console.log("Message from server: " + jsonData);
+        console.log("Message from server: " + e.data);
         if(e.data!==null || e.data !== 'undefined') {
             this.jsonData = Decode(e.data);
             this.eventHandler(this.jsonData);
