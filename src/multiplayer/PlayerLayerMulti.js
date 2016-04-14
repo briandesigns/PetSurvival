@@ -21,7 +21,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         this._super();
         this.space = space;
         this.isPaused = false;
-        this.currentPlayerID = jsonData.playerID;
+        this.currentPlayerID = _jsonData.playerID;
         this.playerList = [];
         this.playerList[this.currentPlayerID] = new PlayerMulti(this.currentPlayerID, character);
         //var position = this.jsonData.position
@@ -44,11 +44,10 @@ var PlayerLayerMulti = cc.Layer.extend({
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
                     onKeyPressed: function (key, event) {
-                        //console.log(this.player.character.sprite.getPositionX() + "," + this.player.character.sprite.getPositionY());
-                        var tiles = TileAtCoordinates(this.playerList[this.currentPlayerID].character.sprite.getPositionX(), this.playerList[this.currentPlayerID].character.sprite.getPositionY());
+                        /*var tiles = TileAtCoordinates(this.playerList[this.currentPlayerID].character.sprite.getPositionX(), this.playerList[this.currentPlayerID].character.sprite.getPositionY());
                         var xTile = tiles.xTile;
                         var yTile = tiles.yTile;
-                        console.log(xTile + ", " + yTile);
+                        console.log(xTile + ", " + yTile);*/
 
                         if (key.toString() === "37") { //left
                             this.requestMove("left");
@@ -87,6 +86,7 @@ var PlayerLayerMulti = cc.Layer.extend({
             move: move
         };
         var message = Encode(config);
+        console.log("Sending message to server: " + message);
         ws.send(message);
     },
 
@@ -214,7 +214,7 @@ var PlayerLayerMulti = cc.Layer.extend({
 
     // Websocket functions
     ongamestatus:function(e) {
-        console.log("Message from server (in player layer): "+e.data);
+        console.log("Message from server: " + jsonData);
         if(e.data!==null || e.data !== 'undefined') {
             this.jsonData = Decode(e.data);
             this.eventHandler(this.jsonData);
