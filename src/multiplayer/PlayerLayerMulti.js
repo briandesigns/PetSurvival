@@ -6,6 +6,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     space: null,
     currentPlayerID: null,
     playerList: null,
+    isPaused: null,
     inMotion: null,
     jsonData: null,
 
@@ -19,8 +20,8 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         this._super();
         this.space = space;
-        //this.currentPlayerID = jsonData.playerID;
-        this.currentPlayerID = 1;
+        this.isPaused = false;
+        this.currentPlayerID = jsonData.playerID;
         this.playerList = [];
         this.playerList[this.currentPlayerID] = new PlayerMulti(this.currentPlayerID, character);
         //var position = this.jsonData.position
@@ -69,9 +70,9 @@ var PlayerLayerMulti = cc.Layer.extend({
                             this.removeItem(4);
                         } else if (key.toString() === "53") { //5
                             this.removeItem(5);
-                        } else if (key.toString() === "27") { //esc
+                        }*/ else if (key.toString() === "27") { //esc
                             this.showPauseMenu();
-                        }*/
+                        }
                     }.bind(this)
                 },
                 this
@@ -152,6 +153,20 @@ var PlayerLayerMulti = cc.Layer.extend({
         if (this.playerList[this.currentPlayerID].character.removeItem(itemNumber)) {
             var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
             hudLayer.updateInventory();
+        }
+    },
+
+    showPauseMenu: function () {
+        if (this.isPaused == false) {
+            cc.director.pause();
+            this.isPaused = true;
+            this.pauseMenuLayer = new PauseMenuLayer();
+            this.pauseMenuLayer.init();
+            this.getParent().getParent().addChild(this.pauseMenuLayer);
+        } else {
+            cc.director.resume();
+            this.isPaused = false;
+            this.getParent().getParent().removeChild(this.pauseMenuLayer);
         }
     },
 
