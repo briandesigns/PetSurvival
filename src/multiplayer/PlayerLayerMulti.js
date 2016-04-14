@@ -37,7 +37,10 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         // Create the hero sprite and position it in the center of the screen
         this.inMotion = false;
-        this.playerList.character.sprite.setPosition(cc.p(this.jsonData.x, this.jsonData.y));
+        console.log("Setting current player position to " + this.jsonData.x + ", " + this.jsonData.y);
+        var newPlayerCoordinates = CoordinatesAtTile(this.jsonData.x, this.jsonData.y);
+        var newPlayerPoint = cc.p(newPlayerCoordinates.xCoordinate, newPlayerCoordinates.yCoordinate);
+        this.playerList[this.currentPlayerID].character.sprite.setPosition(newPlayerPoint);
         this.addChild(this.playerList[this.currentPlayerID].character.sprite);
 
         // Setup event listeners for keyboard events
@@ -174,11 +177,13 @@ var PlayerLayerMulti = cc.Layer.extend({
     // Multiplayer functions
     eventHandler:function(jsonData) {
         switch (jsonData.event) {
-            case Events.NEW_USER_LOGIN_DONE:
-                console.log("Events: NEW_USER_LOGIN_DONE");
+            case Events.SET_POSITION:
+                console.log("Events: SET_POSITION");
                 this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new PigMulti(this.space)); // Fix this to actually get character type
-                var newPlayerPosition = cc.p(jsonData.x, jsonData.y);
-                this.playerList[jsonData.playerID].character.sprite.setPosition(newPlayerPosition);
+                var newPlayerCoordinates = CoordinatesAtTile(jsonData.x, jsonData.y);
+                var newPlayerPoint = cc.p(newPlayerCoordinates.xCoordinate, newPlayerCoordinates.yCoordinate);
+                console.log("Setting new player position to " + this.jsonData.x + ", " + this.jsonData.y);
+                this.playerList[jsonData.playerID].character.sprite.setPosition(newPlayerPoint);
                 this.addChild(this.playerList[jsonData.playerID].character.sprite);
                 break;
             case Events.PLAY_DONE:
@@ -200,9 +205,6 @@ var PlayerLayerMulti = cc.Layer.extend({
                         console.log("Attack");
                         break;
                 }
-                break;
-            case Events.SET_POSITION:
-                console.log("Setting player position to: " + jsonData.x + ", " + jsonData.y);
                 break;
         }
         console.log("Set turn message.");
