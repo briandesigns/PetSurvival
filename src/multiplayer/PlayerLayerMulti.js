@@ -82,7 +82,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     requestMove: function (move) {
         var config = {
             event: Events.PLAY,
-            player: this.currentPlayerID,
+            playerID: this.currentPlayerID,
             move: move
         };
         var message = Encode(config);
