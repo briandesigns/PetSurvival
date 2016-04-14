@@ -1,4 +1,8 @@
-var HudLayer = cc.Layer.extend({
+/**
+ * Created by Joe on 2016-04-13.
+ */
+
+var HudLayerMulti = cc.Layer.extend({
     labelHealth:null,
     labelHealthPoint:null,
     labelSpeed:null,
@@ -84,26 +88,26 @@ var HudLayer = cc.Layer.extend({
     //called when in contact with enemy and when adding food item
     updateHealth: function () {
         var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
-        this.labelHealth.setString("Health: " + playerLayer.player.character.health);
+        this.labelHealth.setString("Health: " + playerLayer.playerList[playerLayer.currentPlayerID].character.health);
     },
 
     updateScore: function () {
         var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
-        this.labelScore.setString("Score: " + playerLayer.player.character.score);
+        this.labelScore.setString("Score: " + playerLayer.playerList[playerLayer.currentPlayerID].character.score);
     },
 
     //called when adding and deleting items
     updateInventory: function() {
         var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
-        for (var i = 0; i < playerLayer.player.character.inventoryCapacity; i++) {
-            if (playerLayer.player.character.inventory[i] == null) {
+        for (var i = 0; i < playerLayer.playerList[playerLayer.currentPlayerID].character.inventoryCapacity; i++) {
+            if (playerLayer.playerList[playerLayer.currentPlayerID].character.inventory[i] == null) {
                 if(this.itemContentList[i] != null) {
                     this.removeChild(this.itemContentList[i]);
                 }
             } else {
-                var itemType = playerLayer.player.character.inventory[i].itemType;
+                var itemType = playerLayer.playerList[playerLayer.currentPlayerID].character.inventory[i].itemType;
                 this.removeChild(this.itemContentList[i]);
-                if (playerLayer.player.character.inventory[i].isSuper) {
+                if (playerLayer.playerList[playerLayer.currentPlayerID].character.inventory[i].isSuper) {
                     switch(itemType) {
                         case ITEM_TYPE.healthPoint:
                             this.itemContentList[i] = new cc.Sprite(res.object_super_health_png);
@@ -140,10 +144,10 @@ var HudLayer = cc.Layer.extend({
                 this.addChild(this.itemContentList[i]);
             }
         }
-        this.labelHealth.setString("Health: " + playerLayer.player.character.health);
-        this.labelHealthPoint.setString("HealthPoint: " + playerLayer.player.character.healthPoint);
-        this.labelHitPoint.setString("HitPoint: " + playerLayer.player.character.hitPoint);
-        this.labelSpeed.setString("Speed: " + playerLayer.player.character.speed.toFixed(1));
+        this.labelHealth.setString("Health: " + playerLayer.playerList[playerLayer.currentPlayerID].character.health);
+        this.labelHealthPoint.setString("HealthPoint: " + playerLayer.playerList[playerLayer.currentPlayerID].character.healthPoint);
+        this.labelHitPoint.setString("HitPoint: " + playerLayer.playerList[playerLayer.currentPlayerID].character.hitPoint);
+        this.labelSpeed.setString("Speed: " + playerLayer.playerList[playerLayer.currentPlayerID].character.speed.toFixed(1));
 
     }
 });

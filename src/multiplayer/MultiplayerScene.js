@@ -22,7 +22,7 @@ var MultiplayerScene = cc.Scene.extend({
     onEnter: function() {
         this._super();
         this.gameLayer = new cc.Layer();
-        this.hudLayer = new HudLayer();
+        this.hudLayer = new HudLayerMulti();
 
         this.mapLayer = new CaveMapLayer(this.space);
         this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true, null);
@@ -62,11 +62,9 @@ var MultiplayerScene = cc.Scene.extend({
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        this.playerLayer.player.character.sprite.setPosition(
-            cc.p(
-                CoordinatesAtTile(8,13).xCoordinate,
-                CoordinatesAtTile(8,13).yCoordinate
-            ));
+        var spawnPoint = SpawnPointCoordinates(this.jsonData.playerID);
+            this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.sprite.setPosition(
+                cc.p(spawnPoint.xCoordinate, spawnPoint.yCoordinate));
 
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
@@ -80,7 +78,7 @@ var MultiplayerScene = cc.Scene.extend({
      * destroyed
      */
     trashDeadThings: function () {
-        if (this.playerLayer.player.character.health <= 0) {
+        if (this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.health <= 0) {
             this.showGameOverMenu("LOST");
         }
     },
@@ -91,7 +89,7 @@ var MultiplayerScene = cc.Scene.extend({
     emptyTrash: function () {
         for (var i = 0; i < this.trash.length; i ++) {
             cc.log("score added: " + this.trash[i].healthPoint);
-            this.playerLayer.player.character.score += this.trash[i].healthPoint;
+            this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.score += this.trash[i].healthPoint;
             this.hudLayer.updateScore();
             this.trash[i].die();
             this.trash = [];

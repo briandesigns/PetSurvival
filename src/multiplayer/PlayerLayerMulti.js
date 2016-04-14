@@ -4,7 +4,7 @@
 
 var PlayerLayerMulti = cc.Layer.extend({
     space: null,
-    player: null,
+    currentPlayerID: null,
     playerList: null,
     inMotion: null,
     jsonData: null,
@@ -19,9 +19,10 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         this._super();
         this.space = space;
-        //var id = jsonData.playerID;
-        var id = 1;
-        this.player = new PlayerMulti(id, character);
+        //this.currentPlayerID = jsonData.playerID;
+        this.currentPlayerID = 1;
+        this.playerList = [];
+        this.playerList[this.currentPlayerID] = new PlayerMulti(this.currentPlayerID, character);
         //var position = this.jsonData.position
         this.init();
     },
@@ -35,9 +36,7 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         // Create the hero sprite and position it in the center of the screen
         this.inMotion = false;
-        this.playerList = [];
-        this.playerList.push(this.player);
-        this.addChild(this.player.character.sprite);
+        this.addChild(this.playerList[this.currentPlayerID].character.sprite);
 
         // Setup event listeners for keyboard events
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
@@ -45,7 +44,7 @@ var PlayerLayerMulti = cc.Layer.extend({
                     event: cc.EventListener.KEYBOARD,
                     onKeyPressed: function (key, event) {
                         //console.log(this.player.character.sprite.getPositionX() + "," + this.player.character.sprite.getPositionY());
-                        var tiles = TileAtCoordinates(this.player.character.sprite.getPositionX(), this.player.character.sprite.getPositionY());
+                        var tiles = TileAtCoordinates(this.playerList[this.currentPlayerID].character.sprite.getPositionX(), this.playerList[this.currentPlayerID].character.sprite.getPositionY());
                         var xTile = tiles.xTile;
                         var yTile = tiles.yTile;
                         console.log(xTile + ", " + yTile);
@@ -83,7 +82,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     requestMove: function (move) {
         var config = {
             event: Events.PLAY,
-            player: this.player.playerId,
+            player: this.currentPlayerID,
             move: move
         };
         var message = Encode(config);
@@ -102,7 +101,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     moveRight: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
-            this.player.character.moveRight();
+            this.playerList[id].character.moveRight();
             this.inMotion = false;
         }
     },
@@ -110,7 +109,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     moveLeft: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
-            this.player.character.moveLeft();
+            this.playerList[id].character.moveLeft();
             this.inMotion = false;
         }
     },
@@ -118,7 +117,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     moveUp: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
-            this.player.character.moveUp();
+            this.playerList[id].character.moveUp();
             this.inMotion = false;
         }
     },
@@ -126,23 +125,23 @@ var PlayerLayerMulti = cc.Layer.extend({
     moveDown: function (id) {
         if (this.inMotion == false) {
             this.inMotion = true;
-            this.player.character.moveDown();
+            this.playerList[id].character.moveDown();
             this.inMotion = false;
         }
     },
 
     getEyeX: function () {
-        return this.player.character.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
+        return this.playerList[this.currentPlayerID].character.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
     },
 
     getEyeY: function () {
-        return this.player.character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
+        return this.playerList[this.currentPlayerID].character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
     },
 
     addItem: function (item) {
         cc.audioEngine.playEffect(res.sound_item_add);
         //cc.audioEngine.setEffectsVolume(1);
-        this.player.character.addItem(item);
+        this.playerList[this.currentPlayerID].character.addItem(item);
         var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
         hudLayer.updateInventory();
     },
@@ -150,7 +149,7 @@ var PlayerLayerMulti = cc.Layer.extend({
     removeItem: function (itemNumber) {
         cc.audioEngine.playEffect(res.sound_item_remove);
         //cc.audioEngine.setEffectsVolume(1);
-        if (this.player.character.removeItem(itemNumber)) {
+        if (this.playerList[this.currentPlayerID].character.removeItem(itemNumber)) {
             var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
             hudLayer.updateInventory();
         }
@@ -165,7 +164,11 @@ var PlayerLayerMulti = cc.Layer.extend({
                 break;
             case Events.NEW_USER_LOGIN_DONE:
                 console.log("Events: NEW_USER_LOGIN_DONE");
-                //this.setupOtherPlayerS();
+                this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new Pig(this.space)); // Fix this to actually get character type
+                var spawnPoint = SpawnPointCoordinates(jsonData.playerID);
+                this.playerList[jsonData.playerID].character.sprite.setPosition(
+                    cc.p(spawnPoint.xCoordinate, spawnPoint.yCoordinate));
+                this.addChild(this.playerList[jsonData.playerID].character.sprite);
                 break;
             case Events.PLAY_DONE:
                 console.log("EVENTS: PLAY_DONE");
