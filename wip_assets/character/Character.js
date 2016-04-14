@@ -13,13 +13,13 @@ var Character = cc.Node.extend({
     collisionList: null,
     space: null,
     /***/ //added stuffs
-    plist : null,
-    png : null,
-    spriteSheet:null,
-    upAction:null,
-    downAction:null,
-    leftAction:null,
-    rightAction:null,
+    plist: null,
+    png: null,
+    spriteSheet: null,
+    upAction: null,
+    downAction: null,
+    leftAction: null,
+    rightAction: null,
     upAttack: null,
     downAttack: null,
     leftAttack: null,
@@ -32,18 +32,18 @@ var Character = cc.Node.extend({
      * @param {cp.Space *}
      * @param {cc.p}
      */
-     ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity, space, plist, png, name ) {
+    ctor: function (collisionType, sprite, healthPoint, health, hitPoint, speed, inventory, inventoryCapacity, space, plist, png, name) {
         this._super();
-    /***/
+        /***/
         this.plist = plist;
         this.png = png;
 
         cc.spriteFrameCache.addSpriteFrames(this.plist);
         this.spriteSheet = new cc.SpriteBatchNode(this.png);
         this.addChild(this.spriteSheet);
-      //  var str= "#"+ name + "-down-normal.png";
-      //  this.sprite = new cc.PhysicsSprite(str);  //alternative way of creating the sprite (from spritesheet)
-    /***/
+        //  var str= "#"+ name + "-down-normal.png";
+        //  this.sprite = new cc.PhysicsSprite(str);  //alternative way of creating the sprite (from spritesheet)
+        /***/
         this.collisionType = collisionType;
         this.sprite = sprite;
 
@@ -68,48 +68,48 @@ var Character = cc.Node.extend({
 
         this.direction = "down";    // as reference for attack direction
 
-    // moving up animation
+        // moving up animation
         var animframes = [];
-        var str = name + "-up-normal.png" ;
+        var str = name + "-up-normal.png";
         var frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str= name + "-up-move.png"
+        str = name + "-up-move.png"
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         var animationMoveUp = new cc.Animation(animframes, 0.2);
         this.upAction = new cc.Sequence(new cc.Animate(animationMoveUp));
 
 
-    //moving down animation
+        //moving down animation
         animframes = [];
-        str = name + "-down-normal.png" ;
+        str = name + "-down-normal.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-down-move.png" ;
+        str = name + "-down-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         var animationMoveDown = new cc.Animation(animframes, 0.2);
         this.downAction = new cc.Sequence(new cc.Animate(animationMoveDown));
 
 
-    //moving left animation
+        //moving left animation
         animframes = [];
-        str = name + "-left-normal.png" ;
+        str = name + "-left-normal.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-left-move.png" ;
+        str = name + "-left-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         var animationMoveLeft = new cc.Animation(animframes, 0.2);
         this.leftAction = new cc.Sequence(new cc.Animate(animationMoveLeft));
 
 
-    //moving right animation
+        //moving right animation
         animframes = [];
-        str = name + "-right-normal.png" ;
+        str = name + "-right-normal.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-right-move.png" ;
+        str = name + "-right-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         var animationMoveRight = new cc.Animation(animframes, 0.2);
@@ -119,40 +119,40 @@ var Character = cc.Node.extend({
         //attacking animation
 
         animframes = [];
-        str = name + "-up-move.png" ;
+        str = name + "-up-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-up-attack.png" ;
+        str = name + "-up-attack.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         var attack = new cc.Animation(animframes, 0.2);
         this.upAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
-        str = name + "-down-move.png" ;
+        str = name + "-down-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-down-attack.png" ;
+        str = name + "-down-attack.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         attack = new cc.Animation(animframes, 0.2);
         this.downAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
-        str = name + "-left-move.png" ;
+        str = name + "-left-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-left-attack.png" ;
+        str = name + "-left-attack.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         attack = new cc.Animation(animframes, 0.2);
         this.leftAttack = new cc.Sequence(new cc.Animate(attack));
 
         animframes = [];
-        str = name + "-right-move.png" ;
+        str = name + "-right-move.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
-        str = name + "-right-attack.png" ;
+        str = name + "-right-attack.png";
         frame = cc.spriteFrameCache.getSpriteFrame(str);
         animframes.push(frame);
         attack = new cc.Animation(animframes, 0.2);
@@ -189,19 +189,19 @@ var Character = cc.Node.extend({
     moveLeft: function () {
         this.direction = "left";
         var actionTo = new cc.MoveBy(0.5, cc.p(-10, 0));
-       this.sprite.runAction(this.leftAction);
+        this.sprite.runAction(this.leftAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
     moveUp: function () {
         this.direction = "up";
         var actionTo = new cc.MoveBy(0.5, cc.p(0, 10));
-       this.sprite.runAction(this.upAction);
+        this.sprite.runAction(this.upAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
     moveDown: function () {
-        this.direction ="down";
+        this.direction = "down";
         var actionTo = new cc.MoveBy(0.5, cc.p(0, -10));
         this.sprite.runAction(this.downAction);
         this.sprite.runAction(new cc.Sequence(actionTo));
@@ -212,11 +212,11 @@ var Character = cc.Node.extend({
         //this.shape = null;
         //this.sprite.removeFromParent();
         //this.sprite = null;
-        this.body.setPos(cc.p((cc.director.getWinSize().width * 10)  , (cc.director.getWinSize().height * 10))) ;
+        this.body.setPos(cc.p((cc.director.getWinSize().width * 10), (cc.director.getWinSize().height * 10)));
 
     },
 
-    removeCollisionByChar: function(char) {
+    removeCollisionByChar: function (char) {
         for (var i = 0; i < this.collisionList.length; i++) {
             if (this.collisionList[i] == char) {
                 this.collisionList.splice(i, 1);
@@ -225,21 +225,21 @@ var Character = cc.Node.extend({
         }
     },
 
-    attackEnemies: function() {
-        if(this.direction == "up") {
+    attackEnemies: function () {
+        if (this.direction == "up") {
             this.sprite.runAction(this.upAttack);
         }
-        else if(this.direction == "left") {
+        else if (this.direction == "left") {
             this.sprite.runAction(this.leftAttack);
         }
-        else if(this.direction == "right") {
+        else if (this.direction == "right") {
             this.sprite.runAction(this.rightAttack);
         }
         else {
             this.sprite.runAction(this.downAttack);
         }
-        for (var i =0; i < this.collisionList.length; i++) {
-            this.collisionList[i].health-=this.hitPoint;
+        for (var i = 0; i < this.collisionList.length; i++) {
+            this.collisionList[i].health -= this.hitPoint;
         }
     }
 
