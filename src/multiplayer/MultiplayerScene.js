@@ -58,14 +58,10 @@ var MultiplayerScene = cc.Scene.extend({
     },
 
     /**
-     * Move player to Spawn point and zoom into the player and init hud
+     * Zoom into the player and init hud
      * @param dt time frame(unused)
      */
     positionPlayer: function (dt) {
-        var spawnPoint = SpawnPointCoordinates(this.jsonData.playerID);
-            this.playerLayer.playerList[this.playerLayer.currentPlayerID].character.sprite.setPosition(
-                cc.p(spawnPoint.xCoordinate, spawnPoint.yCoordinate));
-
         var zoomAction = new cc.scaleBy(1, 1.5, 1.5);
         this.gameLayer.runAction(new cc.Sequence(zoomAction));
         this.hudLayer.updateHealth();

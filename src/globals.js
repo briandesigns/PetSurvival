@@ -143,7 +143,8 @@ Events = {
     NEW_USER_LOGIN_DONE:4,
     PLAY:5,
     PLAY_DONE:6,
-    UPDATE_HEALTH:7
+    UPDATE_HEALTH:7,
+    SET_POSITION:8
 };
 
 var Encode = function(obj) {

@@ -37,6 +37,7 @@ var PlayerLayerMulti = cc.Layer.extend({
 
         // Create the hero sprite and position it in the center of the screen
         this.inMotion = false;
+        this.playerList.character.sprite.setPosition(cc.p(this.jsonData.x, this.jsonData.y));
         this.addChild(this.playerList[this.currentPlayerID].character.sprite);
 
         // Setup event listeners for keyboard events
@@ -173,21 +174,15 @@ var PlayerLayerMulti = cc.Layer.extend({
     // Multiplayer functions
     eventHandler:function(jsonData) {
         switch (jsonData.event) {
-            case Events.LOGIN_DONE:
-                console.log("Events: LOGIN_DONE");
-                //this.setupCurrentPlayer();
-                break;
             case Events.NEW_USER_LOGIN_DONE:
                 console.log("Events: NEW_USER_LOGIN_DONE");
                 this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, new PigMulti(this.space)); // Fix this to actually get character type
-                var spawnPoint = SpawnPointCoordinates(jsonData.playerID);
-                this.playerList[jsonData.playerID].character.sprite.setPosition(
-                    cc.p(spawnPoint.xCoordinate, spawnPoint.yCoordinate));
+                var newPlayerPosition = cc.p(jsonData.x, jsonData.y);
+                this.playerList[jsonData.playerID].character.sprite.setPosition(newPlayerPosition);
                 this.addChild(this.playerList[jsonData.playerID].character.sprite);
                 break;
             case Events.PLAY_DONE:
                 console.log("EVENTS: PLAY_DONE");
-
                 switch (jsonData.move) {
                     case "up":
                         this.moveUp(jsonData.playerID);
@@ -205,7 +200,9 @@ var PlayerLayerMulti = cc.Layer.extend({
                         console.log("Attack");
                         break;
                 }
-
+                break;
+            case Events.SET_POSITION:
+                console.log("Setting player position to: " + jsonData.x + ", " + jsonData.y);
                 break;
         }
         console.log("Set turn message.");
