@@ -159,7 +159,7 @@ function FunChecker(fullMapTileCount, fullMapWidth, collisionArray, objectsToPos
         var randomNumber = parseInt(Math.random()*accessibleTiles.length);
         var randomTile = accessibleTiles[randomNumber];
 
-        if (collisionArray[randomTile-1-fullMapWidth] == 0 && collisionArray[randomTile-fullMapWidth] == 0 && collisionArray[randomTile+1-fullMapWidth] == 0 && collisionArray[randomTile-1] == 0 && collisionArray[randomTile+fullMapWidth] == 0 && collisionArray[randomTile-1+fullMapWidth] == 0 && collisionArray[randomTile+fullMapWidth] == 0 && collisionArray[randomTile+1+fullMapWidth] == 0 && (randomTile % fullMapWidth) != 0 && (randomTile % fullMapWidth) != fullMapWidth-1 ) {
+        if (collisionArray[randomTile-1-fullMapWidth] == 0 && collisionArray[randomTile-fullMapWidth] == 0 && collisionArray[randomTile+1-fullMapWidth] == 0 && collisionArray[randomTile-1] == 0 && collisionArray[randomTile] == 0 && collisionArray[randomTile+1] == 0 && collisionArray[randomTile-1+fullMapWidth] == 0 && collisionArray[randomTile+fullMapWidth] == 0 && collisionArray[randomTile+1+fullMapWidth] == 0 && (randomTile % fullMapWidth) != 0 && (randomTile % fullMapWidth) != fullMapWidth-1 ) {
             objectRandomTiles.push(randomTile);
             //remove used tiles so we don't put spawns on top of each other
             accessibleTiles.splice(accessibleTiles.indexOf(randomTile-2-2*fullMapWidth), 5);
