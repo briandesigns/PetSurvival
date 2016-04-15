@@ -50,7 +50,6 @@ var Character = cc.Class.extend({
         this.png = png;
         cc.spriteFrameCache.addSpriteFrames(this.plist);
         this.spriteSheet = new cc.SpriteBatchNode(this.png);
-        //this.addChild(this.spriteSheet);
         this.sprite = sprite;
         this.sprite.setScale(this.spriteScale);
         this.healthPoint = healthPoint;
@@ -127,9 +126,7 @@ var Character = cc.Class.extend({
         var animationMoveRight = new cc.Animation(animframes, this.speedDuration);
         this.rightAction = new cc.Sequence(new cc.Animate(animationMoveRight));
 
-        //to do: attacking animation
-        //attacking animation
-
+    //attacking animations
         animframes = [];
         str = name + "-up-move.png" ;
         frame = cc.spriteFrameCache.getSpriteFrame(str);
