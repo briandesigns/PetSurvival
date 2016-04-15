@@ -232,8 +232,8 @@ var PlayScene = cc.Scene.extend({
                 parseFloat(posTokens[1])));
         } else if (this.isLoadGame == false) {
             this.playerLayer.player.character.sprite.setPosition(cc.p(
-                this.locationLayer.start.body.p.x,
-                this.locationLayer.start.body.p.y));
+                this.locationLayer.start.sprite.getPositionX(),
+                this.locationLayer.start.sprite.getPositionY()));
         } else if (this.isLoadGame == "boss") {
             var dict = cc.sys.localStorage;
             var string = dict.getItem("bossplayerChar");

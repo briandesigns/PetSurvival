@@ -24,7 +24,7 @@ var LocationLayer = cc.Layer.extend({
             var startAndEnd = this.funChecker;
             
             this.start = new StartPoint(this.space);
-            this.start.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.start).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.start).y+16));
+            this.start.sprite.setPosition(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.start).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.start).y+16));
             this.end = new EndPoint(this.space);
             this.end.body.setPos(cc.p(this.mapLayer.coordinateAtTileIndex(startAndEnd.end).x+16, this.mapLayer.coordinateAtTileIndex(startAndEnd.end).y+16));
         }
