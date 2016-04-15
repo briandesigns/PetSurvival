@@ -60,6 +60,7 @@ var BossScene = cc.Scene.extend({
         proj.collisionList.push(enemy);
         proj.attackEnemies();
         proj.die();
+        cc.audioEngine.playEffect(res.sound_projectile);
         return true;
     },
 
@@ -275,7 +276,6 @@ var BossScene = cc.Scene.extend({
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
 
         cc.audioEngine.playMusic(res.music_boss, true);
-        //cc.audioEngine.setMusicVolume(0.4);
     },
 
     onExit: function () {
