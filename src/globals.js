@@ -107,7 +107,7 @@ if (typeof SPAWN_STATS == "undefined") {
     SPAWN_STATS.baseHealth = 500;
     SPAWN_STATS.baseHealthPoint = 500;
     SPAWN_STATS.baseCapacity = 5;
-    SPAWN_STATS.baseSpriteScale = 0.06;
+    SPAWN_STATS.baseSpriteScale = 0.04;
 }
 
 //item stats
@@ -130,7 +130,7 @@ if (typeof MAP_SIZE == "undefined") {
 
 //player options, with default values assigned
 var playerType = CHAR_TYPE.dog;
-var chosenMapSize = MAP_SIZE.big;
+var chosenMapSize = MAP_SIZE.medium;
 
 // Websocket properties
 var Websocket = Websocket || window.Websocket || window.MozWebSocket;

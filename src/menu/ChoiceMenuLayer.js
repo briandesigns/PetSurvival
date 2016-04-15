@@ -112,7 +112,7 @@ var ChoiceMenuLayer = cc.Layer.extend({
     },
 
     chooseSmall: function () {
-        chosenMapSize =MAP_SIZE.small;
+        chosenMapSize = MAP_SIZE.small;
     },
 
     chooseMedium: function () {

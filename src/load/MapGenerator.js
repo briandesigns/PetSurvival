@@ -1,19 +1,19 @@
-function Terrain(size) {
+function DiamondSquare(size) {
     this.size = size;
     this.max = this.size - 1;
     this.map = new Float32Array(this.size * this.size);
 }
 
-Terrain.prototype.get = function(x, y) {
+DiamondSquare.prototype.get = function(x, y) {
     if (x < 0 || x > this.max || y < 0 || y > this.max) return -1;
     return this.map[x + this.size * y];
 };
 
-Terrain.prototype.set = function(x, y, val) {
+DiamondSquare.prototype.set = function(x, y, val) {
     this.map[x + this.size * y] = val;
 };
 
-Terrain.prototype.generate = function(roughness) {
+DiamondSquare.prototype.generate = function(roughness) {
     var self = this;
     this.set(0, 0, self.max);
     this.set(this.max, 0, self.max / 2);

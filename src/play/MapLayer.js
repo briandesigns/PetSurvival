@@ -2,15 +2,15 @@ var MapLayer = cc.Layer.extend({
     collisionArray: null, //tiles that the user can't walk over because of trees, etc.
     terrainArray: null, //terrain texture at a tile
     featuresArray: null, //features like rocks, trees, at a tile
-    mapAsTmxStrings: null,
-    tiledMapsWide: null,
-    tiledMapsHigh: null,
-    totalTiledMaps: null,
-    tiledMapWidth: null,
-    tiledMapHeight: null,
-    fullMapWidth: null,
-    fullMapHeight: null,
-    fullMapTileCount: null,
+    mapAsTmxStrings: null, //string representation of tiled maps
+    tiledMapsWide: null, //number of tiled maps stacked widthwise
+    tiledMapsHigh: null, //number of tiled maps stacked heightwise
+    totalTiledMaps: null, //total number of tiled maps
+    tiledMapWidth: null, //width of each tiled map
+    tiledMapHeight: null, //height of each tiled map
+    fullMapWidth: null, //full width of map in tiles
+    fullMapHeight: null, //full height of map in tiles
+    fullMapTileCount: null, //total number of tiles in overall map
     space: null,
 
     ctor:function (space, mapAsTmxStrings, collisionArray, tiledMapsWide, tiledMapsHigh, totalTiledMaps, tiledMapWidth, tiledMapHeight) {
@@ -53,37 +53,36 @@ var MapLayer = cc.Layer.extend({
         //set the position of tiled maps in a square grid
         for (i = 0; i < this.totalTiledMaps; i++) {
             var xPosition = (this.mapWidth * i) % (this.mapWidth * this.tiledMapsWide);
-            var yPosition = this.mapHeight * parseInt(i / this.tiledMapsHigh);
+            var yPosition = this.mapHeight * (this.tiledMapsHigh - 1 - parseInt(i / this.tiledMapsHigh));
 
             maps[i].setPosition(cc.p(xPosition, yPosition));
             this.addChild(maps[i]);
         }
 
-        //this.map = new cc.TMXTiledMap(res.testmap_tmx);
-        //this.addChild(this.map);
-/*
-        cc.log(this.collisionArray);
-        cc.log(this.mapAsTmxStrings);
-        cc.log(this.tiledMapsWide);
-        cc.log(this.tiledMapsHigh);
-        cc.log(this.totalTiledMaps);
-        cc.log(this.tiledMapWidth);
-        cc.log(this.tiledMapHeight);
-        cc.log(this.fullMapWidth);
-        cc.log(this.fullMapHeight);
-        cc.log(this.fullMapTileCount);*/
-
         this.scheduleUpdate();
     },
 
     createNewMap: function () {
-        this.tiledMapsWide = 1;
-        this.tiledMapsHigh = 1;
-        this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
+        // Size map based on player setting
+        if (chosenMapSize == MAP_SIZE.small) {
+            this.tiledMapsWide = 1;
+            this.tiledMapsHigh = 1;
+            this.tiledMapWidth = 33;
+            this.tiledMapHeight = 33    ;
+        } else if (chosenMapSize == MAP_SIZE.medium) {
+            this.tiledMapsWide = 1;
+            this.tiledMapsHigh = 1;
+            this.tiledMapWidth = 65;
+            this.tiledMapHeight = 65;
+        } else if (chosenMapSize == MAP_SIZE.big) {
+            this.tiledMapsWide = 1;
+            this.tiledMapsHigh = 1;
+            this.tiledMapWidth = 65;
+            this.tiledMapHeight = 65;
+        }
 
-        //for our map to generate properly, these need to be (a power of 2) + 1
-        this.tiledMapWidth = 65;
-        this.tiledMapHeight = 65;
+        // Calculate value of map variables based on input
+        this.totalTiledMaps = this.tiledMapsWide * this.tiledMapsHigh;
         this.fullMapWidth = this.tiledMapWidth * this.tiledMapsWide;
         this.fullMapHeight = this.tiledMapHeight * this.tiledMapsHigh;
         this.fullMapTileCount = this.fullMapWidth * this.fullMapHeight;
@@ -92,14 +91,23 @@ var MapLayer = cc.Layer.extend({
         this.featuresArray = new Array(this.fullMapTileCount);
         this.collisionArray = new Array(this.fullMapTileCount);
 
-        var terrain = new Terrain(this.tiledMapWidth);
-        terrain.generate(0.7);
+        // Get the diamond square array
+        var diamondSquare = new DiamondSquare(this.fullMapWidth);
+        diamondSquare.generate(0.7);
 
         for (i = 0; i < this.fullMapTileCount; i++) {
             this.featuresArray[i] = 1046; //fill features array with blank transparent tiles
             this.collisionArray[i] = 0; //fill collision array with 0s (no collision)
 
-            var terrainAsInt = parseInt(terrain.map[i] / 20);
+            // Divide the result of diamond square to give less water tiles if the map is small
+            var divisor = 0;
+            if (chosenMapSize == MAP_SIZE.small) {
+                divisor = 10;
+            } else {
+                divisor = 20;
+            }
+
+            var terrainAsInt = parseInt(diamondSquare.map[i] / divisor);
 
             switch (true) {
                 case (terrainAsInt < 0):
@@ -121,10 +129,6 @@ var MapLayer = cc.Layer.extend({
                 case (terrainAsInt > 3):
                     this.terrainArray[i] = 191; //grass again
                     break;
-                default:
-                    console.log(terrainAsInt > 3);
-                    console.log(terrainAsInt);
-
             }
         }
 
@@ -248,12 +252,12 @@ var MapLayer = cc.Layer.extend({
 
             for (var i = 0; i < this.fullMapTileCount; i++) {
 
-                //SAND SURROUNDED BY WATER
-                if (this.terrainArray[i] == p) { //sand tile
-                    if (this.tileLeftOf(i) == q || this.tileLeftOf(i) == piql || this.tileLeftOf(i) == qpbl || this.tileLeftOf(i) == qrpl || this.tileLeftOf(i) == qpul) { //water left
-                        if (this.tileAbove(i) == q || this.tileAbove(i) == piql || this.tileAbove(i) == qpur || this.tileAbove(i) == qbpa || this.tileAbove(i) == qpul) { //water above
-                            if (this.tileRightOf(i) == q || this.tileRightOf(i) == piql || this.tileRightOf(i) == qpbr || this.tileRightOf(i) == qlpr || this.tileRightOf(i) == qpur) { //water right
-                                if (this.tileBelow(i) == q || this.tileBelow(i) == piql || this.tileBelow(i) == qpbr || this.tileBelow(i) == qapb || this.tileBelow(i) == qpbl) { //water below
+                //p SURROUNDED BY q
+                if (this.terrainArray[i] == p) { //p tile
+                    if (this.tileLeftOf(i) == q || this.tileLeftOf(i) == piql || this.tileLeftOf(i) == qpbl || this.tileLeftOf(i) == qrpl || this.tileLeftOf(i) == qpul) { //q left
+                        if (this.tileAbove(i) == q || this.tileAbove(i) == piql || this.tileAbove(i) == qpur || this.tileAbove(i) == qbpa || this.tileAbove(i) == qpul) { //q above
+                            if (this.tileRightOf(i) == q || this.tileRightOf(i) == piql || this.tileRightOf(i) == qpbr || this.tileRightOf(i) == qlpr || this.tileRightOf(i) == qpur) { //q right
+                                if (this.tileBelow(i) == q || this.tileBelow(i) == piql || this.tileBelow(i) == qpbr || this.tileBelow(i) == qapb || this.tileBelow(i) == qpbl) { //q below
                                     if (this.terrainArray[i] != piql) {
                                         this.terrainArray[i] = piql;
                                         corrections++;
@@ -267,9 +271,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //SAND WITH WATER IN BOTTOM RIGHT
-                if (this.tileRightOf(i) == pqbl || this.tileRightOf(i) == qbpa || this.tileRightOf(i) == qpul) { //sand right on top half
-                    if (this.tileBelow(i) == pqur || this.tileBelow(i) == qrpl || this.tileBelow(i) == qpul) { //sand below on left half
+                //p WITH q IN BOTTOM RIGHT
+                if (this.tileRightOf(i) == pqbl || this.tileRightOf(i) == qbpa || this.tileRightOf(i) == qpul) { //p right on top half
+                    if (this.tileBelow(i) == pqur || this.tileBelow(i) == qrpl || this.tileBelow(i) == qpul) { //p below on left half
                         if (this.terrainArray[i] != pqbr) {
                             this.terrainArray[i] = pqbr;
                             corrections++;
@@ -280,9 +284,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //SAND WITH WATER IN BOTTOM LEFT
-                if (this.tileLeftOf(i) == pqbr || this.tileLeftOf(i) == qpur || this.tileLeftOf(i) == qbpa) { //sand left on top half
-                    if (this.tileBelow(i) == pqul || this.tileBelow(i) == qlpr || this.tileBelow(i) == qpur) { //sand below on right half
+                //p WITH q IN BOTTOM LEFT
+                if (this.tileLeftOf(i) == pqbr || this.tileLeftOf(i) == qpur || this.tileLeftOf(i) == qbpa) { //p left on top half
+                    if (this.tileBelow(i) == pqul || this.tileBelow(i) == qlpr || this.tileBelow(i) == qpur) { //p below on right half
                         if (this.terrainArray[i] != pqbl) {
                             this.terrainArray[i] = pqbl;
                             corrections++;
@@ -293,9 +297,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //SAND WITH WATER IN TOP RIGHT
-                if (this.tileAbove(i) == pqbr || this.tileAbove(i) == qpbl || this.tileAbove(i) == qrpl) { //sand above on left half
-                    if (this.tileRightOf(i) == pqul || this.tileRightOf(i) == qapb || this.tileRightOf(i) == qpbl) { //sand right on bottom half
+                //p WITH q IN TOP RIGHT
+                if (this.tileAbove(i) == pqbr || this.tileAbove(i) == qpbl || this.tileAbove(i) == qrpl) { //p above on left half
+                    if (this.tileRightOf(i) == pqul || this.tileRightOf(i) == qapb || this.tileRightOf(i) == qpbl) { //p right on bottom half
                         if (this.terrainArray[i] != pqur) {
                             this.terrainArray[i] = pqur;
                             corrections++;
@@ -307,9 +311,9 @@ var MapLayer = cc.Layer.extend({
                 }
 
 
-                //SAND WITH WATER IN TOP LEFT
-                if (this.tileLeftOf(i) == pqur || this.tileLeftOf(i) == qpbr || this.tileLeftOf(i) == 399) { //sand left in bottom half
-                    if (this.tileAbove(i) == pqbl || this.tileAbove(i) == qpbr || this.tileAbove(i) == qlpr) { //sand above on right half
+                //p WITH q IN TOP LEFT
+                if (this.tileLeftOf(i) == pqur || this.tileLeftOf(i) == qpbr || this.tileLeftOf(i) == 399) { //p left in bottom half
+                    if (this.tileAbove(i) == pqbl || this.tileAbove(i) == qpbr || this.tileAbove(i) == qlpr) { //p above on right half
                         if (this.terrainArray[i] != pqul) {
                             this.terrainArray[i] = pqul;
                             corrections++;
@@ -320,9 +324,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER WITH SAND IN BOTTOM RIGHT
-                if (this.tileRightOf(i) == pqul || this.tileRightOf(i) == qapb || this.tileRightOf(i) == qpbl) { //water right on top half
-                    if (this.tileBelow(i) == pqul || this.tileBelow(i) == qlpr || this.tileBelow(i) == qpur) { //water below on left half
+                //q WITH p IN BOTTOM RIGHT
+                if (this.tileRightOf(i) == pqul || this.tileRightOf(i) == qapb || this.tileRightOf(i) == qpbl) { //q right on top half
+                    if (this.tileBelow(i) == pqul || this.tileBelow(i) == qlpr || this.tileBelow(i) == qpur) { //q below on left half
                         if (this.terrainArray[i] != qpbr) {
                             this.terrainArray[i] = qpbr;
                             corrections++;
@@ -333,9 +337,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER WITH SAND IN BOTTOM LEFT
-                if (this.tileLeftOf(i) == pqur || this.tileLeftOf(i) == qpbr || this.tileLeftOf(i) == qapb) { //water left on top half
-                    if (this.tileBelow(i) == pqur || this.tileBelow(i) == qrpl || this.tileBelow(i) == qpul) { //water below in right half
+                //q WITH p IN BOTTOM LEFT
+                if (this.tileLeftOf(i) == pqur || this.tileLeftOf(i) == qpbr || this.tileLeftOf(i) == qapb) { //q left on top half
+                    if (this.tileBelow(i) == pqur || this.tileBelow(i) == qrpl || this.tileBelow(i) == qpul) { //q below in right half
                         if (this.terrainArray[i] != qpbl) {
                             this.terrainArray[i] = qpbl;
                             corrections++;
@@ -346,9 +350,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER WITH SAND IN TOP RIGHT
-                if (this.tileAbove(i) == pqbl || this.tileAbove(i) == qpbr || this.tileAbove(i) == qlpr) { //water above in left half
-                    if (this.tileRightOf(i) == pqbl || this.tileRightOf(i) == qbpa || this.tileRightOf(i) == qpul) { //water right in bottom half
+                //q WITH p IN TOP RIGHT
+                if (this.tileAbove(i) == pqbl || this.tileAbove(i) == qpbr || this.tileAbove(i) == qlpr) { //q above in left half
+                    if (this.tileRightOf(i) == pqbl || this.tileRightOf(i) == qbpa || this.tileRightOf(i) == qpul) { //q right in bottom half
                         if (this.terrainArray[i] != qpur) {
                             this.terrainArray[i] = qpur;
                             corrections++;
@@ -359,9 +363,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER WITH SAND IN TOP LEFT
-                if (this.tileLeftOf(i) == pqbr || this.tileLeftOf(i) == qpur || this.tileLeftOf(i) == qbpa) { //water left in bottom half
-                    if (this.tileAbove(i) == pqbr || this.tileAbove(i) == qpbl || this.tileAbove(i) == qrpl) { //water above in right half
+                //q WITH p IN TOP LEFT
+                if (this.tileLeftOf(i) == pqbr || this.tileLeftOf(i) == qpur || this.tileLeftOf(i) == qbpa) { //q left in bottom half
+                    if (this.tileAbove(i) == pqbr || this.tileAbove(i) == qpbl || this.tileAbove(i) == qrpl) { //q above in right half
                         if (this.terrainArray[i] != qpul) {
                             this.terrainArray[i] = qpul;
                             corrections++;
@@ -372,9 +376,9 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER ABOVE, SAND BELOW
-                if (this.tileAbove(i) == q || this.tileAbove(i) == piql || this.tileAbove(i) == qpur || this.tileAbove(i) == qbpa || this.tileAbove(i) == qpul) { //water above
-                    if (this.tileBelow(i) == p || this.tileBelow(i) == qpur) { //sand below
+                //q ABOVE, p BELOW
+                if (this.tileAbove(i) == q || this.tileAbove(i) == piql || this.tileAbove(i) == qpur || this.tileAbove(i) == qbpa || this.tileAbove(i) == qpul) { //q above
+                    if (this.tileBelow(i) == p || this.tileBelow(i) == qpur) { //p below
                         if (this.terrainArray[i] != qapb) {
                             this.terrainArray[i] = qapb;
                             corrections++;
@@ -385,7 +389,7 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //WATER LEFT, SAND RIGHT
+                //q LEFT, p RIGHT
                 if (this.tileLeftOf(i) == q || this.tileLeftOf(i) == piql || this.tileLeftOf(i) == qpbl || this.tileLeftOf(i) == qrpl || this.tileLeftOf(i) == qpul) {
                     if (this.tileRightOf(i) == p || this.tileRightOf(i) == qrpl) {
                         if (this.terrainArray[i] != qlpr) {
@@ -398,7 +402,7 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //SAND LEFT, WATER RIGHT
+                //p LEFT, q RIGHT
                 if (this.tileLeftOf(i) == p || this.tileLeftOf(i) == qlpr) {
                     if (this.tileRightOf(i) == q || this.tileRightOf(i) == piql || this.tileRightOf(i) == qpbr || this.tileRightOf(i) == qlpr || this.tileRightOf(i) == qpur) {
                         if (this.terrainArray[i] != qrpl) {
@@ -411,7 +415,7 @@ var MapLayer = cc.Layer.extend({
                     }
                 }
 
-                //SAND ABOVE, WATER BELOW
+                //p ABOVE, q BELOW
                 if (this.tileAbove(i) == p || this.tileAbove(i) == qapb || this.tileAbove(i) == pqur || this.tileAbove(i) == pqul) {
                     if (this.tileBelow(i) == q || this.tileBelow(i) == piql || this.tileBelow(i) == qpbr || this.tileBelow(i) == qapb || this.tileBelow(i) == qpbl) {
                         if (this.terrainArray[i] != qbpa) {
@@ -553,27 +557,27 @@ var MapLayer = cc.Layer.extend({
                         }
                         break;
                     case 9:
-                        if (this.collisionArray[d] == 0 && this.collisionArray[d+1] == 0 && this.collisionArray[d-this.fullMapWidth] == 0 &&this.collisionArray[d-this.fullMapWidth+1] == 0) {
-                            this.featuresArray[d] = 1079; //wide pine tree bottom left
-                            this.featuresArray[d+1] = 1080; //bottom right
-                            this.featuresArray[d-this.fullMapWidth] = 1063; //top left
-                            this.featuresArray[d-this.fullMapWidth+1] = 1064; //top left
+                        if (this.collisionArray[d-1] == 0 && this.collisionArray[d] == 0 && this.collisionArray[d-this.fullMapWidth-1] == 0 &&this.collisionArray[d-this.fullMapWidth] == 0) {
+                            this.featuresArray[d-1] = 1079; //wide pine tree bottom left
+                            this.featuresArray[d] = 1080; //bottom right
+                            this.featuresArray[d-this.fullMapWidth-1] = 1063; //top left
+                            this.featuresArray[d-this.fullMapWidth] = 1064; //top left
+                            this.collisionArray[d-1] = 1;
                             this.collisionArray[d] = 1;
-                            this.collisionArray[d+1] = 1;
+                            this.collisionArray[d-this.fullMapWidth-1] = 1;
                             this.collisionArray[d-this.fullMapWidth] = 1;
-                            this.collisionArray[d-this.fullMapWidth+1] = 1;
                         }
                         break;
                     case 10:
-                        if (this.collisionArray[d] == 0 && this.collisionArray[d+1] == 0 && this.collisionArray[d-this.fullMapWidth] == 0 &&this.collisionArray[d-this.fullMapWidth+1] == 0) {
-                            this.featuresArray[d] = 1111; //wide leafy tree bottom left
-                            this.featuresArray[d+1] = 1112; //bottom right
-                            this.featuresArray[d-this.fullMapWidth] = 1095; //top left
-                            this.featuresArray[d-this.fullMapWidth+1] = 1096; //top left
+                        if (this.collisionArray[d-1] == 0 && this.collisionArray[d] == 0 && this.collisionArray[d-this.fullMapWidth-1] == 0 &&this.collisionArray[d-this.fullMapWidth] == 0) {
+                            this.featuresArray[d-1] = 1111; //wide leafy tree bottom left
+                            this.featuresArray[d] = 1112; //bottom right
+                            this.featuresArray[d-this.fullMapWidth-1] = 1095; //top left
+                            this.featuresArray[d-this.fullMapWidth] = 1096; //top left
+                            this.collisionArray[d-1] = 1;
                             this.collisionArray[d] = 1;
-                            this.collisionArray[d+1] = 1;
+                            this.collisionArray[d-this.fullMapWidth-1] = 1;
                             this.collisionArray[d-this.fullMapWidth] = 1;
-                            this.collisionArray[d-this.fullMapWidth+1] = 1;
                         }
                         break;
                     default:

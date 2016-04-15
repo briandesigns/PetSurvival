@@ -446,7 +446,7 @@ jsb.Terrain.prototype._ctor = function(parameter, fixedType = jsb.Terrain.INCREA
         this.initWithTerrainData(parameter, fixedType);
     }
     else {
-        cc.error("jsb.Terrain constructor: arguments error");
+        cc.error("jsb.DiamondSquare constructor: arguments error");
     }
 }
 

@@ -7,7 +7,6 @@ var MultiplayerScene = cc.Scene.extend({
     gameLayer: null, // need multiplayer version of this?
     playerLayer: null,
     mapLayer: null,
-    itemLayer: null,
     hudLayer: null,
     trash: null,
     jsonData: null,
@@ -25,7 +24,6 @@ var MultiplayerScene = cc.Scene.extend({
         this.hudLayer = new HudLayerMulti();
 
         this.mapLayer = new CaveMapLayer(this.space);
-        this.itemLayer = new ItemLayer(this.space, this.mapLayer, null, true, null);
 
         var chosenChar;
         switch (this.jsonData.playerID%4) {
@@ -47,7 +45,6 @@ var MultiplayerScene = cc.Scene.extend({
 
         this.gameLayer.addChild(this.mapLayer, 0, TagOfLayer.Map);
         this.gameLayer.addChild(this.playerLayer, 0, TagOfLayer.Player);
-        this.gameLayer.addChild(this.itemLayer, 0, TagOfLayer.Item);
 
         this.addChild(this.gameLayer);
         this.addChild(this.hudLayer, 0, TagOfLayer.Hud);

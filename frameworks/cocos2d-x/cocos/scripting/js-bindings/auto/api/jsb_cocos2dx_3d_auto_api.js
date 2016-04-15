@@ -1299,7 +1299,7 @@ getInstance : function (
 };
 
 /**
- * @class Terrain
+ * @class DiamondSquare
  */
 jsb.Terrain = {
 
@@ -1564,7 +1564,7 @@ getMaxHeight : function (
 },
 
 /**
- * @method Terrain
+ * @method DiamondSquare
  * @constructor
  */
 Terrain : function (

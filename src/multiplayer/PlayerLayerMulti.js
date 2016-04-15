@@ -148,23 +148,6 @@ var PlayerLayerMulti = cc.Layer.extend({
         return this.playerList[this.currentPlayerID].character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
     },
 
-    addItem: function (item) {
-        cc.audioEngine.playEffect(res.sound_item_add);
-        //cc.audioEngine.setEffectsVolume(1);
-        this.playerList[this.currentPlayerID].character.addItem(item);
-        var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
-        hudLayer.updateInventory();
-    },
-
-    removeItem: function (itemNumber) {
-        cc.audioEngine.playEffect(res.sound_item_remove);
-        //cc.audioEngine.setEffectsVolume(1);
-        if (this.playerList[this.currentPlayerID].character.removeItem(itemNumber)) {
-            var hudLayer = this.getParent().getParent().getChildByTag(TagOfLayer.Hud);
-            hudLayer.updateInventory();
-        }
-    },
-
     // Show the pause menu
     showPauseMenu: function () {
         if (this.isPaused == false) {
