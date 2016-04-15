@@ -107,7 +107,7 @@ var loadLocations = function (space, boss) {
     var startTokens = startString.split(",");
     var posTokens = startTokens[1].split(";");
     var start = new StartPoint(space);
-    start.body.setPos(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
+    start.sprite.setPosition(cc.p(parseFloat(posTokens[0]), parseFloat(posTokens[1])));
     var endString = dict.getItem(boss + "end");
     var endTokens = endString.split(",");
     posTokens = endTokens[1].split(";");
