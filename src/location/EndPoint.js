@@ -8,10 +8,11 @@ var EndPoint = Location.extend({
     ctor: function (space) {
         this._super(COLLISION_TYPE.end, new cc.PhysicsSprite(res.EndPoint), 0.15, space);
         
+        //endpoint sprite animation
         cc.spriteFrameCache.addSpriteFrames(res.human_plist);
         this.spriteSheet = new cc.SpriteBatchNode(res.human_png);
 
-        var animframes = [];  // (1,2,4,5)
+        var animframes = [];  
         animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint1.png"));
         animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint4.png"));
         animframes.push(cc.spriteFrameCache.getSpriteFrame("EndPoint5.png"));
