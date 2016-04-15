@@ -1,5 +1,8 @@
 var HealthBoostItem = Item.extend({
 
+    /**
+     * an item that boosts ur health
+     */
     healthBoost: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

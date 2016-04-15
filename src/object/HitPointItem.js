@@ -1,5 +1,8 @@
 var HitPointItem = Item.extend({
 
+    /**
+     * item that boosts ur hitpoints
+     */
     hitPointBenefit: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

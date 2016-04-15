@@ -1,4 +1,7 @@
 var OverMenuLayer = cc.Layer.extend({
+    /**
+     * menu that shows up when you win or lose the game
+     */
     winsize: null,
     centerpos : null,
     score: null,

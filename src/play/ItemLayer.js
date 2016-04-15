@@ -1,3 +1,7 @@
+/**
+ * layer containing all items
+ */
+
 var ItemLayer = cc.Layer.extend({
     space: null,
     itemList: null,
@@ -28,6 +32,9 @@ var ItemLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * generate all items on the map
+     */
     createItems: function() {
         if (this.isCave) {
             this.itemList[0] = new PineConeItem(this.space);
@@ -90,6 +97,11 @@ var ItemLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * retrieve the item based on its sprite
+     * @param shape
+     * @returns {*}
+     */
     getItemByShape: function(shape) {
         for (var i = 0; i < this.itemList.length; i++) {
             var item = this.itemList[i];
@@ -100,6 +112,11 @@ var ItemLayer = cc.Layer.extend({
         return null;
     },
 
+    /**
+     * retrieve item by its id
+     * @param id
+     * @returns {*}
+     */
     getItemByID: function (id) {
         for (var i = 0; i < this.itemList.length; i++) {
             var item = this.itemList[i];
@@ -109,6 +126,10 @@ var ItemLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * find a free tile on the map to place the item
+     * @returns {*|{x, y}|{x: number, y: number}}
+     */
     getRandomFreeTileLocation: function () {
         var tile = this.funChecker.freeTiles[Math.floor(Math.random() * this.funChecker.freeTiles.length) - 1];
         return this.mapLayer.coordinateAtTileIndex(tile);

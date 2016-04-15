@@ -1,4 +1,7 @@
 var Item = cc.Class.extend({
+    /**
+     * base class for all item that could be picked up
+     */
     itemID: null,
     collisionType: null,
     name: null,

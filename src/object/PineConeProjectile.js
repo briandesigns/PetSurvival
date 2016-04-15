@@ -1,6 +1,8 @@
 var PineConeProjectile = Projectile.extend({
 
-
+    /**
+     * a range weapon
+     */
     /** Constructor
      * @param {cc.SpriteBatchNode *}
      * @param {cp.Space *}

@@ -1,3 +1,6 @@
+/**
+ * layer containing start and end point
+ */
 var LocationLayer = cc.Layer.extend({
     space: null,
     mapLayer: null,
@@ -19,6 +22,9 @@ var LocationLayer = cc.Layer.extend({
         this.init();
     },
 
+    /**
+     * place start and end point based on a position returned by funchecker algorithm
+     */
     init: function () {
         if (this.start == null && this.end == null) {
             var startAndEnd = this.funChecker;

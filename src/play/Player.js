@@ -1,5 +1,7 @@
 var Player = cc.Class.extend({
-
+    /**
+     * player class, contains the character the player has chosen
+     */
     character: null,
 
 

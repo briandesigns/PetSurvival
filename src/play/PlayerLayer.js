@@ -1,5 +1,5 @@
 /**
- * Created by brian on 2/13/16.
+ * playerlayer, contains logic for controls and player state
  */
 var PlayerLayer = cc.Layer.extend({
     space: null,
@@ -9,6 +9,12 @@ var PlayerLayer = cc.Layer.extend({
     isPaused: null,
     pauseMenuLayer: null,
     inMotion: null,
+
+    /**
+     * constructor
+     * @param space
+     * @param character
+     */
     ctor: function (space, character) {
         this._super();
         this.space = space;
@@ -21,6 +27,10 @@ var PlayerLayer = cc.Layer.extend({
         this.addChild(this._debugNode, 10);
 
     },
+
+    /**
+     * post constructor initiation
+     */
     init: function () {
         this._super();
         //create the hero sprite
@@ -33,21 +43,10 @@ var PlayerLayer = cc.Layer.extend({
 
         this.addChild(this.player.character.sprite);
 
+        //keyboard key event listeners for control implementation
         if (cc.sys.capabilities.hasOwnProperty("keyboard")) {
             cc.eventManager.addListener({
                     event: cc.EventListener.KEYBOARD,
-                    //onKeyReleased: function (key, event) {
-                    //    if (key.toString() === "37") { //left
-                    //        this.player.character.sprite.stopAllActions();
-                    //    } else if (key.toString() === "38") { //up
-                    //        this.player.character.sprite.stopAllActions();
-                    //    } else if (key.toString() === "40") { //down
-                    //        this.player.character.sprite.stopAllActions();
-                    //    } else if (key.toString() === "39") { //right
-                    //        this.player.character.sprite.stopAllActions();
-                    //    } else {
-                    //    }
-                    //}.bind(this),
                     onKeyPressed: function (key, event) {
                         if (key.toString() === "37") { //left
                             this.moveLeft();
@@ -81,6 +80,11 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * find the player based on its sprite attribute
+     * @param shape
+     * @returns {*}
+     */
     getPlayerByShape: function (shape) {
         for (var i = 0; i < this.playerList.length; i++) {
             if (this.playerList[i].character.shape == shape) {
@@ -122,13 +126,27 @@ var PlayerLayer = cc.Layer.extend({
 
 
     },
+    /**
+     * find how much character is shifting, this is to center the player on the screen no matter
+     * where it moves
+     * @returns {number}
+     */
     getEyeX: function () {
         return this.player.character.sprite.getPositionX() - (cc.director.getWinSize().width / 2);
     },
+
+    /**
+     * find how much character is shifting on y axis. this is to center the player on screen
+     * @returns {number}
+     */
     getEyeY: function () {
         return this.player.character.sprite.getPositionY() - (cc.director.getWinSize().height / 2);
     },
 
+    /**
+     * add item to players character
+     * @param item
+     */
     addItem: function (item) {
         cc.audioEngine.playEffect(res.sound_item_add);
         //cc.audioEngine.setEffectsVolume(1);
@@ -137,6 +155,11 @@ var PlayerLayer = cc.Layer.extend({
         hudLayer.updateInventory();
     },
 
+
+    /**
+     * remove item from player character
+     * @param itemNumber
+     */
     removeItem: function (itemNumber) {
         cc.audioEngine.playEffect(res.sound_item_remove);
         //cc.audioEngine.setEffectsVolume(1);
@@ -146,6 +169,11 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * find out all projectile of the player
+     * @param shape
+     * @returns {*}
+     */
     getProjectileByShape: function (shape) {
         for (var i = 0; i < this.projectileList.length; i++) {
             if (this.projectileList[i].shape == shape) {
@@ -154,6 +182,9 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * throw a projectile in a direction
+     */
     throwProjectile: function () {
         if (this.player.character.projectileCount > 0) {
             var proj = new PineConeProjectile(this.space);
@@ -185,6 +216,9 @@ var PlayerLayer = cc.Layer.extend({
         }
     },
 
+    /**
+     * display the pause menu based on key press
+     */
     showPauseMenu: function () {
         if (this.isPaused == false) {
             cc.director.pause();

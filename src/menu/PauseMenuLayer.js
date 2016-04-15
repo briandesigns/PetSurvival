@@ -1,4 +1,7 @@
 var PauseMenuLayer = cc.Layer.extend({
+    /**
+     * pause menu
+     */
     winsize: null,
     centerpos : null,
     ctor: function () {

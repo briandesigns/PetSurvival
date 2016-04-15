@@ -1,4 +1,8 @@
 var HealthPointItem = Item.extend({
+
+    /**
+     * an item that allows u a greater health point capacity
+     */
     healthPointBenefit: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

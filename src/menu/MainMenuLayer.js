@@ -1,4 +1,8 @@
 var MainMenuLayer = cc.Layer.extend({
+    /**
+     * our main menu
+     */
+
     ctor: function () {
         this._super();
     },

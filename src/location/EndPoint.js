@@ -1,8 +1,12 @@
 var EndPoint = Location.extend({
    animation : null,
-   
+
+    /**
+     * the goal location that the player needs to reach
+     * @param space
+     */
     ctor: function (space) {
-        this._super(COLLISION_TYPE.end, new cc.PhysicsSprite(res.EndPoint), 0.2, space);
+        this._super(COLLISION_TYPE.end, new cc.PhysicsSprite(res.EndPoint), 0.15, space);
         
         cc.spriteFrameCache.addSpriteFrames(res.human_plist);
         this.spriteSheet = new cc.SpriteBatchNode(res.human_png);

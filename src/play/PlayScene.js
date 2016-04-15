@@ -78,6 +78,12 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    /**
+     * handles when projectile hits an enemy
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionProjectileEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var proj = this.playerLayer.getProjectileByShape(shapes[0]);
@@ -88,6 +94,12 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    /**
+     * handles when projectile finishes hitting enemy
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionProjectileEnemyEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var enemy = this.enemyLayer.getEnemyByShape(shapes[1]);
@@ -202,12 +214,24 @@ var PlayScene = cc.Scene.extend({
         return true;
     },
 
+    /**
+     * handles when player reaches end goal
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionPlayerGoalBegin: function (arbiter, space) {
         cc.director.pause();
         this.showGameOverMenu("WON");
         return true;
     },
 
+    /**
+     * handles what happens when enemy collide with an item
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionEnemyItemBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var enemy = this.enemyLayer.getEnemyByShape(shapes[0]);
@@ -346,6 +370,10 @@ var PlayScene = cc.Scene.extend({
         this.trash = [];
     },
 
+    /**
+     * displayer game over menu
+     * @param winLoss
+     */
     showGameOverMenu: function (winLoss) {
         var gameOverLayer = new OverMenuLayer(this.playerLayer.player.character.score, winLoss);
         gameOverLayer.init();
@@ -415,12 +443,10 @@ var PlayScene = cc.Scene.extend({
         this.positionPlayer();
         this.initCollisions();
         this.scheduleUpdate();//execute main method every frame
-        //this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
         this.schedule(this.spawnEnemy, 5); //spawn enemy every 5 seconds
         this.schedule(this.enemyBehavior, 0.5);//move all enemies at every 0.5 seconds interval
 
         cc.audioEngine.playMusic(res.music_map, true);
-        //cc.audioEngine.setMusicVolume(0.4);
     },
 
     onExit: function () {

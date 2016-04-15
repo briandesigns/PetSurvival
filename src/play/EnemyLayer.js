@@ -1,5 +1,5 @@
 /**
- * Created by brian on 2/13/16.
+ * layer that contains all enemy spawns and enemies
  */
 var EnemyLayer = cc.Layer.extend({
     space: null,
@@ -16,25 +16,28 @@ var EnemyLayer = cc.Layer.extend({
         this.init();
 
     },
-init: function () {
+    init: function () {
         this._super();
-    if (this.enemySpawnList == null) {
-        this.enemySpawnList = [];
-        this.createSpawns();
-    } else {
-        for (var i = 0; i < this.enemySpawnList.length; i++) {
-            var spawn = this.enemySpawnList[i];
-            this.addChild(spawn.sprite);
-            for (var j = 0; j < spawn.enemyList.length; j++) {
-                var enemy = spawn.enemyList[j];
-                this.addChild(enemy.sprite);
+        if (this.enemySpawnList == null) {
+            this.enemySpawnList = [];
+            this.createSpawns();
+        } else {
+            for (var i = 0; i < this.enemySpawnList.length; i++) {
+                var spawn = this.enemySpawnList[i];
+                this.addChild(spawn.sprite);
+                for (var j = 0; j < spawn.enemyList.length; j++) {
+                    var enemy = spawn.enemyList[j];
+                    this.addChild(enemy.sprite);
+                }
             }
         }
-    }
 
     },
 
-    createSpawns: function() {
+    /**
+     * generate spawns and set their location randomly
+     */
+    createSpawns: function () {
         this.enemySpawnList[0] = new HydrantSpawn(this.space);
         this.enemySpawnList[1] = new DryerSpawn(this.space);
         this.enemySpawnList[2] = new CanSpawn(this.space);
@@ -57,21 +60,24 @@ init: function () {
         var spawnLocations = this.funChecker.objectLocations;
 
         for (var i = 0; i < this.enemySpawnList.length; i++) {
-            var xCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).x+16;
-            var yCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).y+16;
+            var xCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).x + 16;
+            var yCoord = this.mapLayer.coordinateAtTileIndex(spawnLocations[i]).y + 16;
 
-            this.enemySpawnList[i].body.setPos(cc.p(xCoord, yCoord)) ;
+            this.enemySpawnList[i].body.setPos(cc.p(xCoord, yCoord));
             this.addChild(this.enemySpawnList[i].sprite);
         }
     },
 
-    spawnEnemy: function() {
-        for (var i = 0; i< this.enemySpawnList.length; i++) {
+    /**
+     * spawn 1 enemy for each spawn,, this is called at different time steps
+     */
+    spawnEnemy: function () {
+        for (var i = 0; i < this.enemySpawnList.length; i++) {
             var enemySpawn = this.enemySpawnList[i];
             //cc.log("spawn" + i + "created, " + "spawn capacity: " + enemySpawn.capacity+ ", enemylist: " + enemySpawn.enemyList.length);
-            if (enemySpawn.enemyList.length<enemySpawn.capacity) {
+            if (enemySpawn.enemyList.length < enemySpawn.capacity) {
                 var enemy = null;
-                switch(enemySpawn.spawnType) {
+                switch (enemySpawn.spawnType) {
                     case SPAWN_TYPE.can:
                         enemy = new Can(this.space);
                         break;
@@ -95,7 +101,12 @@ init: function () {
 
     },
 
-    getSpawnByShape: function(shape) {
+    /**
+     * find the spawn given its sprite on the map
+     * @param shape
+     * @returns {*}
+     */
+    getSpawnByShape: function (shape) {
         for (var i = 0; i < this.enemySpawnList.length; i++) {
             var spawn = this.enemySpawnList[i];
             if (spawn.shape == shape) {
@@ -105,10 +116,15 @@ init: function () {
         return null;
     },
 
-    getEnemyByShape: function(shape) {
+    /**
+     * find the enemy of a spawn gven its sprite on the map
+     * @param shape
+     * @returns {*}
+     */
+    getEnemyByShape: function (shape) {
         for (var i = 0; i < this.enemySpawnList.length; i++) {
             var spawn = this.enemySpawnList[i];
-            for (var j = 0; j< spawn.enemyList.length; j++) {
+            for (var j = 0; j < spawn.enemyList.length; j++) {
                 var enemy = spawn.enemyList[j];
                 if (enemy.shape == shape) {
                     return enemy;

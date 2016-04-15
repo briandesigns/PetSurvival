@@ -1,4 +1,8 @@
 var SuperHealthPointItem = Item.extend({
+
+    /**
+     * super health point item could only be obtaied through boss fights
+     */
     healthPointBenefit: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

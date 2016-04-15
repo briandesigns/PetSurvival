@@ -1,3 +1,7 @@
+/**
+ * layer containing all map elements like tiles and trees
+ */
+
 var MapLayer = cc.Layer.extend({
     collisionArray: null, //tiles that the user can't walk over because of trees, etc.
     terrainArray: null, //terrain texture at a tile
@@ -13,6 +17,17 @@ var MapLayer = cc.Layer.extend({
     fullMapTileCount: null, //total number of tiles in overall map
     space: null,
 
+    /**
+     * constructor
+     * @param space
+     * @param mapAsTmxStrings
+     * @param collisionArray
+     * @param tiledMapsWide
+     * @param tiledMapsHigh
+     * @param totalTiledMaps
+     * @param tiledMapWidth
+     * @param tiledMapHeight
+     */
     ctor:function (space, mapAsTmxStrings, collisionArray, tiledMapsWide, tiledMapsHigh, totalTiledMaps, tiledMapWidth, tiledMapHeight) {
         this._super();
         this.space = space;
@@ -33,6 +48,9 @@ var MapLayer = cc.Layer.extend({
         this.init();
     },
 
+    /**
+     * post constructor initiation
+     */
     init: function () {
         this._super();
 
@@ -61,6 +79,7 @@ var MapLayer = cc.Layer.extend({
 
         this.scheduleUpdate();
     },
+
 
     createNewMap: function () {
         // Size map based on player setting

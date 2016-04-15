@@ -1,3 +1,7 @@
+/**
+ * layer that contains all hud elements
+ */
+
 var HudLayer = cc.Layer.extend({
     labelHealth:null,
     labelHealthPoint:null,
@@ -21,6 +25,9 @@ var HudLayer = cc.Layer.extend({
         this.init();
     },
 
+    /**
+     * creating all visual labels
+     */
     init:function () {
         this._super();
         var winsize = cc.director.getWinSize();
@@ -87,6 +94,7 @@ var HudLayer = cc.Layer.extend({
         this.labelHealth.setString("Health: " + playerLayer.player.character.health);
     },
 
+    //called when ever theres a score change (when killed any enemy)
     updateScore: function () {
         var playerLayer = this.getParent().gameLayer.getChildByTag(TagOfLayer.Player);
         this.labelScore.setString("Score: " + playerLayer.player.character.score);

@@ -1,5 +1,8 @@
 var EnemySpawn = cc.Class.extend({
 
+    /**
+     * base class for the spawn of enemy, holds a list of all the enemies it spawns
+     */
     collisionType: null,
     body: null,
     shape: null,

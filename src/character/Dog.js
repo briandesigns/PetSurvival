@@ -1,7 +1,5 @@
 var Dog = Character.extend({
 
-
-
     /** Constructor
      * @param {cc.SpriteBatchNode *}
      * @param {cp.Space *}

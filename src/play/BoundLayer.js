@@ -1,4 +1,7 @@
 var BoundLayer = cc.Layer.extend({
+    /**
+     * layer containing all physics that simulates colliding bodies
+     */
     space: null,
     obstacleList: null,
     mapLayer: null,
@@ -13,6 +16,10 @@ var BoundLayer = cc.Layer.extend({
         this.mapLayer = mapLayer;
         this.init();
     },
+
+    /**
+     * create the walls so player can't go beyond the map bounds
+     */
     init: function () {
         this._super();
 

@@ -1,4 +1,7 @@
 var CaveMapLayer = cc.Layer.extend ({
+    /**
+     * layer that contains boss maps
+     */
     map: null,
     collisionArray: null,
     space: null,
@@ -41,6 +44,11 @@ var CaveMapLayer = cc.Layer.extend ({
         ];
     },
 
+    /**
+     * find the x , y in pixels given the tile we want
+     * @param tileIndex
+     * @returns {{x: number, y: number}}
+     */
     coordinateAtTileIndex: function (tileIndex) {
         var xTile = tileIndex % this.fullMapWidth;
         var yTile = parseInt(tileIndex / this.fullMapWidth);

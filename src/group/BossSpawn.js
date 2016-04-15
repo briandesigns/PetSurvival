@@ -5,7 +5,7 @@ var BossSpawn = EnemySpawn.extend({
     },
 
     changeHealth: function () {
-        //do nothing
+        //do nothing since boss spawn cannot be attacked
     }
 
 

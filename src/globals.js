@@ -1,4 +1,7 @@
-//map properties
+/**
+ * game setting values all in 1 file
+ * @type {Array}
+ */
 var collisionArray = []; //tiles that the user can't walk over because of trees, etc.
 var fullMapTileCount = null;
 var fullMapWidth = null;

@@ -1,5 +1,7 @@
 var Character = cc.Class.extend({
-
+    /**
+     * base characterclass, everything that moves is a child of this class
+     */
     collisionType: null,
     body: null,
     shape: null,
@@ -170,6 +172,11 @@ var Character = cc.Class.extend({
 
     },
 
+    /**
+     * vary health based on current health
+     * @param h
+     * @returns {boolean}
+     */
     changeHealth: function (h) {
         if (h>0) {
             if (this.health < this.healthPoint) {
@@ -194,6 +201,9 @@ var Character = cc.Class.extend({
         }
     },
 
+    /**
+     * run move right sequence
+     */
     moveRight: function () {
         this.direction = "right";
         this.sprite.setRotation(0);
@@ -203,6 +213,9 @@ var Character = cc.Class.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
+    /**
+     * run move left sequence
+     */
     moveLeft: function () {
         this.direction = "left";
         this.sprite.setRotation(0);
@@ -212,6 +225,9 @@ var Character = cc.Class.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
+    /**
+     * run move up sequence
+     */
     moveUp: function () {
         this.direction = "up";
         this.sprite.setRotation(0);
@@ -221,6 +237,9 @@ var Character = cc.Class.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
+    /**
+     * run move down sequence
+     */
     moveDown: function () {
         this.direction = "down";
         this.sprite.setRotation(0);
@@ -229,10 +248,12 @@ var Character = cc.Class.extend({
         this.sprite.runAction(new cc.Sequence(actionTo));
     },
 
+    /**
+     * dispose of character
+     */
     die: function () {
         if(this.characterType >3) {
             cc.audioEngine.playEffect(res.sound_enemy_defeat);
-            //cc.audioEngine.setEffectsVolume(1);
         }
         for(var i=0; i<this.inventory.length;i++) {
             this.removeItem(i+1);
@@ -245,6 +266,10 @@ var Character = cc.Class.extend({
     },
 
 
+    /**
+     * add item to inventory
+     * @param item
+     */
     addItem: function(item) {
         if(this.inventoryCapacity > this.inventory.length &&
             (item.itemType !== ITEM_TYPE.healthBoost && item.itemType !== ITEM_TYPE.pineCone)) {
@@ -275,6 +300,11 @@ var Character = cc.Class.extend({
         }
     },
 
+    /**
+     * remove item from inventory
+     * @param itemNumber
+     * @returns {boolean}
+     */
     removeItem: function(itemNumber) {
         if(this.inventory[itemNumber-1] != null) {
             var item = this.inventory[itemNumber-1];
@@ -302,6 +332,10 @@ var Character = cc.Class.extend({
         }
     },
 
+    /**
+     * remove collision body from ur collisionbody list
+     * @param char
+     */
     removeCollisionByChar: function(char) {
         for (var i = 0; i < this.collisionList.length; i++) {
             if (this.collisionList[i] == char) {
@@ -310,6 +344,9 @@ var Character = cc.Class.extend({
         }
     },
 
+    /**
+     * inflict damage on enemy
+     */
     attackEnemies: function() {
         cc.audioEngine.playEffect(res.sound_attack);
 
@@ -330,6 +367,11 @@ var Character = cc.Class.extend({
         }
     },
 
+    /**
+     * calculate the distance of this character from another
+     * @param char
+     * @returns {number}
+     */
     distanceFromChar: function(char) {
         var charX = char.body.p.x;
         var charY = char.body.p.y;

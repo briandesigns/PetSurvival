@@ -1,4 +1,7 @@
 var ChoiceMenuLayer = cc.Layer.extend({
+    /**
+     * menu that lets us choose our character and map sizes
+     */
     ctor: function () {
         this._super();
     },

@@ -1,7 +1,4 @@
 var Dryer = Character.extend({
-
-
-
     /** Constructor
      * @param {cc.SpriteBatchNode *}
      * @param {cp.Space *}

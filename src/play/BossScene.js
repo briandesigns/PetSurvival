@@ -1,9 +1,5 @@
 /**
- * The class that contains the main scene of the whole game
- * this is the scene where the player gets to control its character and complete the objectives
- * on the map
- * this class contains the main method called update that controls the execution of our game
- * from frame to frame
+ * boss fighting side quest scene
  */
 var BossScene = cc.Scene.extend({
 
@@ -53,6 +49,12 @@ var BossScene = cc.Scene.extend({
             this.collisionProjectileEnemyEnd.bind(this));
     },
 
+    /**
+     * handles when projectile hits an enemy
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionProjectileEnemyBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var proj = this.playerLayer.getProjectileByShape(shapes[0]);
@@ -64,6 +66,12 @@ var BossScene = cc.Scene.extend({
         return true;
     },
 
+    /**
+     * handles when projectile hits an enemy
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionProjectileEnemyEnd: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var enemy = this.boss;
@@ -121,6 +129,12 @@ var BossScene = cc.Scene.extend({
     },
 
 
+    /**
+     * handles when enemy collide with item
+     * @param arbiter
+     * @param space
+     * @returns {boolean}
+     */
     collisionEnemyItemBegin: function (arbiter, space) {
         var shapes = arbiter.getShapes();
         var enemy = this.boss;

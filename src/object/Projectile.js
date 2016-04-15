@@ -1,5 +1,8 @@
 var Projectile = cc.Class.extend({
 
+    /**
+     * base class for all range weapons
+     */
     collisionType: null,
     body: null,
     shape: null,

@@ -1,4 +1,8 @@
 var SuperSpeedItem = Item.extend({
+
+    /**
+     * super speed boost item that could only be obtained through boss fights
+     */
     speedBoost: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

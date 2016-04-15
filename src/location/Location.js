@@ -1,5 +1,8 @@
 var Location = cc.Class.extend({
 
+    /**
+     * base class for end and starting points
+     */
     collisionType: null,
     body: null,
     shape: null,

@@ -1,5 +1,8 @@
 var PineConeItem = Item.extend({
 
+    /**
+     * item that allows u to throw pine cones
+     */
     /** Constructor
      * @param {cc.SpriteBatchNode *}
      * @param {cp.Space *}

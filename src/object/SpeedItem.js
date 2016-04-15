@@ -1,4 +1,8 @@
 var SpeedItem = Item.extend({
+
+    /**
+     * item that boosts ur speed
+     */
     speedBoost: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}

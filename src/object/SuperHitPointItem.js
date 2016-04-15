@@ -1,5 +1,8 @@
 var SuperHitPointItem = Item.extend({
 
+    /**
+     * super hit point item could only be obtained through boss fights
+     */
     hitPointBenefit: null,
     /** Constructor
      * @param {cc.SpriteBatchNode *}
