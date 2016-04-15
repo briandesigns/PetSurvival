@@ -38,10 +38,21 @@ init: function () {
         this.enemySpawnList[0] = new HydrantSpawn(this.space);
         this.enemySpawnList[1] = new DryerSpawn(this.space);
         this.enemySpawnList[2] = new CanSpawn(this.space);
-        this.enemySpawnList[3] = new VacuumSpawn(this.space);
-        this.enemySpawnList[4] = new BossSpawn(this.space);
-        this.enemySpawnList[5] = new BossSpawn(this.space);
-        this.enemySpawnList[6] = new BossSpawn(this.space);
+        this.enemySpawnList[3] = new BossSpawn(this.space);
+
+        // If map size is medium or bigger add more enemies
+        if (chosenMapSize != MAP_SIZE.small) {
+            this.enemySpawnList[4] = new VacuumSpawn(this.space);
+            this.enemySpawnList[5] = new BossSpawn(this.space);
+
+            // If map size is large add even more enemies
+            if (chosenMapSize == MAP_SIZE.big) {
+                this.enemySpawnList[0] = new HydrantSpawn(this.space);
+                this.enemySpawnList[1] = new DryerSpawn(this.space);
+                this.enemySpawnList[2] = new CanSpawn(this.space);
+                this.enemySpawnList[6] = new BossSpawn(this.space);
+            }
+        }
 
         var spawnLocations = this.funChecker.objectLocations;
 

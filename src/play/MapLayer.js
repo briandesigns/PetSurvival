@@ -67,13 +67,13 @@ var MapLayer = cc.Layer.extend({
         if (chosenMapSize == MAP_SIZE.small) {
             this.tiledMapsWide = 1;
             this.tiledMapsHigh = 1;
-            this.tiledMapWidth = 33;
-            this.tiledMapHeight = 33    ;
+            this.tiledMapWidth = 17;
+            this.tiledMapHeight = 17;
         } else if (chosenMapSize == MAP_SIZE.medium) {
             this.tiledMapsWide = 1;
             this.tiledMapsHigh = 1;
-            this.tiledMapWidth = 65;
-            this.tiledMapHeight = 65;
+            this.tiledMapWidth = 33;
+            this.tiledMapHeight = 33;
         } else if (chosenMapSize == MAP_SIZE.big) {
             this.tiledMapsWide = 1;
             this.tiledMapsHigh = 1;
@@ -102,8 +102,10 @@ var MapLayer = cc.Layer.extend({
             // Divide the result of diamond square to give less water tiles if the map is small
             var divisor = 0;
             if (chosenMapSize == MAP_SIZE.small) {
+                divisor = 5;
+            } else if (chosenMapSize == MAP_SIZE.medium) {
                 divisor = 10;
-            } else {
+            } else if (chosenMapSize == MAP_SIZE.big) {
                 divisor = 20;
             }
 
