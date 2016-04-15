@@ -2,6 +2,8 @@ var res = {
     menu_background_png : "res/menu/menu_background.png",
     menu_button_normal_singleplayer : "res/menu/menu_button_normal_singleplayer.png",
     menu_button_selected_singleplayer : "res/menu/menu_button_selected_singleplayer.png",
+    menu_button_normal_multiplayer : "res/menu/menu_button_normal_multiplayer.png",
+    menu_button_selected_multiplayer : "res/menu/menu_button_selected_multiplayer.png",
     menu_button_normal_runaway : "res/menu/menu_button_normal_runaway.png",
     menu_button_selected_runaway: "res/menu/menu_button_selected_runaway.png",
     menu_button_normal_resume: "res/menu/menu_button_normal_resume.png",

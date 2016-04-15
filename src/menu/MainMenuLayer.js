@@ -25,8 +25,8 @@ var MainMenuLayer = cc.Layer.extend({
         );
         // Multiplayer menu button (note: currently uses single player sprite)
         var menuItemMultiplayer = new cc.MenuItemSprite(
-            new cc.Sprite(res.menu_button_normal_singleplayer),
-            new cc.Sprite(res.menu_button_selected_singleplayer),
+            new cc.Sprite(res.menu_button_normal_multiplayer),
+            new cc.Sprite(res.menu_button_selected_multiplayer),
             this.onMultiplayer,
             this
         );
