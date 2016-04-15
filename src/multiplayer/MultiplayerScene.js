@@ -1,7 +1,3 @@
-/**
- * Created by Joe on 2016-04-13.
- */
-
 var MultiplayerScene = cc.Scene.extend({
     space: null,
     gameLayer: null, // need multiplayer version of this?
@@ -25,6 +21,7 @@ var MultiplayerScene = cc.Scene.extend({
 
         this.mapLayer = new CaveMapLayer(this.space);
 
+        // assign a player model based on their player ID
         var chosenChar;
         switch (this.jsonData.playerID%4) {
             case 0:
@@ -48,7 +45,7 @@ var MultiplayerScene = cc.Scene.extend({
 
         this.addChild(this.gameLayer);
         this.addChild(this.hudLayer, 0, TagOfLayer.Hud);
-        this.scheduleUpdate();//execute main method every frame
+        this.scheduleUpdate(); //execute main method every frame
         this.scheduleOnce(this.positionPlayer); //execute position player to spawn point at first
 
         cc.audioEngine.playMusic(res.music_boss, true);

@@ -1,7 +1,3 @@
-/**
- * Created by Joe on 2016-04-13.
- */
-
 var HudLayerMulti = cc.Layer.extend({
     labelHealth:null,
     labelHealthPoint:null,

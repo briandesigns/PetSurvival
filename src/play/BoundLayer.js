@@ -110,7 +110,6 @@ var BoundLayer = cc.Layer.extend({
 
     //draw a collision sprite at the given index for the specified width and height
     drawCollisionSprite: function (index, width, height) {
-        //console.log("draw sprite from (" + index%fullMapWidth + "," + parseInt(index/fullMapWidth) + ") to (" + (index%fullMapWidth+width-1) + "," + (parseInt(index/fullMapWidth) + height-1) + ") of size " + (height*width));
         var block = new cp.Body(MAX_INT, cp.momentForBox(1, 32 * width, 32 * height));
         block.setAngVel(0);
         block.setMoment(MAX_INT);

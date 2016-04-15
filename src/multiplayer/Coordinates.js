@@ -1,5 +1,5 @@
 /**
- * Created by Joe on 2016-04-13.
+ * Helper functions for multiplayer to determine the coordinates of a tile and vice versa.
  */
 
 function CoordinatesAtTile(xTile, yTile) {

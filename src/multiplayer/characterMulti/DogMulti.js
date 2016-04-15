@@ -1,6 +1,4 @@
-/**
- * Created by Joe on 2016-04-13.
- */
+
 
 var DogMulti = Character.extend({
     

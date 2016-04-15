@@ -1,6 +1,4 @@
-/**
- * Created by Joe on 2016-04-13.
- */
+// Extend the player layer so that it can support Player IDs
 
 var PlayerMulti = Player.extend({
     playerId: null,

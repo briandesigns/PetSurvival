@@ -121,15 +121,16 @@ var MapLayer = cc.Layer.extend({
             // Divide the result of diamond square to give less water tiles if the map is small
             var divisor = 0;
             if (chosenMapSize == MAP_SIZE.small) {
-                divisor = 5;
+                divisor = 3;
             } else if (chosenMapSize == MAP_SIZE.medium) {
                 divisor = 10;
             } else if (chosenMapSize == MAP_SIZE.big) {
                 divisor = 20;
             }
 
+            // Set tile terrain based on diamond square array value
             var terrainAsInt = parseInt(diamondSquare.map[i] / divisor);
-
+            
             switch (true) {
                 case (terrainAsInt < 0):
                     this.terrainArray[i] = 320; //sand
@@ -152,9 +153,7 @@ var MapLayer = cc.Layer.extend({
                     break;
             }
         }
-
-        //console.log("max " + parseInt(Math.max.apply(Math, terrain.map) / 20) + ", min " + parseInt(Math.min.apply(Math, terrain.map) / 20));
-
+        
         this.smoothTiles(320,323,256,277,279,278,258,257,342,340,300,298,299,341,319,321); //water/sand smoothing
         this.smoothTiles(320,191,253,274,276,275,255,254,339,337,297,295,296,338,316,318); //sand/grass smoothing
         this.smoothTiles(326,191,262,283,285,284,264,263,348,346,306,304,305,347,325,327); //grass/dirt smoothing
@@ -226,7 +225,6 @@ var MapLayer = cc.Layer.extend({
 
         var xCoordinate = xTile * 32;
         var yCoordinate = this.fullMapHeight*32-((yTile+1) * 32);
-        //console.log("index " + tileIndex + " has coordinate (" + xCoordinate + "," + yCoordinate + ")");
 
         return {x:xCoordinate, y:yCoordinate};
     },

@@ -50,22 +50,24 @@ DiamondSquare.prototype.generate = function(roughness) {
         return total / valid.length;
     }
 
+    // Square phase
     function square(x, y, size, offset) {
         var ave = average([
-            self.get(x - size, y - size),   // upper left
-            self.get(x + size, y - size),   // upper right
-            self.get(x + size, y + size),   // lower right
-            self.get(x - size, y + size)    // lower left
+            self.get(x - size, y - size), // upper left
+            self.get(x + size, y - size), // upper right
+            self.get(x + size, y + size), // lower right
+            self.get(x - size, y + size)  // lower left
         ]);
         self.set(x, y, ave + offset);
     }
 
+    // Diamond phase
     function diamond(x, y, size, offset) {
         var ave = average([
-            self.get(x, y - size),      // top
-            self.get(x + size, y),      // right
-            self.get(x, y + size),      // bottom
-            self.get(x - size, y)       // left
+            self.get(x, y - size), // top
+            self.get(x + size, y), // right
+            self.get(x, y + size), // bottom
+            self.get(x - size, y)  // left
         ]);
         self.set(x, y, ave + offset);
     }

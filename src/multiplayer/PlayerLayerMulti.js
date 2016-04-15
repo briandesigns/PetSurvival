@@ -1,7 +1,3 @@
-/**
- * Created by Joe on 2016-04-13.
- */
-
 var PlayerLayerMulti = cc.Layer.extend({
     space: null,
     currentPlayerID: null,
@@ -26,18 +22,16 @@ var PlayerLayerMulti = cc.Layer.extend({
         this.currentPlayerID = _jsonData.playerID;
         this.playerList = [];
         this.playerList[this.currentPlayerID] = new PlayerMulti(this.currentPlayerID, character);
-        //var position = this.jsonData.position
         this.init();
     },
     init: function() {
         this._super();
 
-        //multiplayer stuff;
+        //multiplayer setup;
         this.eventHandler(this.jsonData.event);
 
-        // Create the current player's sprite and position it in the center of the screen
+        // Create the current player's sprite and position it where the server tells us
         this.inMotion = false;
-        console.log("Setting current player position to " + this.jsonData.x + ", " + this.jsonData.y);
         var newPlayerCoordinates = CoordinatesAtTile(this.jsonData.x, this.jsonData.y);
         var newPlayerPoint = cc.p(newPlayerCoordinates.xCoordinate, newPlayerCoordinates.yCoordinate);
         this.playerList[this.currentPlayerID].character.sprite.setPosition(newPlayerPoint);
@@ -67,6 +61,7 @@ var PlayerLayerMulti = cc.Layer.extend({
             );
         }
 
+        // Inform the server that we have finished loading the scene
         var config = {
             event: Events.LOADING_DONE,
             playerID: this.currentPlayerID
@@ -76,6 +71,7 @@ var PlayerLayerMulti = cc.Layer.extend({
         ws.send(message);
     },
 
+    // Send a move request to the server
     requestMove: function (move) {
         var config = {
             event: Events.PLAY,
@@ -135,7 +131,6 @@ var PlayerLayerMulti = cc.Layer.extend({
     },
 
     changeHealth: function (id, newHealth) {
-        console.log("Changing health of player " + id + " to " + newHealth);
         this.playerList[id].character.health = newHealth;
         this.hudLayer.updateHealth();
     },
@@ -202,6 +197,8 @@ var PlayerLayerMulti = cc.Layer.extend({
     // Multiplayer functions
     eventHandler:function(jsonData) {
         switch (jsonData.event) {
+            
+            // Set the position of a newly joined player
             case Events.SET_POSITION:
                 console.log("Events: SET_POSITION");
                 this.playerList[jsonData.playerID] = new PlayerMulti(jsonData.playerID, this.characterModelFromID(jsonData.playerID));
@@ -211,6 +208,8 @@ var PlayerLayerMulti = cc.Layer.extend({
                 this.playerList[jsonData.playerID].character.sprite.setPosition(newPlayerPoint);
                 this.addChild(this.playerList[jsonData.playerID].character.sprite);
                 break;
+            
+            // Perform an action after the server has approved it
             case Events.PLAY_DONE:
                 console.log("EVENTS: PLAY_DONE");
                 switch (jsonData.move) {
@@ -234,12 +233,12 @@ var PlayerLayerMulti = cc.Layer.extend({
                         break;
                 }
                 break;
+            
+            // Kill a player when the server notifies us that they have died
             case Events.DEATH:
                 this.killPlayerWithID(jsonData.playerID);
                 break;
         }
-        console.log("Set turn message.");
-        //this.setTurnMassage();
     },
 
     // Websocket functions

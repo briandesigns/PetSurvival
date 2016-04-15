@@ -143,7 +143,6 @@ var saveMap = function (mapLayer, boss) {
     dict.setItem(boss + "tiledMapsHigh", tiledMapsHigh);
     dict.setItem(boss + "totalTiledMaps", totalTiledMaps);
     dict.setItem(boss + "collisionArray", buildMapArrayString(collisionArray));
-    cc.log("Saving collision array: " + collisionArray);
 
     var mapAsTmxStrings = mapLayer.mapAsTmxStrings;
     for (var i = 0; i < mapAsTmxStrings.length; i++) {

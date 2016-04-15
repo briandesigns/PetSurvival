@@ -24,6 +24,7 @@ var CaveMapLayer = cc.Layer.extend ({
         this.map = new cc.TMXTiledMap(res.caveTerrain_tmx);
         this.addChild(this.map);
 
+        // Represents walkable areas
         this.collisionArray = [
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
